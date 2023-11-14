@@ -24,6 +24,7 @@
 }
 
 .login-form {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -45,7 +46,7 @@
   width: 25rem;
   padding: 1.5rem;
   border-radius: 16px;
-  border: none;
+  border: 1px solid rgba(0, 0, 0, 0);
   background: #ededee;
   margin-bottom: 3rem;
 
@@ -53,6 +54,10 @@
   font-style: normal;
   font-weight: 500;
   line-height: 109%;
+}
+
+.login-form .auth-failed {
+  border: 1px solid red;
 }
 
 .login-form #password-input {
@@ -64,10 +69,18 @@
   padding-right: 3rem;
 }
 
-.login-form #checkPassword {
+.login-form #makePasswordVisible {
+  border: none;
+  background: none;
   position: absolute;
   top: 25%;
   right: 1.5em;
+  width: fit-content;
+  height: fit-content;
+}
+
+.login-form #makePasswordVisible:hover img {
+  opacity: 0.6;
 }
 
 .login-form #submit {
@@ -86,4 +99,10 @@
 
 .login-form #submit:hover {
   background: #515f6a;
+}
+
+.login-form p {
+  position: absolute;
+  color: red;
+  top: 6rem;
 }

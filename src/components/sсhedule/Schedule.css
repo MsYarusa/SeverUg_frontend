@@ -1,0 +1,11 @@
+.schedule {
+  display: flex;
+  width: 1371px;
+  padding-bottom: 0px;
+
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+
+  background: #d9d9d9;
+}

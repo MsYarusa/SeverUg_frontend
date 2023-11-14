@@ -1,0 +1,10 @@
+.schedule-filter {
+  width: 1371px;
+  height: 78px;
+
+  display: flex;
+  flex-direction: row;
+
+  border: 1px solid #000;
+  background: #b9b9b9;
+}

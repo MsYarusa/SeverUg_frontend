@@ -1,0 +1,10 @@
+.trip {
+  width: 1310px;
+  height: 78px;
+  display: flex;
+  flex-direction: row;
+
+  border-radius: 5px;
+  border: 1px solid #000;
+  background: #bfbfbf;
+}

@@ -1,12 +1,12 @@
 const axios = require("axios").default;
 
 axios
-  .post("https://jsonplaceholder.typicode.com/posts", {
-    login: "abobus",
-    password: "abobs",
+  .post("https://spacekot.ru/apishechka/login", {
+    login: "abobs",
+    password: "abobus",
   })
   .then((response) => {
-    console.log(response.data);
+    console.log(response);
   })
   .catch((error) => {
     console.error(error);

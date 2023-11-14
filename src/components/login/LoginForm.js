@@ -1,12 +1,14 @@
 import React, { useState } from "react";
-import checkPassword_button from "./passwordImg.svg";
+import makePasswordVisible_active from "./passImgVis.svg";
+import makePasswordVisible_unactive from "./passImgUnvis.svg";
 import "./LoginForm.css";
 import axios from "axios";
 
-const LoginFrom = () => {
+const LoginFrom = (props) => {
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
-  const [isSubmited, setIsSubmited] = useState(false);
+  const [passwordIsVisible, setPasswordIsVisible] = useState(false);
+  const [authFailed, setAuthFailed] = useState(false);
 
   const changeLoginHandler = (event) => {
     setLogin(event.target.value);
@@ -16,21 +18,25 @@ const LoginFrom = () => {
     setPassword(event.target.value);
   };
 
+  const makePasswordVisibleHandler = () => {
+    setPasswordIsVisible(!passwordIsVisible);
+  };
+
   const submitHandler = (event) => {
     event.preventDefault();
-    setIsSubmited(true);
 
     axios
-      // "http://194.35.119.103/apishechka/login"
-      .post("https://jsonplaceholder.typicode.com/posts", {
+      .post("https://spacekot.ru/apishechka/login", {
         login: login,
         password: password,
       })
-      .then((response) => {
-        console.log(response.data);
+      .then((res) => {
+        console.log(res.data);
+        props.getData(res.data);
       })
       .catch((error) => {
         console.error(error);
+        setAuthFailed(true);
       });
 
     setLogin("");
@@ -43,6 +49,7 @@ const LoginFrom = () => {
         <form className="login-form" onSubmit={submitHandler}>
           <label>Вход</label>
           <input
+            className={authFailed ? "auth-failed" : ""}
             type="text"
             id="login"
             placeholder="Логин"
@@ -51,19 +58,35 @@ const LoginFrom = () => {
           ></input>
           <div id="password-input">
             <input
-              type="password"
+              className={authFailed ? "auth-failed" : ""}
+              type={passwordIsVisible ? "text" : "password"}
               id="password"
               placeholder="Пароль"
               value={password}
               onChange={changePasswordHandler}
             ></input>
-            <div type="button" id="checkPassword">
-              <img src={checkPassword_button} alt={"check"} />
-            </div>
+            <button
+              type="button"
+              id="makePasswordVisible"
+              onClick={makePasswordVisibleHandler}
+            >
+              {passwordIsVisible ? (
+                <img
+                  src={makePasswordVisible_unactive}
+                  alt={"makePasswordVisible_unact"}
+                />
+              ) : (
+                <img
+                  src={makePasswordVisible_active}
+                  alt={"makePasswordVisible_act"}
+                />
+              )}
+            </button>
           </div>
           <button type="submit>" id="submit">
             Войти
           </button>
+          {authFailed && <p>Некорректный логин или пароль</p>}
         </form>
       </div>
     </div>

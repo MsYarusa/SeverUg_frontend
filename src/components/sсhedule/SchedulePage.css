@@ -1,0 +1,4 @@
+.schedule-page {
+  display: flex;
+  flex-direction: column;
+}
