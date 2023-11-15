@@ -2,6 +2,7 @@ import "./App.css";
 import React, { useState } from "react";
 import LoginForm from "./components/login/LoginForm";
 import Logo from "./components/login/Logo";
+import SchedulePage from "./components/sсhedule/SchedulePage";
 
 function App() {
   const [isAuth, setIsAuth] = useState(false);
@@ -17,8 +18,9 @@ function App() {
 
   return (
     <div className="App">
-      <Logo />
-      {!isAuth && <LoginForm getData={getTokenAndRole} />}
+      {/* <Logo />
+      {!isAuth && <LoginForm getData={getTokenAndRole} />} */}
+      <SchedulePage></SchedulePage>
     </div>
   );
 }

@@ -1,10 +1,61 @@
 .schedule-filter {
-  width: 1371px;
-  height: 78px;
+  width: 100%;
+  height: 70px;
+
+  margin-bottom: 24px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  background: #b9b9b9;
+}
+
+.schedule-filter form {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  height: 100%;
+  margin: 14px 25px;
+}
+
+.schedule-filter div {
+  width: 40%;
+  height: 100%;
 
   display: flex;
   flex-direction: row;
+  align-items: center;
 
-  border: 1px solid #000;
-  background: #b9b9b9;
+  font-size: 19px;
+}
+
+.schedule-filter label {
+  margin-right: 15px;
+}
+.schedule-filter input {
+  width: 90%;
+
+  padding: 10px 4px;
+
+  border-radius: 30px;
+  border: none;
+  outline: none;
+  background: #fff;
+
+  font-size: 19px;
+}
+
+.schedule-filter button {
+  width: 100px;
+
+  padding: 5px 4px;
+
+  border-radius: 30px;
+  border: none;
+  background: #e9e9e9;
+
+  font: inherit;
+  font-size: 19px;
 }

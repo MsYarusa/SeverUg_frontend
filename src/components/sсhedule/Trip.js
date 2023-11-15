@@ -1,12 +1,15 @@
 import React from "react";
 import "./Trip.css";
 
-const Trip = () => {
+const Trip = (props) => {
   return (
     <div className="trip">
-      <time>Время</time>
-      <p id="destination">Откуда - куда</p>
-      <p id="cost">Цена</p>
+      <p id="date">{props.date}</p>
+      <p id="time">00:00</p>
+      <p id="current">{props.from}</p>
+      <p id="dash">—</p>
+      <p id="destination">{props.to}</p>
+      <p id="cost">цена руб.</p>
       <button>Оформить</button>
     </div>
   );

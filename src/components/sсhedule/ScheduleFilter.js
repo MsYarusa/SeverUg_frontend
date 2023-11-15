@@ -4,15 +4,18 @@ import "./ScheduleFilter.css";
 const ScheduleFilter = () => {
   return (
     <div className="schedule-filter">
-      <div>
-        <p>от:</p>
-        <input></input>
-      </div>
-      <div>
-        <p>до:</p>
-        <input></input>
-      </div>
-      <button>Найти</button>
+      <form>
+        <div>
+          <label htmlFor="from">от:</label>
+          <input id="from"></input>
+        </div>
+        <div>
+          <label htmlFor="to">до:</label>
+          <input id="to"></input>
+        </div>
+
+        <button>Найти</button>
+      </form>
     </div>
   );
 };
