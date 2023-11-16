@@ -12,12 +12,15 @@ const axios = require("axios").default;
 //     console.error(error);
 //   });
 
-axios
-  .get("http://spacekot.ru/apishechka/schedule")
-  .then((res) => {
-    console.log(res.data);
-    data = res.data;
-  })
-  .catch((error) => {
-    console.error(error);
-  });
+// axios
+//   .get("http://spacekot.ru/apishechka/schedule")
+//   .then((res) => {
+//     console.log(res.data);
+//     data = res.data;
+//   })
+//   .catch((error) => {
+//     console.error(error);
+//   });
+
+let str = "aaaa";
+console.log(str.indexOf("v"));

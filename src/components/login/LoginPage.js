@@ -1,21 +1,17 @@
 import React from "react";
+import LoginForm from "./LoginForm";
+import Logo from "../Logo";
+import "./LoginPage.css";
 
-const LoginPage = () => {
-  const [isAuth, setIsAuth] = useState(false);
-
-  let token = null;
-  let role = null;
-
+const LoginPage = (props) => {
   const getTokenAndRole = (data) => {
-    token = data.token;
-    role = data.role;
-    setIsAuth(true);
+    props.sendTokenAndRole(data);
   };
 
   return (
-    <div>
+    <div className="login-page">
       <Logo />
-      {!isAuth && <LoginForm getData={getTokenAndRole} />}
+      <LoginForm getData={getTokenAndRole} />
     </div>
   );
 };

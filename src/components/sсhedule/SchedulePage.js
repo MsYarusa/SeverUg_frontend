@@ -3,8 +3,10 @@ import Shedule from "./Schedule";
 import GetSchedule from "./GetSchedule";
 
 import "./SchedulePage.css";
+import Header from "../Header";
+import Footer from "../Footer";
 
-const SchedulePage = () => {
+const SchedulePage = (props) => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -16,8 +18,9 @@ const SchedulePage = () => {
 
   return (
     <div className="schedule-page">
-      {console.log("in return, data:", data)}
+      <Header firstName={props.firstName} lastName={props.lastName} />
       <Shedule schedule={data}></Shedule>
+      <Footer />
     </div>
   );
 };

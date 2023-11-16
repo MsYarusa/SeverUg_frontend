@@ -1,28 +1,31 @@
-import "./App.css";
 import React, { useState } from "react";
-import LoginForm from "./components/login/LoginForm";
-import Logo from "./components/login/Logo";
 import SchedulePage from "./components/sсhedule/SchedulePage";
+import LoginPage from "./components/login/LoginPage";
 
 function App() {
-  const [isAuth, setIsAuth] = useState(false);
+  const checkAuth = sessionStorage.getItem("isAuth");
+  const [isAuth, setIsAuth] = useState(checkAuth ? checkAuth : false);
 
-  let token = null;
-  let role = null;
-
-  const getTokenAndRole = (data) => {
-    token = data.token;
-    role = data.role;
-    setIsAuth(true);
+  let user = {
+    token: null,
+    role: null,
+    firstName: "Имя",
+    lastName: "Фамилия",
   };
 
-  return (
-    <div className="App">
-      {/* <Logo />
-      {!isAuth && <LoginForm getData={getTokenAndRole} />} */}
-      <SchedulePage></SchedulePage>
-    </div>
-  );
+  const getTokenAndRole = (data) => {
+    user.token = data.token;
+    user.role = data.role;
+    user.firstName = data.first_name;
+    user.lastName = data.last_name;
+
+    setIsAuth(true);
+    sessionStorage.setItem("isAuth", true);
+  };
+
+  if (!isAuth) return <LoginPage sendTokenAndRole={getTokenAndRole} />;
+  else
+    return <SchedulePage lastName={user.lastName} firstName={user.firstName} />;
 }
 
 export default App;

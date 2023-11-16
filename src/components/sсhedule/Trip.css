@@ -39,3 +39,12 @@
   margin: 13px 0px;
   padding: 10px 20px;
 }
+
+.trip:hover {
+  background: rgb(250, 250, 250);
+}
+
+.trip button:hover {
+  background: rgb(220, 220, 220);
+  cursor: pointer;
+}

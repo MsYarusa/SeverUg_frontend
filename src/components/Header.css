@@ -1,0 +1,23 @@
+.header {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  top: 0px;
+  width: 100%;
+  height: 122px;
+  background: #6f808d;
+}
+
+.header #user {
+  display: flex;
+  color: white;
+  gap: 20px;
+  font-size: 22px;
+  font-weight: 500;
+  margin: 50px;
+}
+
+.header #user p:hover {
+  text-decoration: underline;
+}

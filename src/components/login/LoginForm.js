@@ -4,7 +4,7 @@ import makePasswordVisible_unactive from "./passImgUnvis.svg";
 import "./LoginForm.css";
 import axios from "axios";
 
-const LoginFrom = (props) => {
+const LoginForm = (props) => {
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
   const [passwordIsVisible, setPasswordIsVisible] = useState(false);
@@ -24,6 +24,16 @@ const LoginFrom = (props) => {
 
   const submitHandler = (event) => {
     event.preventDefault();
+
+    // if (login === "abobus" && password === "abobus") {
+    //   let data = {
+    //     token: "token",
+    //     role: "directior",
+    //   };
+    //   props.getData(data);
+    // } else {
+    //   setAuthFailed(true);
+    // }
 
     axios
       .post("https://spacekot.ru/apishechka/login", {
@@ -93,4 +103,4 @@ const LoginFrom = (props) => {
   );
 };
 
-export default LoginFrom;
+export default LoginForm;
