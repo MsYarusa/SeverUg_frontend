@@ -1,3 +1,5 @@
+const { json } = require("react-router-dom");
+
 const axios = require("axios").default;
 
 // axios
@@ -21,6 +23,3 @@ const axios = require("axios").default;
 //   .catch((error) => {
 //     console.error(error);
 //   });
-
-let str = "aaaa";
-console.log(str.indexOf("v"));

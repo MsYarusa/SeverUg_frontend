@@ -3,15 +3,11 @@ import LoginForm from "./LoginForm";
 import Logo from "../Logo";
 import "./LoginPage.css";
 
-const LoginPage = (props) => {
-  const getTokenAndRole = (data) => {
-    props.sendTokenAndRole(data);
-  };
-
+const LoginPage = () => {
   return (
     <div className="login-page">
       <Logo />
-      <LoginForm getData={getTokenAndRole} />
+      <LoginForm />
     </div>
   );
 };

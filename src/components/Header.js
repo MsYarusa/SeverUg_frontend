@@ -1,19 +1,21 @@
 import React from "react";
 import Logo from "./Logo";
-import user from "./userImg.svg";
+import userImg from "./userImg.svg";
 import "./Header.css";
+import { useSelector } from "react-redux";
 
-const Header = (props) => {
+const Header = () => {
+  const user = useSelector((state) => state.user.user);
   return (
-    <div className="header">
+    <header className="header">
       <Logo />
       <div id="user">
-        <img src={user} alt="user" />
+        <img src={userImg} alt="user" />
         <p>
-          {props.lastName} {props.firstName}
+          {user.last_name} {user.first_name}
         </p>
       </div>
-    </div>
+    </header>
   );
 };
 

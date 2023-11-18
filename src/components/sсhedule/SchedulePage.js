@@ -6,7 +6,7 @@ import "./SchedulePage.css";
 import Header from "../Header";
 import Footer from "../Footer";
 
-const SchedulePage = (props) => {
+const SchedulePage = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -18,7 +18,7 @@ const SchedulePage = (props) => {
 
   return (
     <div className="schedule-page">
-      <Header firstName={props.firstName} lastName={props.lastName} />
+      <Header />
       <Shedule schedule={data}></Shedule>
       <Footer />
     </div>

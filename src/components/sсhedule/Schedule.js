@@ -21,7 +21,7 @@ const Shedule = (props) => {
       let searchedFrom = tripFrom.indexOf(searchData.from);
       let searchedTo = tripTo.indexOf(searchData.to);
 
-      if (searchedFrom != -1 && searchedTo != -1) {
+      if (searchedFrom !== -1 && searchedTo !== -1) {
         search_results.push(trip);
       }
     }
@@ -35,7 +35,7 @@ const Shedule = (props) => {
       <ul>
         {schedule?.map((trip) => (
           <Trip
-            key={trip.id}
+            key={trip.trip_id}
             date={trip.time_to}
             from={trip.stations.at(0).name}
             to={trip.stations.at(-1).name}
