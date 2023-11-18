@@ -3,9 +3,7 @@ import makePasswordVisible_active from "./passImgVis.svg";
 import makePasswordVisible_unactive from "./passImgUnvis.svg";
 import "./LoginForm.css";
 import { useDispatch, useSelector } from "react-redux";
-import { setUser } from "../store/userSlice";
 import { getUser } from "./GetUser";
-import axios from "axios";
 
 const LoginForm = () => {
   const dispatch = useDispatch();
@@ -36,35 +34,6 @@ const LoginForm = () => {
   const submitHandler = (event) => {
     event.preventDefault();
     dispatch(getUser({ login, password }));
-
-    // if (login === "abobus" && password === "abobus") {
-    //   let data = {
-    //     token: "token",
-    //     first_name: "Abobus",
-    //     last_name: "banfuciy",
-    //     role: "directior",
-    //   };
-    //   dispatch(setUser(data));
-    // } else {
-    //   setAuthFailed(true);
-    // }
-
-    // axios
-    //   .post("https://spacekot.ru/apishechka/login", {
-    //     login: login,
-    //     password: password,
-    //   })
-    //   .then((res) => {
-    //     console.log(res.data);
-    //     props.getData(res.data);
-    //   })
-    //   .catch((error) => {
-    //     console.error(error);
-    //     setAuthFailed(true);
-    // });
-
-    // setLogin("");
-    // setPassword("");
   };
 
   return (

@@ -1,25 +1,24 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import Shedule from "./Schedule";
-import GetSchedule from "./GetSchedule";
+import { getSchedule } from "./GetSchedule";
+import { useDispatch, useSelector } from "react-redux";
 
 import "./SchedulePage.css";
-import Header from "../Header";
-import Footer from "../Footer";
+import Header from "../layout/Header";
+import Footer from "../layout/Footer";
 
 const SchedulePage = () => {
-  const [data, setData] = useState([]);
+  const dispatch = useDispatch();
+  const schedule = useSelector((state) => state.schedule.schedule);
 
   useEffect(() => {
-    GetSchedule().then((res) => {
-      console.log("in useEffect, res:", res);
-      setData(res);
-    });
-  }, []);
+    dispatch(getSchedule());
+  }, [dispatch]);
 
   return (
     <div className="schedule-page">
       <Header />
-      <Shedule schedule={data}></Shedule>
+      <Shedule schedule={schedule}></Shedule>
       <Footer />
     </div>
   );
