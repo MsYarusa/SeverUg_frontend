@@ -5,6 +5,7 @@ const userSlice = createSlice({
   name: "user",
   initialState: {
     user: JSON.parse(sessionStorage.getItem("user")),
+    // user: null,
     status: null,
     error: null,
   },

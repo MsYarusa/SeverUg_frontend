@@ -8,7 +8,6 @@ import { getUser } from "./GetUser";
 const LoginForm = () => {
   const dispatch = useDispatch();
   const status = useSelector((state) => state.user.status);
-  console.log(status);
 
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
@@ -47,6 +46,7 @@ const LoginForm = () => {
             id="login"
             placeholder="Логин"
             value={login}
+            autoComplete="username"
             onChange={changeLoginHandler}
           ></input>
           <div id="password-input">
@@ -56,6 +56,7 @@ const LoginForm = () => {
               id="password"
               placeholder="Пароль"
               value={password}
+              autoComplete="current-password"
               onChange={changePasswordHandler}
             ></input>
             <button

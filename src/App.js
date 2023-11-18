@@ -1,12 +1,25 @@
 import SchedulePage from "./components/sсhedule/SchedulePage";
 import LoginPage from "./components/login/LoginPage";
-import { useSelector } from "react-redux/es/hooks/useSelector";
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
+import Layout from "./components/layout/Layout";
+import RequireAuth from "./hoc/RequireAuth";
 
 function App() {
-  const user = useSelector((state) => state.user.user);
-  if (!user) return <LoginPage />;
-  else return <SchedulePage />;
+  return (
+    <Routes>
+      <Route path="/login" element={<LoginPage />} />
+      <Route
+        path="/"
+        element={
+          <RequireAuth>
+            <Layout />
+          </RequireAuth>
+        }
+      >
+        <Route index element={<SchedulePage />} />
+      </Route>
+    </Routes>
+  );
 }
 
 export default App;
