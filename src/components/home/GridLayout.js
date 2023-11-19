@@ -1,5 +1,5 @@
 import React from "react";
-import LinkButton from "../forms/LinkButton";
+import LinkButton from "../cards/LinkButton";
 import { admin_data } from "./LinkButtonData/LinkButtonData";
 import "./GridLayout.css";
 
@@ -8,7 +8,7 @@ const GridLayout = ({ type }) => {
     return (
       <ul className="grid-layout">
         {admin_data?.map((button) => (
-          <div className="link-button">
+          <div key={button.text} className="link-button">
             <LinkButton
               to={button.to}
               className="container"

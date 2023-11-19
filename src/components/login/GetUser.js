@@ -6,7 +6,7 @@ export const getUser = createAsyncThunk(
   async ({ login, password }, { rejectWithValue }) => {
     let data = null;
 
-    console.log("login, password", login, password);
+    // console.log("login, password", login, password);
 
     try {
       if (login === "abobus" && password === "abobus") {
@@ -40,5 +40,3 @@ export const getUser = createAsyncThunk(
     return data;
   }
 );
-
-export default getUser;

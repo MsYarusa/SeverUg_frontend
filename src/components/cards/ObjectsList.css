@@ -1,0 +1,24 @@
+.objects-list {
+  display: flex;
+  width: 70%;
+  min-width: 800px;
+  height: fit-content;
+  padding-bottom: 0px;
+  margin-top: 200px;
+  margin-bottom: 100px;
+
+  flex-direction: column;
+  align-items: center;
+
+  border-radius: 40px;
+  background: #fff;
+  box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.25);
+}
+.objects-list ul {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+}

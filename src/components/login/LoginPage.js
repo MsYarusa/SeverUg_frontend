@@ -15,7 +15,7 @@ const LoginPage = () => {
     if (user) {
       navigate(fromPage, { replace: true });
     }
-  }, []);
+  }, [user]);
 
   return (
     <div className="login-page">

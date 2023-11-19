@@ -4,8 +4,6 @@ import { getSchedule } from "./GetSchedule";
 import { useDispatch, useSelector } from "react-redux";
 
 import "./SchedulePage.css";
-import Header from "../layout/Header";
-import Footer from "../layout/Footer";
 
 const SchedulePage = () => {
   const dispatch = useDispatch();
@@ -17,9 +15,7 @@ const SchedulePage = () => {
 
   return (
     <div className="schedule-page">
-      <Header />
       <Shedule schedule={schedule}></Shedule>
-      <Footer />
     </div>
   );
 };

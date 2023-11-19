@@ -1,0 +1,13 @@
+.employees-page {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.employees-page #message {
+  text-align: center;
+  font-size: 22px;
+  margin-bottom: 50px;
+  margin-top: 0px;
+}
