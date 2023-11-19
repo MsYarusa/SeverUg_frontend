@@ -11,37 +11,61 @@ import EmployeeFilter from "./EmployeeFilter";
 const EmployeesPage = () => {
   const dispatch = useDispatch();
   const employees = useSelector((state) => state.employees.employees);
-  const [empList, setEmpList] = useState(employees);
+  const [filteredList, setFilteredList] = useState(employees);
+  const [searchedList, setSearchedList] = useState(employees);
 
   useEffect(() => {
     dispatch(getEmployees());
   }, []);
 
   useEffect(() => {
-    setEmpList(employees);
+    setFilteredList(employees);
+    setSearchedList(employees);
   }, [employees]);
 
-  const searchHandler = (searchData) => {
+  useEffect(() => {
+    setSearchedList(filteredList);
+  }, [filteredList]);
+
+  const searchHandler = (searchConfig) => {
     let search_results = [];
 
-    for (let emp of employees) {
+    for (let emp of filteredList) {
       let lastName = emp.last_name.toLowerCase();
       let firstName = emp.first_name.toLowerCase();
 
-      let lastFirst = [lastName, firstName].join(" ").indexOf(searchData);
-      let firstLast = [firstName, lastName].join(" ").indexOf(searchData);
+      let lastFirst = [lastName, firstName].join(" ").indexOf(searchConfig);
+      let firstLast = [firstName, lastName].join(" ").indexOf(searchConfig);
 
       if (lastFirst === 0 || firstLast === 0) {
         search_results.push(emp);
       }
     }
 
-    setEmpList(search_results);
+    setSearchedList(search_results);
+  };
+
+  const filterHandler = (filterConfig) => {
+    let search_results = [];
+    if (filterConfig.length === 0) {
+      setFilteredList(employees);
+    } else {
+      for (let emp of employees) {
+        for (let role of filterConfig) {
+          if (emp.role === role) {
+            search_results.push(emp);
+            break;
+          }
+        }
+      }
+
+      setFilteredList(search_results);
+    }
   };
 
   return (
     <div className="employees-page">
-      <EmployeeFilter />
+      <EmployeeFilter onFilter={filterHandler} />
       <ObjectsList>
         <ul>
           <div className="object-search">
@@ -51,11 +75,11 @@ const EmployeesPage = () => {
             />
             <button>Зарегистрировать сотрудника</button>
           </div>
-          {empList?.map((item) => (
+          {searchedList?.map((item) => (
             <Employee key={item.id} data={item} />
           ))}
         </ul>
-        {empList.length === 0 && <p id="message">Нет совпадений</p>}
+        {searchedList.length === 0 && <p id="message">Нет совпадений</p>}
       </ObjectsList>
     </div>
   );

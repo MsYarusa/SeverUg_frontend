@@ -23,3 +23,5 @@ const axios = require("axios").default;
 //   .catch((error) => {
 //     console.error(error);
 //   });
+
+console.log([1, 3] + [2]);
