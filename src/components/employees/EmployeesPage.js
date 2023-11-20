@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import ObjectsList from "../cards/ObjectsList";
 import { getEmployees } from "./GetEmployees";
-import Employee from "./Employee";
-import ObjectSearch from "../cards/ObjectSearch";
-import "./EmployeesPage.css";
-import "../cards/ObjectSearch.css";
+
 import EmployeeFilter from "./EmployeeFilter";
+import EmployeesList from "./EmployeesList";
+import "../cards/ObjectPage.css";
 
 const EmployeesPage = () => {
   const dispatch = useDispatch();
   const employees = useSelector((state) => state.employees.employees);
   const [filteredList, setFilteredList] = useState(employees);
   const [searchedList, setSearchedList] = useState(employees);
+  const [addEmployee, setAddEmployee] = useState(false, false, false);
 
   useEffect(() => {
     dispatch(getEmployees());
@@ -63,24 +62,19 @@ const EmployeesPage = () => {
     }
   };
 
+  const addEmployeeHandler = () => {
+    setAddEmployee(!addEmployee);
+  };
+
   return (
-    <div className="employees-page">
+    <div className="page">
       <EmployeeFilter onFilter={filterHandler} />
-      <ObjectsList>
-        <ul>
-          <div className="object-search">
-            <ObjectSearch
-              search={searchHandler}
-              searchMessage={"Найти сотрудника"}
-            />
-            <button>Зарегистрировать сотрудника</button>
-          </div>
-          {searchedList?.map((item) => (
-            <Employee key={item.id} data={item} />
-          ))}
-        </ul>
-        {searchedList.length === 0 && <p id="message">Нет совпадений</p>}
-      </ObjectsList>
+      <EmployeesList
+        searchHandler={searchHandler}
+        addEmployeeHandler={addEmployeeHandler}
+        list={searchedList}
+      />
+      {/* {addEmployee && <Window></Window>} */}
     </div>
   );
 };

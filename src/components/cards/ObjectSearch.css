@@ -3,7 +3,7 @@
   position: sticky;
   top: 122px;
   display: flex;
-  height: 70px;
+  height: 72px;
   width: 90%;
 
   background: #fff;
@@ -16,6 +16,10 @@
   position: sticky;
   display: flex;
   width: 90%;
+  gap: 20px;
+
+  /* background-color: #ededee;
+  border-radius: 16px; */
 }
 
 .object-search input {

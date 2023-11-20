@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getSchedule } from "../components/sсhedule/GetSchedule";
+import { getSchedule } from "../components/schedule/GetSchedule";
 
 const userSlice = createSlice({
   name: "schedule",

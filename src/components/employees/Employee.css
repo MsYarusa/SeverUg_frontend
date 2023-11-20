@@ -1,5 +1,10 @@
+#name {
+  position: absolute;
+  left: 0%;
+}
+
 #role {
   z-index: 0;
   position: absolute;
-  left: 50%;
+  left: 40%;
 }

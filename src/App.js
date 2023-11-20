@@ -1,4 +1,4 @@
-import SchedulePage from "./components/sсhedule/SchedulePage";
+import SchedulePage from "./components/schedule/SchedulePage";
 import LoginPage from "./components/login/LoginPage";
 import HomePage from "./components/home/HomePage";
 import { Routes, Route } from "react-router-dom";
@@ -20,8 +20,8 @@ function App() {
         }
       >
         <Route index element={<HomePage />} />
-        <Route path="tickets" element={<SchedulePage />} />
         <Route path="employees" element={<EmployeesPage />} />
+        <Route path="schedule" element={<SchedulePage />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>

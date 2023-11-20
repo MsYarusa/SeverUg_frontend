@@ -1,0 +1,39 @@
+#date {
+  position: absolute;
+  left: 0%;
+  max-width: 10%;
+}
+
+#time {
+  position: absolute;
+  left: 13%;
+  max-width: 10%;
+}
+
+#current {
+  position: absolute;
+  right: 55%;
+  /* left: 20%; */
+  max-width: 20%;
+  text-align: end;
+}
+
+#dash {
+  text-align: justify;
+  position: absolute;
+  font-size: 30px;
+  right: 51.5%;
+  max-width: 2%;
+}
+
+#destination {
+  position: absolute;
+  left: 45%;
+  max-width: 20%;
+}
+
+#cost {
+  position: absolute;
+  left: 68%;
+  max-width: 8%;
+}

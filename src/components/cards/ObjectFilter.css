@@ -59,7 +59,7 @@
   cursor: pointer;
 }
 
-.object-filter div {
+.object-filter > div {
   width: 90%;
   height: 72px;
   display: flex;
