@@ -8,7 +8,7 @@ const EmployeeFilter = ({ onFilter }) => {
 
   const all = "Все";
 
-  const selectHandler = (event) => {
+  const selectHandler = () => {
     let filterConfig = [];
     let includeAll = document.getElementById("role-main").value === all;
     let filterData = [document.getElementById("role-main").value];
@@ -29,7 +29,6 @@ const EmployeeFilter = ({ onFilter }) => {
   };
 
   const clearHandler = () => {
-    document.getElementById("role-main").value = "Выбрать";
     setExtraFilters([]);
     onFilter([]);
   };
@@ -65,7 +64,7 @@ const EmployeeFilter = ({ onFilter }) => {
       <button id="add-filter" onClick={addHandler}>
         Добавить фильтр
       </button>
-      <button id="clear" onClick={clearHandler}>
+      <button id="clear" type="reset" onClick={clearHandler}>
         Сбросить
       </button>
     </ObjectFilter>

@@ -1,0 +1,68 @@
+.cost {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cost div {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0px 10px;
+}
+
+.cost input {
+  margin-bottom: 10px;
+  min-width: 60%;
+  padding: 0;
+}
+
+.cost > label {
+  margin: 15px 0px;
+}
+
+.time {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.time div {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.time div label {
+  margin: 0px 5px 0px 10px;
+}
+
+.time input {
+  width: 100px;
+}
+
+.time label {
+  margin: 15px 0px;
+}
+
+.date button {
+  display: flex;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  margin: 0;
+  margin-right: 10px;
+}
+
+.date button img {
+  width: 30px;
+  height: 30px;
+}
+
+.date button img:hover {
+  width: 34px;
+  height: 34px;
+  cursor: pointer;
+  margin-left: -2px;
+}

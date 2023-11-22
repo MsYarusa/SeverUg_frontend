@@ -16,10 +16,15 @@
 
   color: #5c5c5c;
   font-family: Montserrat;
-  font-size: 19px;
+  font-size: 17px;
   font-style: normal;
   font-weight: 500;
   line-height: 110%;
+}
+
+.object-item:hover {
+  cursor: pointer;
+  box-shadow: 0px 0px 0px 2px #ededee;
 }
 
 .object-item button {

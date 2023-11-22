@@ -9,7 +9,7 @@ export const getUser = createAsyncThunk(
     // console.log("login, password", login, password);
 
     try {
-      if (login === "abobus" && password === "abobus") {
+      if (login === "abobus" && password === "SJhDjh98ksdjkSDKJ-SKDJK") {
         data = {
           token: "token",
           first_name: "Abobus",

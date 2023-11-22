@@ -1,0 +1,120 @@
+.days .day {
+  font-size: 16px;
+  padding: 0;
+  width: 50px;
+  height: 50px;
+  color: #5c5c5c;
+  background: #ededee;
+}
+
+.days .day:hover {
+  box-shadow: 0px 0px 0px 2px #ededee;
+}
+
+.days .day-selected {
+  font-size: 16px;
+  padding: 0;
+  width: 50px;
+  height: 50px;
+}
+
+.label-input {
+  position: relative;
+  width: 100%;
+  min-height: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.label-input label {
+  margin: 0;
+}
+
+.label-input input {
+  position: absolute;
+  left: 58%;
+  width: 30%;
+}
+
+.label-input p {
+  margin: 0;
+}
+
+.station {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0;
+  gap: 20px;
+}
+
+.station select {
+  height: 50px;
+
+  -moz-appearance: none;
+  -webkit-appearance: none;
+
+  border: none;
+  outline: none;
+  border-radius: 30px;
+  background: #ededee;
+
+  color: #5c5c5c;
+  font-family: Montserrat;
+  text-align: center;
+  font-size: 19px;
+  font-weight: 500;
+  line-height: 110%;
+  cursor: pointer;
+}
+
+.station select option {
+  background: #fff;
+  width: 100%;
+}
+
+.station select::-ms-expand {
+  /* IE */
+  display: none;
+}
+
+.station .cancelStation {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: none;
+  width: 50px;
+  height: 50px;
+}
+
+.station .cancelStation:hover {
+  box-shadow: none;
+}
+
+.station .cancelStation img {
+  width: 40px;
+  height: 40px;
+}
+
+.station .cancelStation img:hover {
+  width: 45px;
+  height: 45px;
+}
+
+.routes {
+  display: flex;
+  flex-direction: column;
+  padding: 2px 0px;
+  align-items: center;
+  overflow: auto;
+  gap: 20px;
+  -ms-overflow-style: none; /* IE и Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.routes::-webkit-scrollbar {
+  width: 0;
+}

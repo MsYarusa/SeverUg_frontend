@@ -61,7 +61,8 @@
 
 .object-filter > div {
   width: 90%;
-  height: 72px;
+  min-height: 72px;
+  height: fit-content;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -105,6 +106,33 @@
 .object-filter select::-ms-expand {
   /* IE */
   display: none;
+}
+
+.object-filter input {
+  width: 50%;
+  height: 50px;
+
+  border: none;
+  outline: none;
+  border-radius: 30px;
+
+  color: #5c5c5c;
+  font-family: Montserrat;
+  text-align: center;
+  font-size: 19px;
+  font-weight: 500;
+  line-height: 110%;
+  cursor: pointer;
+  padding-right: 5px;
+}
+
+.object-filter input::-webkit-outer-spin-button,
+.object-filter input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+.object-filter .input[type="number"] {
+  -moz-appearance: textfield;
 }
 
 @media screen and (max-width: 1500px) {

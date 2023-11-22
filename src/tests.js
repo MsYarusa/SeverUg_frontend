@@ -23,5 +23,5 @@ const axios = require("axios").default;
 //   .catch((error) => {
 //     console.error(error);
 //   });
-
-console.log([1, 3] + [2]);
+let a = new Date("2023-11-01");
+console.log(a);

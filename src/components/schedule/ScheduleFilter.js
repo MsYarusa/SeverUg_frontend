@@ -1,37 +1,54 @@
 import React, { useState } from "react";
 import ObjectFilter from "../cards/ObjectFilter";
-import { useSelector } from "react-redux";
+import "./ScheduleFilter.css";
+import cancelImg from "../cards/buttonImgs/close.svg";
+
+let filterConfig = {
+  cost: { from: 0, to: Number.MAX_SAFE_INTEGER },
+  time: { from: 0, to: 23.59 },
+  days: [],
+};
 
 const ScheduleFilter = ({ onFilter }) => {
-  const roles = useSelector((state) => state.employees.roles);
-  const [extraDateFilters, setExtraDateFilters] = useState([]);
+  const [extraDateFilters, setExtraDateFilters] = useState([0]);
 
-  const all = "Все";
+  const filterHandler = (event) => {
+    let id = event.target.id;
+    let value = event.target.value;
 
-  const selectHandler = (event) => {
-    let filterConfig = [];
-    let includeAll = document.getElementById("role-main").value === all;
-    let filterData = [document.getElementById("role-main").value];
-
-    for (let f of extraDateFilters) {
-      filterData.push(document.getElementById(f).value);
-      includeAll = document.getElementById(f).value === all || includeAll;
+    if (id === "min-cost") {
+      filterConfig.cost = { from: value, to: filterConfig.cost.to };
+    }
+    if (id === "max-cost") {
+      value = value === "" ? Number.MAX_SAFE_INTEGER : value;
+      filterConfig.cost = { from: filterConfig.cost.from, to: value };
+    }
+    if (id === "min-time") {
+      let [hours, mins] = value.split(":");
+      value = Number(hours) + Number(mins) / 100;
+      filterConfig.time = { from: value, to: filterConfig.time.to };
+    }
+    if (id === "max-time") {
+      let [hours, mins] = value.split(":");
+      value = Number(hours) + Number(mins) / 100;
+      filterConfig.time = { from: filterConfig.time.from, to: value };
+    }
+    if (id.indexOf("date") !== -1) {
+      dateHandler(extraDateFilters);
     }
 
-    console.log("new", filterData);
-
-    if (includeAll) {
-      filterConfig = [...roles];
-    } else {
-      filterConfig = [...filterData];
-    }
     onFilter(filterConfig);
   };
 
   const clearHandler = () => {
-    document.getElementById("role-main").value = "Выбрать";
+    console.log(extraDateFilters);
+    filterConfig = {
+      cost: { from: 0, to: Number.MAX_SAFE_INTEGER },
+      time: { from: 0, to: 23.59 },
+      days: [],
+    };
     setExtraDateFilters([]);
-    onFilter([]);
+    onFilter(filterConfig);
   };
 
   const addDateHandler = () => {
@@ -39,46 +56,64 @@ const ScheduleFilter = ({ onFilter }) => {
     setExtraDateFilters(update);
   };
 
+  const deleteDateHandler = (event) => {
+    let datesForSave = [];
+    for (let f of extraDateFilters) {
+      if (event.target.id !== f.toString()) {
+        datesForSave.push(
+          document.getElementById("date-" + f.toString()).value
+        );
+      }
+    }
+    let extraDateFiltersNew = extraDateFilters.slice(0, -1);
+    setExtraDateFilters(extraDateFiltersNew);
+    for (let f of extraDateFilters) {
+      document.getElementById("date-" + f.toString()).value =
+        datesForSave[f - 1];
+    }
+
+    dateHandler(extraDateFiltersNew);
+    onFilter(filterConfig);
+  };
+
   return (
     <ObjectFilter>
-      <div>
+      <div className="cost">
         <label>Стоимость:</label>
         <div>
-          <input id="min-cost" type="number" placeholder="От, руб." />
-          <input id="max-cost" type="number" placeholder="До, руб." />
+          <label>От</label>
+          <input id="min-cost" type="number" onChange={filterHandler} />
+          <p>руб.</p>
+        </div>
+        <div>
+          <label>До</label>
+          <input id="max-cost" type="number" onChange={filterHandler} />
+          <p>руб.</p>
         </div>
       </div>
-      <div>
+      <div className="time">
         <label>Время:</label>
         <div>
-          <input id="min-time" type="time" />
-          <input id="max-time" type="time" />
+          <label>От</label>
+          <input id="min-time" type="time" onChange={filterHandler} />
+          <label>До</label>
+          <input id="max-time" type="time" onChange={filterHandler} />
         </div>
       </div>
-      <DateSelect
-        params={{
-          id: "date-main",
-          roles: roles,
-          func: selectHandler,
-        }}
-        key={0}
-      />
       {extraDateFilters.length !== 0 &&
         extraDateFilters.map((id) => (
           <DateSelect
-            params={{
-              id: id,
-              roles: roles,
-              func: selectHandler,
-            }}
+            id={id}
+            func={filterHandler}
+            deleteHandler={deleteDateHandler}
             key={id}
           />
         ))}
       <button id="add-filter" onClick={addDateHandler}>
-        Добавить фильтр
+        Добавить дату
       </button>
 
-      <button id="clear" onClick={clearHandler}>
+      <button id="clear" type="reset" onClick={clearHandler}>
         Сбросить
       </button>
     </ObjectFilter>
@@ -87,11 +122,36 @@ const ScheduleFilter = ({ onFilter }) => {
 
 export default ScheduleFilter;
 
-const DateSelect = ({ params }) => {
+const DateSelect = ({ id, func, deleteHandler }) => {
   return (
-    <div>
+    <div className="date">
       <label>Дата:</label>
-      <input type="date" id={params.id} onChange={params.func} />
+      <input type="date" id={"date-" + id.toString()} onChange={func} />
+      {deleteHandler && (
+        <button id={id.toString()} onClick={deleteHandler}>
+          <img src={cancelImg} id={id.toString()} />
+        </button>
+      )}
     </div>
   );
+};
+
+const dateHandler = (extraDateFilters) => {
+  let dateData = [];
+  for (let f of extraDateFilters) {
+    dateData.push(document.getElementById("date-" + f.toString()).value);
+  }
+  let weekDays = new Set();
+  let dateIsNull = false;
+
+  dateData.forEach((item, i, arr) => {
+    if (item) {
+      let day = new Date(item);
+      weekDays.add(day.getDay());
+    } else {
+      dateIsNull = true;
+    }
+  });
+
+  filterConfig.days = dateIsNull ? [] : [...weekDays];
 };
