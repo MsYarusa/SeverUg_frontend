@@ -11,7 +11,11 @@ const Employee = ({ data }) => {
   };
 
   return (
-    <ObjectItem deleteHandler={printDelete} updateHandler={printUpdate}>
+    <ObjectItem
+      deleteHandler={printDelete}
+      updateHandler={printUpdate}
+      id={data.id}
+    >
       <p id="name">
         {data.last_name} {data.first_name}
       </p>

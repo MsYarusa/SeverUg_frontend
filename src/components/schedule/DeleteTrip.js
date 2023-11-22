@@ -1,10 +1,11 @@
 import React from "react";
+import { deleteReqTrip } from "./ScheduleApi/DeleteReqTrip";
 import "../cards/Window.css";
 
-const DeleteTrip = ({ cancelHandler }) => {
+const DeleteTrip = ({ cancelHandler, id }) => {
   const confirmHaldler = () => {
-    console.log("confirmed");
-    cancelHandler();
+    console.log(id);
+    deleteReqTrip({ id: id });
   };
 
   return (

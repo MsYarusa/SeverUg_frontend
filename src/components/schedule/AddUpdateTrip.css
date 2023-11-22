@@ -2,12 +2,17 @@
   font-size: 16px;
   padding: 0;
   width: 50px;
-  height: 50px;
+  min-height: 50px;
   color: #5c5c5c;
   background: #ededee;
 }
 
-.days .day:hover {
+.days .day.error-border {
+  border: 1px solid red;
+}
+
+.days .day:hover,
+#add-station:hover {
   box-shadow: 0px 0px 0px 2px #ededee;
 }
 
@@ -15,7 +20,15 @@
   font-size: 16px;
   padding: 0;
   width: 50px;
-  height: 50px;
+  min-height: 50px;
+}
+
+#add-station {
+  min-height: 50px;
+  width: 100%;
+  border-radius: 30px;
+  background: #ededee;
+  color: #5c5c5c;
 }
 
 .label-input {
@@ -42,11 +55,16 @@
 }
 
 .station {
+  height: fit-content;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0;
   gap: 20px;
+}
+
+.station p {
+  margin: 0;
 }
 
 .station select {
@@ -107,14 +125,20 @@
 .routes {
   display: flex;
   flex-direction: column;
-  padding: 2px 0px;
+  padding: 2px 2px;
   align-items: center;
   overflow: auto;
-  gap: 20px;
+  gap: 10px;
   -ms-overflow-style: none; /* IE и Edge */
   scrollbar-width: none; /* Firefox */
 }
 
 .routes::-webkit-scrollbar {
   width: 0;
+}
+
+#routes-label {
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 130%;
 }

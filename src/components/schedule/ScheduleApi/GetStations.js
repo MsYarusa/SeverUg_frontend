@@ -2,7 +2,7 @@ import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const getStations = createAsyncThunk(
-  "schedule/getSchedule",
+  "schedule/getStations",
   async (_, { rejectWithValue }) => {
     // let data = [];
     // await axios

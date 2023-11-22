@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getStations } from "./ScheduleApi/GetStations";
 import cancelImg from "../cards/buttonImgs/close.svg";
+import { postTrip } from "./ScheduleApi/PostTrip";
 import "../cards/Window.css";
 import "./AddUpdateTrip.css";
 
@@ -9,11 +10,13 @@ const AddTrip = ({ cancelHandler }) => {
   const dispatch = useDispatch();
   const stations = useSelector((state) => state.schedule.stations);
 
-  const [stationIndexes, setStationIndexes] = useState([]);
-  const [daysSelected, setDaysSelected] = useState([]);
-  const [stationsSelected, setStationsSelected] = useState([]);
-  const [cost, setCost] = useState(null);
-  const [time, setTime] = useState(null);
+  const [stationIndexes, setStationIndexes] = useState([1, 2]);
+  const [daysSelected, setDaysSelected] = useState("");
+
+  const [daysOk, setDaysOk] = useState(true);
+  const [timeOk, setTimeOk] = useState(true);
+  const [costOk, setCostOk] = useState(true);
+  const [stationsOk, setStationsOk] = useState(true);
 
   useEffect(() => {
     dispatch(getStations());
@@ -39,44 +42,67 @@ const AddTrip = ({ cancelHandler }) => {
     }
   };
 
-  const stationsHandler = () => {
+  const submitHandler = (event) => {
+    event.preventDefault();
+    let time = document.getElementById("add-time").value;
+    let cost = document.getElementById("add-cost").value;
     let stationsForSave = [];
 
     for (let index of stationIndexes) {
       stationsForSave.push(
-        document.getElementById("s" + index.toString()).value
+        JSON.parse(document.getElementById("s" + index.toString()).value)
       );
     }
 
-    setStationsSelected(stationsForSave);
-  };
+    console.log(stationsForSave);
+    let daysOK = daysSelected ? true : false;
+    let timeOK = time ? true : false;
+    let costOK = cost ? true : false;
 
-  const timeHandler = (event) => {
-    setTime(event.target.value);
-  };
+    setDaysOk(daysOK);
+    setTimeOk(timeOK);
+    setCostOk(costOK);
+    setStationsOk(stationsForSave.length > 1);
 
-  const costHandler = (event) => {
-    setCost(event.target.value);
+    if (daysOK && timeOK && costOK && stationsForSave.length > 1) {
+      postTrip({
+        days: daysSelected,
+        time: time,
+        cost: Number(cost),
+        stations: stationsForSave,
+      });
+    }
   };
 
   return (
     <div className="window__container">
-      <form className="window">
+      <form className="window" onSubmit={submitHandler}>
         <div className="window__inner">
           <label id="main">Добавление рейса</label>
-          <label>Дни недели:</label>
+          <label>Дни работы рейса:</label>
           <Days selectHandler={setDaysSelected} />
+          <p className={daysOk ? "error error-disabled" : "error"}>
+            Необходимо указать дни работы рейса
+          </p>
           <div className="label-input">
             <label>Время отправления:</label>
-            <input required type="time" onSubmit={timeHandler} />
+            <input
+              type="time"
+              id="add-time"
+              className={timeOk ? "" : "error-border"}
+            />
           </div>
           <div className="label-input">
-            <label>Стоимость:</label>
-            <input required type="number" onSubmit={costHandler} />
+            <label>Стоимость за проезд:</label>
+            <input
+              type="number"
+              id="add-cost"
+              className={costOk ? "" : "error-border"}
+            />
             <p>руб.</p>
           </div>
 
-          <label>Маршрут:</label>
+          <label id="routes-label">Остановочные станции:</label>
           <div className="routes">
             {stationIndexes &&
               stationIndexes?.map((index) => (
@@ -87,11 +113,14 @@ const AddTrip = ({ cancelHandler }) => {
                   deleteHandler={deleteStationHandler}
                 />
               ))}
-            <button type="button" id="addStation" onClick={addStationHandler}>
+            <button type="button" id="add-station" onClick={addStationHandler}>
               Добавить станцию
             </button>
           </div>
         </div>
+        <p className={stationsOk ? "error error-disabled" : "error"}>
+          Необходимо указать минимум две оставновки
+        </p>
         <div id="buttons">
           <button id="cancel" type="button" onClick={cancelHandler}>
             Отмена
@@ -112,7 +141,10 @@ const Station = ({ stations, index, deleteHandler }) => {
       <select id={"s" + index.toString()} defaultValue={"Выбрать"}>
         <option disabled>Выбрать</option>
         {stations?.map((station) => (
-          <option key={station.name + index.toString()} value={station.name}>
+          <option
+            key={station.name + index.toString()}
+            value={JSON.stringify(station)}
+          >
             {station.name}
           </option>
         ))}
@@ -129,64 +161,37 @@ const Station = ({ stations, index, deleteHandler }) => {
   );
 };
 
+let daysSelected = new Set();
+
 const Days = ({ selectHandler }) => {
-  let daysSelected = new Set();
   return (
     <div className="days">
-      <DayButton
-        daysSelected={daysSelected}
-        selectHandler={selectHandler}
-        dayVal={1}
-      >
+      <DayButton selectHandler={selectHandler} dayVal={1}>
         ПН
       </DayButton>
-      <DayButton
-        daysSelected={daysSelected}
-        selectHandler={selectHandler}
-        dayVal={2}
-      >
+      <DayButton selectHandler={selectHandler} dayVal={2}>
         ВТ
       </DayButton>
-      <DayButton
-        daysSelected={daysSelected}
-        selectHandler={selectHandler}
-        dayVal={3}
-      >
+      <DayButton selectHandler={selectHandler} dayVal={3}>
         СР
       </DayButton>
-      <DayButton
-        daysSelected={daysSelected}
-        selectHandler={selectHandler}
-        dayVal={4}
-      >
+      <DayButton selectHandler={selectHandler} dayVal={4}>
         ЧТ
       </DayButton>
-      <DayButton
-        daysSelected={daysSelected}
-        selectHandler={selectHandler}
-        dayVal={5}
-      >
+      <DayButton selectHandler={selectHandler} dayVal={5}>
         ПТ
       </DayButton>
-      <DayButton
-        daysSelected={daysSelected}
-        selectHandler={selectHandler}
-        dayVal={6}
-      >
+      <DayButton selectHandler={selectHandler} dayVal={6}>
         СБ
       </DayButton>
-      <DayButton
-        daysSelected={daysSelected}
-        selectHandler={selectHandler}
-        dayVal={0}
-      >
+      <DayButton selectHandler={selectHandler} dayVal={0}>
         ВС
       </DayButton>
     </div>
   );
 };
 
-const DayButton = ({ children, daysSelected, selectHandler, dayVal }) => {
+const DayButton = ({ children, selectHandler, dayVal }) => {
   const [buttonClicked, setButtonClicked] = useState(false);
 
   const buttonHandler = () => {
@@ -197,7 +202,7 @@ const DayButton = ({ children, daysSelected, selectHandler, dayVal }) => {
     }
 
     setButtonClicked(!buttonClicked);
-    selectHandler([...daysSelected].sort().join(""));
+    selectHandler([...daysSelected].sort().join(" "));
   };
 
   return (

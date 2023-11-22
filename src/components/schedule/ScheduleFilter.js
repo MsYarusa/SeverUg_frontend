@@ -47,17 +47,18 @@ const ScheduleFilter = ({ onFilter }) => {
       time: { from: 0, to: 23.59 },
       days: [],
     };
-    setExtraDateFilters([]);
+    setExtraDateFilters([0]);
     onFilter(filterConfig);
   };
 
   const addDateHandler = () => {
-    let update = [...extraDateFilters, extraDateFilters.length + 1];
+    let update = [...extraDateFilters, extraDateFilters.length];
     setExtraDateFilters(update);
   };
 
   const deleteDateHandler = (event) => {
     let datesForSave = [];
+    console.log(extraDateFilters);
     for (let f of extraDateFilters) {
       if (event.target.id !== f.toString()) {
         datesForSave.push(
@@ -65,11 +66,15 @@ const ScheduleFilter = ({ onFilter }) => {
         );
       }
     }
-    let extraDateFiltersNew = extraDateFilters.slice(0, -1);
+    let extraDateFiltersNew =
+      extraDateFilters.slice(0, -1).length !== 0
+        ? extraDateFilters.slice(0, -1)
+        : [0];
     setExtraDateFilters(extraDateFiltersNew);
-    for (let f of extraDateFilters) {
-      document.getElementById("date-" + f.toString()).value =
-        datesForSave[f - 1];
+    console.log(datesForSave);
+    console.log(extraDateFiltersNew);
+    for (let f of extraDateFiltersNew) {
+      document.getElementById("date-" + f.toString()).value = datesForSave[f];
     }
 
     dateHandler(extraDateFiltersNew);
@@ -106,6 +111,7 @@ const ScheduleFilter = ({ onFilter }) => {
             id={id}
             func={filterHandler}
             deleteHandler={deleteDateHandler}
+            isOnly={extraDateFilters.length === 1}
             key={id}
           />
         ))}
@@ -122,12 +128,12 @@ const ScheduleFilter = ({ onFilter }) => {
 
 export default ScheduleFilter;
 
-const DateSelect = ({ id, func, deleteHandler }) => {
+const DateSelect = ({ id, func, deleteHandler, isOnly }) => {
   return (
     <div className="date">
       <label>Дата:</label>
       <input type="date" id={"date-" + id.toString()} onChange={func} />
-      {deleteHandler && (
+      {!isOnly && (
         <button id={id.toString()} onClick={deleteHandler}>
           <img src={cancelImg} id={id.toString()} />
         </button>

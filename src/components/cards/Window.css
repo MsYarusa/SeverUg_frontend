@@ -42,12 +42,25 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 30px;
-  gap: 30px;
+  gap: 20px;
 }
 
 .window p {
   margin-bottom: 30px;
+}
+
+.window .error {
+  margin: 0;
+  font-size: 14px;
+  color: red;
+}
+
+.window .error-disabled {
+  color: #fff;
+}
+
+.window .error-border {
+  border: 1px solid red;
 }
 
 .window #main {
@@ -57,6 +70,7 @@
 }
 
 .window #buttons {
+  margin-top: 15px;
   display: flex;
 }
 

@@ -17,6 +17,7 @@ const ScheduleItem = ({ data, deleteHandler, updateHandler }) => {
         deleteHandler={deleteHandler}
         updateHandler={updateHandler}
         onClick={infoHandler}
+        id={data.id}
       >
         <p id="date">{days}</p>
         <p id="time">{data.time_to}</p>

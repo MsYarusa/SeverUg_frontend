@@ -17,10 +17,11 @@ const SchedulePage = () => {
   const [addTrip, setAddTrip] = useState(false);
   const [updateTrip, setUpdateTrip] = useState(false);
   const [deleteTrip, setDeleteTrip] = useState(false);
+  const [deleteTripById, setDeleteTripById] = useState(-1);
 
   useEffect(() => {
     dispatch(getSchedule());
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     setFilteredList(schedule);
@@ -59,7 +60,9 @@ const SchedulePage = () => {
       let [hours, mins] = trip.time_to.split(":");
       let time = Number(hours) + Number(mins) / 100;
       let timeOk =
-        filterConfig.time.from <= time && time <= filterConfig.time.to;
+        filterConfig.time.from <= time ||
+        (!filterConfig.time.from && time <= filterConfig.time.to) ||
+        !filterConfig.time.to;
 
       let dateOk = filterConfig.days.length === 0;
 
@@ -84,7 +87,8 @@ const SchedulePage = () => {
     setUpdateTrip(true);
   };
 
-  const deleteTripHandler = () => {
+  const deleteTripHandler = (id) => {
+    setDeleteTripById(id);
     setDeleteTrip(true);
   };
 
@@ -95,6 +99,8 @@ const SchedulePage = () => {
   const cancelUpdateHandler = () => {
     setUpdateTrip(false);
   };
+
+  console.log(deleteTripById);
 
   const cancelDeleteHandler = () => {
     setDeleteTrip(false);
@@ -114,7 +120,12 @@ const SchedulePage = () => {
       />
       {addTrip && <AddTrip cancelHandler={cancelAddHandler} />}
       {updateTrip && <UpdateTrip cancelHandler={cancelUpdateHandler} />}
-      {deleteTrip && <DeleteTrip cancelHandler={cancelDeleteHandler} />}
+      {deleteTrip && (
+        <DeleteTrip
+          cancelHandler={cancelDeleteHandler}
+          id={Number(deleteTripById)}
+        />
+      )}
     </div>
   );
 };

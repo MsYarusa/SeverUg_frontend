@@ -23,5 +23,6 @@ const axios = require("axios").default;
 //   .catch((error) => {
 //     console.error(error);
 //   });
-let a = new Date("2023-11-01");
-console.log(a);
+// let a = new Date("2023-11-01");
+// console.log(a);
+console.log(typeof "dsd");
