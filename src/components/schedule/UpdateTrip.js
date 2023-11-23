@@ -1,26 +1,47 @@
-import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { getStations } from "./ScheduleApi/GetStations";
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import cancelImg from "../cards/buttonImgs/close.svg";
-import { postTrip } from "./ScheduleApi/PostTrip";
+import { putTrip } from "./ScheduleApi/PutTrip";
 import "../cards/Window.css";
 import "./AddUpdateTrip.css";
 
 const UpdateTrip = ({ cancelHandler, data }) => {
-  const dispatch = useDispatch();
   const stations = useSelector((state) => state.schedule.stations);
-
   const [stationIndexes, setStationIndexes] = useState([1, 2]);
+  const [restoreSelects, setRestoreSelects] = useState(false);
+
+  useEffect(() => {
+    if (data) {
+      document.getElementById("upd-time").value = data.time_to;
+      document.getElementById("upd-cost").value = data.price;
+      for (let index of data.days) {
+        document.getElementById("W" + index.toString()).click();
+      }
+    }
+    let defaultIndexes = [];
+    for (let i = 0; i < data.stations.length; i++) {
+      defaultIndexes = [...defaultIndexes, i + 1];
+    }
+
+    setStationIndexes(defaultIndexes);
+    setRestoreSelects(true);
+  }, [data]);
+
+  useEffect(() => {
+    for (let index of stationIndexes) {
+      document.getElementById("s" + index.toString()).value = JSON.stringify(
+        data.stations.at(index - 1)
+      );
+    }
+  }, [restoreSelects]);
+
   const [daysSelected, setDaysSelected] = useState("");
 
   const [daysOk, setDaysOk] = useState(true);
   const [timeOk, setTimeOk] = useState(true);
   const [costOk, setCostOk] = useState(true);
   const [stationsOk, setStationsOk] = useState(true);
-
-  useEffect(() => {
-    dispatch(getStations());
-  }, []);
+  const [containsNull, setContainesNull] = useState(false);
 
   const addStationHandler = () => {
     setStationIndexes([...stationIndexes, stationIndexes.length + 1]);
@@ -44,17 +65,22 @@ const UpdateTrip = ({ cancelHandler, data }) => {
 
   const submitHandler = (event) => {
     event.preventDefault();
-    let time = document.getElementById("add-time").value;
-    let cost = document.getElementById("add-cost").value;
+    let time = document.getElementById("upd-time").value;
+    let cost = document.getElementById("upd-cost").value;
     let stationsForSave = [];
+    let containsNull = false;
 
     for (let index of stationIndexes) {
-      stationsForSave.push(
-        JSON.parse(document.getElementById("s" + index.toString()).value)
+      let val = JSON.parse(
+        document.getElementById("s" + index.toString()).value
       );
+      if (val !== "Выбрать") {
+        stationsForSave.push(val);
+      } else {
+        containsNull = true;
+      }
     }
 
-    console.log(stationsForSave);
     let daysOK = daysSelected ? true : false;
     let timeOK = time ? true : false;
     let costOK = cost ? true : false;
@@ -63,9 +89,17 @@ const UpdateTrip = ({ cancelHandler, data }) => {
     setTimeOk(timeOK);
     setCostOk(costOK);
     setStationsOk(stationsForSave.length > 1);
+    setContainesNull(containsNull);
 
-    if (daysOK && timeOK && costOK && stationsForSave.length > 1) {
-      postTrip({
+    if (
+      daysOK &&
+      timeOK &&
+      costOK &&
+      stationsForSave.length > 1 &&
+      !containsNull
+    ) {
+      putTrip({
+        id: data.id,
         days: daysSelected,
         time: time,
         cost: Number(cost),
@@ -88,7 +122,7 @@ const UpdateTrip = ({ cancelHandler, data }) => {
             <label>Время отправления:</label>
             <input
               type="time"
-              id="add-time"
+              id="upd-time"
               className={timeOk ? "" : "error-border"}
             />
           </div>
@@ -96,7 +130,7 @@ const UpdateTrip = ({ cancelHandler, data }) => {
             <label>Стоимость за проезд:</label>
             <input
               type="number"
-              id="add-cost"
+              id="upd-cost"
               className={costOk ? "" : "error-border"}
             />
             <p>руб.</p>
@@ -118,8 +152,14 @@ const UpdateTrip = ({ cancelHandler, data }) => {
             </button>
           </div>
         </div>
-        <p className={stationsOk ? "error error-disabled" : "error"}>
-          Необходимо указать минимум две оставновки
+        <p
+          className={
+            stationsOk && !containsNull ? "error error-disabled" : "error"
+          }
+        >
+          {!stationsOk
+            ? "Необходимо указать минимум две оставновки"
+            : "Поля со значением Выбрать (станция не указана)"}
         </p>
         <div id="buttons">
           <button id="cancel" type="button" onClick={cancelHandler}>
@@ -138,8 +178,13 @@ const Station = ({ stations, index, deleteHandler }) => {
   return (
     <div id={"S" + index.toString()} className="station">
       <p>{index.toString() + "."}</p>
-      <select id={"s" + index.toString()} defaultValue={"Выбрать"}>
-        <option disabled>Выбрать</option>
+      <select
+        id={"s" + index.toString()}
+        defaultValue={JSON.stringify("Выбрать")}
+      >
+        <option disabled value={JSON.stringify("Выбрать")}>
+          Выбрать
+        </option>
         {stations?.map((station) => (
           <option
             key={station.name + index.toString()}
@@ -207,6 +252,7 @@ const DayButton = ({ children, selectHandler, dayVal }) => {
 
   return (
     <button
+      id={"W" + dayVal.toString()}
       type="button"
       className={buttonClicked ? "day-selected" : "day"}
       onClick={buttonHandler}

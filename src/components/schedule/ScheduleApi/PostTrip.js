@@ -3,27 +3,39 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import Schedule from "./TestSchedule";
 
 export const postTrip = async ({ days, cost, time, stations }) => {
-  // let data = [];
-  // await axios
-  //   .get("https://spacekot.ru/apishechka/schedule")
-  //   .then((res) => {
-  //     console.log("in GetSchedule, res:", res);
-  //     data = res.data;
-  //   })
-  //   .catch((error) => {
-  //     console.error(error);
-  //     return rejectWithValue(error.message)
-  //   });
+  let stationsId = [];
+  for (let station of stations) {
+    stationsId.push({ id: station.id });
+  }
 
-  let newTrip = {
-    id: 6,
-    time_to: time,
-    time_from: null,
-    price: cost,
-    days: days,
-    stations: stations,
-    driverDTO: null,
-  };
+  await axios
+    .post("https://spacekot.ru/apishechka/schedule", {
+      driver_id: null,
+      time_to: time,
+      time_from: null,
+      price: cost,
+      days: days,
+      stations: stationsId,
+    })
+    .then((res) => {
+      console.log(res.data.message);
+      console.log(res.data.data);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
 
-  Schedule(newTrip);
+  window.location.reload();
+
+  // let newTrip = {
+  //   id: 6,
+  //   time_to: time,
+  //   time_from: null,
+  //   price: cost,
+  //   days: days,
+  //   stations: stations,
+  //   driverDTO: null,
+  // };
+
+  // Schedule(newTrip);
 };

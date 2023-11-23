@@ -5,19 +5,20 @@ import Schedule from "./TestSchedule";
 export const getSchedule = createAsyncThunk(
   "schedule/getSchedule",
   async (_, { rejectWithValue }) => {
-    // let data = [];
-    // await axios
-    //   .get("https://spacekot.ru/apishechka/schedule")
-    //   .then((res) => {
-    //     console.log("in GetSchedule, res:", res);
-    //     data = res.data;
-    //   })
-    //   .catch((error) => {
-    //     console.error(error);
-    //     return rejectWithValue(error.message)
-    //   });
+    let data = [];
+    await axios
+      .get("https://spacekot.ru/apishechka/schedule")
+      .then((res) => {
+        console.log(res.data.message);
+        console.log(res.data.data);
+        data = res.data.data;
+      })
+      .catch((error) => {
+        console.error(error);
+        return rejectWithValue(error.message);
+      });
 
-    let data = Schedule(null, true);
+    // let data = Schedule(null, true);
 
     for (let trip of data) {
       if (typeof trip.days === "string") {

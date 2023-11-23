@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getSchedule } from "./ScheduleApi/GetSchedule";
+import { getStations } from "./ScheduleApi/GetStations";
 
 import ScheduleFilter from "./ScheduleFilter";
 import ScheduleList from "./ScheduleList";
@@ -18,9 +19,11 @@ const SchedulePage = () => {
   const [updateTrip, setUpdateTrip] = useState(false);
   const [deleteTrip, setDeleteTrip] = useState(false);
   const [deleteTripById, setDeleteTripById] = useState(-1);
+  const [updateTripById, setUpdateTripById] = useState(null);
 
   useEffect(() => {
     dispatch(getSchedule());
+    dispatch(getStations());
   }, [dispatch]);
 
   useEffect(() => {
@@ -83,7 +86,15 @@ const SchedulePage = () => {
     setAddTrip(true);
   };
 
-  const updateTripHandler = () => {
+  const updateTripHandler = (id) => {
+    let trip = null;
+    for (let t of schedule) {
+      if (t.id == id) {
+        trip = t;
+        break;
+      }
+    }
+    setUpdateTripById(trip);
     setUpdateTrip(true);
   };
 
@@ -99,8 +110,6 @@ const SchedulePage = () => {
   const cancelUpdateHandler = () => {
     setUpdateTrip(false);
   };
-
-  console.log(deleteTripById);
 
   const cancelDeleteHandler = () => {
     setDeleteTrip(false);
@@ -119,12 +128,11 @@ const SchedulePage = () => {
         list={searchedList}
       />
       {addTrip && <AddTrip cancelHandler={cancelAddHandler} />}
-      {updateTrip && <UpdateTrip cancelHandler={cancelUpdateHandler} />}
+      {updateTrip && (
+        <UpdateTrip cancelHandler={cancelUpdateHandler} data={updateTripById} />
+      )}
       {deleteTrip && (
-        <DeleteTrip
-          cancelHandler={cancelDeleteHandler}
-          id={Number(deleteTripById)}
-        />
+        <DeleteTrip cancelHandler={cancelDeleteHandler} id={deleteTripById} />
       )}
     </div>
   );

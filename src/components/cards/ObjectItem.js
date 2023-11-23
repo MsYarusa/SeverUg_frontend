@@ -12,7 +12,8 @@ const ObjectItem = ({
 }) => {
   const updateClickedHandler = (event) => {
     event.stopPropagation();
-    updateHandler();
+    let [type, id] = event.target.id.split(" ");
+    updateHandler(Number(id));
   };
 
   const deleteClickedHandler = (event) => {
