@@ -34,6 +34,22 @@ export const getSchedule = createAsyncThunk(
         });
       }
     }
+    // восстановление последовательности станций
+    for (let trip of data) {
+      trip.road.sort = trip.road.sort.split(" ");
+      trip.road.sort.forEach((item, i, arr) => {
+        arr[i] = Number(item);
+      });
+    }
+
+    for (let trip of data) {
+      let sortedStations = [];
+      for (let i of trip.road.sort) {
+        let station = trip.road.stations.find((station) => station.id === i);
+        sortedStations.push(station);
+      }
+      trip.road.stations = sortedStations;
+    }
 
     return data;
   }
@@ -42,24 +58,15 @@ export const getSchedule = createAsyncThunk(
 // ДОБАВЛЕНИЕ РЕЙСА
 export const postTrip = createAsyncThunk(
   "schedule/postTrip",
-  async ({ days, cost, time, stations }, { rejectWithValue, dispatch }) => {
-    // предобработка массива станций
-    let stationsId = [];
-    for (let station of stations) {
-      stationsId.push({ id: station.id });
-    }
-
+  async ({ days, time, road_id }, { rejectWithValue, dispatch }) => {
     let trip = null;
 
     //отправление запроса
     await axios
       .post("https://spacekot.ru/apishechka/schedule", {
-        driver_id: null,
-        time_to: time,
-        time_from: null,
-        price: cost,
+        departure_time: time,
         days: days,
-        stations: stationsId,
+        road_id: road_id,
       })
       .then((res) => {
         console.log("статус: ", res.message);
@@ -78,24 +85,15 @@ export const postTrip = createAsyncThunk(
 // ИЗМЕНЕНИЯ ДАННЫХ РЕЙСА
 export const putTrip = createAsyncThunk(
   "schedule/putTrip",
-  async ({ id, days, cost, time, stations }, { rejectWithValue, dispatch }) => {
-    // предобработка массива станций
-    let stationsId = [];
-    for (let station of stations) {
-      stationsId.push({ id: station.id });
-    }
-
+  async ({ id, days, time, road_id }, { rejectWithValue, dispatch }) => {
     let trip = null;
 
     //отправление запроса
     await axios
       .put(`https://spacekot.ru/apishechka/schedule/${id}`, {
-        driver_id: null,
-        time_to: time,
-        time_from: null,
-        price: cost,
+        departure_time: time,
         days: days,
-        stations: stationsId,
+        road_id: road_id,
       })
       .then((res) => {
         console.log("статус: ", res.message);

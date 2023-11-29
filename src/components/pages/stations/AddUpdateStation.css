@@ -1,0 +1,12 @@
+#station-name {
+  min-width: 170px;
+}
+
+.station-input {
+  position: relative;
+  min-width: 400px;
+  min-height: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

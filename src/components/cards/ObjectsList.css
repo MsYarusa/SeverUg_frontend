@@ -24,6 +24,32 @@
   margin: 0;
 }
 
+.objects-list ul .info {
+  margin-top: -50px;
+  margin-bottom: 24px;
+  padding-top: 46px;
+  width: 90%;
+  background-color: #6f808d;
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+  list-style: none;
+
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.objects-list ul .info p {
+  color: #fff;
+  margin: 0;
+  font-family: Montserrat;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 110%;
+}
+
 .objects-list #message {
   color: #5c5c5c;
   font-family: Montserrat;

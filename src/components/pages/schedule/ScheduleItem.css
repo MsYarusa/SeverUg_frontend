@@ -1,65 +1,79 @@
-#date {
+.trip-date {
   position: absolute;
-  left: 0%;
-  max-width: 15%;
+  left: 1.5%;
+  max-width: 13.5%;
 }
 
-#time {
+.trip-totalTime {
   position: absolute;
   left: 15%;
   max-width: 10%;
 }
 
-#current {
+.trip-departure {
   position: absolute;
   right: 55%;
-  /* left: 20%; */
-  max-width: 20%;
+  max-width: 18%;
   text-align: end;
 }
 
-#dash {
+.trip-dash {
   text-align: justify;
   position: absolute;
   font-size: 30px;
-  right: 51.5%;
-  max-width: 2%;
+  left: 46%;
 }
 
-#destination {
+.trip-destination {
   position: absolute;
-  left: 45%;
-  max-width: 20%;
+  left: 50%;
+  max-width: 18%;
 }
 
-#cost {
+.trip-cost {
+  position: absolute;
+  left: 70%;
+  max-width: 8%;
+}
+
+.trip-time {
+  position: absolute;
+  left: 18.6%;
+  max-width: 10%;
+}
+
+.trip-station1 {
+  position: absolute;
+  right: 54.5%;
+  max-width: 18%;
+  text-align: end;
+}
+
+.info .trip-dash {
+  text-align: justify;
+  position: absolute;
+  font-size: 30px;
+  left: 47%;
+}
+
+.trip-station2 {
+  position: absolute;
+  left: 50%;
+  max-width: 18%;
+}
+
+.trip-price {
   position: absolute;
   left: 68%;
   max-width: 8%;
 }
-
-#stations {
-  margin-top: -50px;
-  margin-bottom: 24px;
-  padding-top: 46px;
+.info .trip-station-pare {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
   width: 90%;
-  background-color: #6f808d;
-  border-bottom-left-radius: 16px;
-  border-bottom-right-radius: 16px;
-  list-style: none;
-}
-
-#stations p {
-  text-align: center;
-  width: 90%;
-  margin-right: 10%;
+  min-height: 20px;
+  height: fit-content;
   margin-top: 0px;
   margin-bottom: 15px;
-
-  color: #fff;
-  font-family: Montserrat;
-  font-size: 15px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 110%;
 }

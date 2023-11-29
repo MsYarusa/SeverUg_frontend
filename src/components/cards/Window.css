@@ -46,7 +46,7 @@
 }
 
 .window p {
-  margin-bottom: 30px;
+  margin-bottom: 10px;
 }
 
 .window .error {
@@ -56,11 +56,17 @@
 }
 
 .window .error-disabled {
+  margin: 0;
+  font-size: 14px;
   color: #fff;
 }
 
 .window .error-border {
   border: 1px solid red;
+}
+
+.window .base-border {
+  border: 1px solid #ededee;
 }
 
 .window #main {

@@ -1,110 +1,79 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
-import cancelImg from "../../cards/buttonImgs/close.svg";
+import { useSelector, useDispatch } from "react-redux";
 import { putTrip } from "../../../requests/SheduleRequests";
 import "../../cards/Window.css";
 import "./AddUpdateTrip.css";
 
 const UpdateTrip = ({ cancelHandler, data }) => {
-  const stations = useSelector((state) => state.schedule.stations);
-  const [stationIndexes, setStationIndexes] = useState([1, 2]);
-  const [restoreSelects, setRestoreSelects] = useState(false);
+  const dispatch = useDispatch;
+  const routes = useSelector((state) => state.routes.routes);
+
+  const [selectedRoute, setSelectedRoute] = useState({
+    indexes: [],
+    route: null,
+  });
+  const [daysSelected, setDaysSelected] = useState("");
 
   useEffect(() => {
     if (data) {
-      document.getElementById("upd-time").value = data.time_to;
-      document.getElementById("upd-cost").value = data.price;
+      document.getElementById("upd-time").value = data.departure_time;
+      document.getElementById("route-select").value = JSON.stringify(data.road);
       for (let index of data.days) {
-        document.getElementById("W" + index.toString()).click();
+        document.getElementById("W" + index).click();
       }
-    }
-    let defaultIndexes = [];
-    for (let i = 0; i < data.stations.length; i++) {
-      defaultIndexes = [...defaultIndexes, i + 1];
-    }
 
-    setStationIndexes(defaultIndexes);
-    setRestoreSelects(true);
-  }, [data]);
-
-  useEffect(() => {
-    for (let index of stationIndexes) {
-      document.getElementById("s" + index.toString()).value = JSON.stringify(
-        data.stations.at(index - 1)
-      );
+      let route = data.road;
+      let indexes = [];
+      for (let i = 0; i < route.stations.length - 1; i++) {
+        indexes = [...indexes, i + 1];
+      }
+      setSelectedRoute({ indexes: indexes, route: route });
     }
-  }, [restoreSelects]);
-
-  const [daysSelected, setDaysSelected] = useState("");
+  }, [routes]);
 
   const [daysOk, setDaysOk] = useState(true);
   const [timeOk, setTimeOk] = useState(true);
-  const [costOk, setCostOk] = useState(true);
-  const [stationsOk, setStationsOk] = useState(true);
-  const [containsNull, setContainesNull] = useState(false);
+  const [routeOk, setRouteOk] = useState(true);
 
-  const addStationHandler = () => {
-    setStationIndexes([...stationIndexes, stationIndexes.length + 1]);
-  };
-
-  const deleteStationHandler = (event) => {
-    let stationsForSave = [];
-    for (let index of stationIndexes) {
-      if (event.target.id !== index.toString()) {
-        stationsForSave.push(
-          document.getElementById("s" + index.toString()).value
-        );
-      }
+  const selectRouteHandler = (event) => {
+    let route = JSON.parse(event.target.value);
+    let indexes = [];
+    for (let i = 0; i < route.stations.length - 1; i++) {
+      indexes = [...indexes, i + 1];
     }
-    setStationIndexes(stationIndexes.slice(0, -1));
-    for (let index of stationIndexes) {
-      document.getElementById("s" + index.toString()).value =
-        stationsForSave[index - 1];
-    }
+    setSelectedRoute({ indexes: indexes, route: route });
   };
 
   const submitHandler = (event) => {
     event.preventDefault();
-    let time = document.getElementById("upd-time").value;
-    let cost = document.getElementById("upd-cost").value;
-    let stationsForSave = [];
-    let containsNull = false;
 
-    for (let index of stationIndexes) {
-      let val = JSON.parse(
-        document.getElementById("s" + index.toString()).value
-      );
-      if (val !== "Выбрать") {
-        stationsForSave.push(val);
-      } else {
-        containsNull = true;
-      }
-    }
+    let time = document.getElementById("upd-time").value;
+    let route = JSON.parse(document.getElementById("route-select").value);
 
     let daysOK = daysSelected ? true : false;
     let timeOK = time ? true : false;
-    let costOK = cost ? true : false;
+    let routeOK = route !== "Выбрать" ? true : false;
 
     setDaysOk(daysOK);
     setTimeOk(timeOK);
-    setCostOk(costOK);
-    setStationsOk(stationsForSave.length > 1);
-    setContainesNull(containsNull);
+    setRouteOk(routeOK);
 
-    if (
-      daysOK &&
-      timeOK &&
-      costOK &&
-      stationsForSave.length > 1 &&
-      !containsNull
-    ) {
-      putTrip({
+    if (daysOK && timeOK && routeOK) {
+      console.log({
         id: data.id,
         days: daysSelected,
         time: time,
-        cost: Number(cost),
-        stations: stationsForSave,
+        road_id: route.id,
       });
+      // dispatch(
+      //   putTrip({
+      //     id: data.id,
+      //     days: daysSelected,
+      //     time: time,
+      //     road_id: route.id,
+      //   })
+      // );
+      cancelHandler();
     }
   };
 
@@ -112,10 +81,10 @@ const UpdateTrip = ({ cancelHandler, data }) => {
     <div className="window__container">
       <form className="window" onSubmit={submitHandler}>
         <div className="window__inner">
-          <label id="main">Измение информации о рейсе</label>
+          <label id="main">Добавление рейса</label>
           <label>Дни работы рейса:</label>
           <Days selectHandler={setDaysSelected} />
-          <p className={daysOk ? "error error-disabled" : "error"}>
+          <p className={daysOk ? "error-disabled" : "error"}>
             Необходимо указать дни работы рейса
           </p>
           <div className="label-input">
@@ -123,43 +92,92 @@ const UpdateTrip = ({ cancelHandler, data }) => {
             <input
               type="time"
               id="upd-time"
-              className={timeOk ? "" : "error-border"}
+              className={timeOk ? "base-border" : "error-border"}
             />
           </div>
-          <div className="label-input">
-            <label>Стоимость за проезд:</label>
-            <input
-              type="number"
-              id="upd-cost"
-              className={costOk ? "" : "error-border"}
-            />
-            <p>руб.</p>
-          </div>
-
-          <label id="routes-label">Остановочные станции:</label>
+          <label>Маршрут:</label>
+          <select
+            id="route-select"
+            defaultValue={JSON.stringify("Выбрать")}
+            onChange={selectRouteHandler}
+          >
+            <option disabled value={JSON.stringify("Выбрать")}>
+              Выбрать
+            </option>
+            {routes?.map((route) => (
+              <option key={route.id} value={JSON.stringify(route)}>
+                {console.log(route)}№{route.id} "{route.stations.at(0).name} —{" "}
+                {route.stations.at(-1).name}"
+              </option>
+            ))}
+          </select>
           <div className="routes">
-            {stationIndexes &&
-              stationIndexes?.map((index) => (
-                <Station
-                  key={index}
-                  stations={stations}
-                  index={index}
-                  deleteHandler={deleteStationHandler}
-                />
-              ))}
-            <button type="button" id="add-station" onClick={addStationHandler}>
-              Добавить станцию
-            </button>
+            {selectedRoute.route && (
+              <>
+                <label id="routes-label">Список станций:</label>
+                <div className="station">
+                  <p>1.</p>
+                  <select
+                    disabled
+                    defaultValue={JSON.stringify(
+                      selectedRoute.route.stations.at(0)
+                    )}
+                  >
+                    <option
+                      disabled
+                      value={JSON.stringify(selectedRoute.route.stations.at(0))}
+                    >
+                      {selectedRoute.route.stations.at(0).name}
+                    </option>
+                  </select>
+                </div>
+                {selectedRoute.indexes?.map((index) => (
+                  <div key={index} className="stations__container">
+                    <div className="label-input" key={"upd-time " + index}>
+                      <label>Время в пути:</label>
+                      <input
+                        disabled
+                        type="text"
+                        value={getTimeFromMins(
+                          selectedRoute.route.time[index - 1]
+                        )}
+                      />
+                    </div>
+                    <div className="label-input" key={"upd-cost " + index}>
+                      <label>Стоимость за проезд:</label>
+                      <input
+                        disabled
+                        type="number"
+                        value={selectedRoute.route.price[index - 1]}
+                      />
+                      <p>руб.</p>
+                    </div>
+                    <div id={"S" + index} className="station">
+                      <p>{index + 1 + "."}</p>
+                      <select
+                        disabled
+                        defaultValue={JSON.stringify(
+                          selectedRoute.route.stations.at(index)
+                        )}
+                      >
+                        <option
+                          disabled
+                          value={JSON.stringify(
+                            selectedRoute.route.stations.at(index)
+                          )}
+                        >
+                          {selectedRoute.route.stations.at(index).name}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                ))}
+              </>
+            )}
           </div>
         </div>
-        <p
-          className={
-            stationsOk && !containsNull ? "error error-disabled" : "error"
-          }
-        >
-          {!stationsOk
-            ? "Необходимо указать минимум две оставновки"
-            : "Поля со значением Выбрать (станция не указана)"}
+        <p className={routeOk ? "error-disabled" : "error"}>
+          Необходимо выбрать маршрут
         </p>
         <div id="buttons">
           <button id="cancel" type="button" onClick={cancelHandler}>
@@ -173,38 +191,6 @@ const UpdateTrip = ({ cancelHandler, data }) => {
 };
 
 export default UpdateTrip;
-
-const Station = ({ stations, index, deleteHandler }) => {
-  return (
-    <div id={"S" + index.toString()} className="station">
-      <p>{index.toString() + "."}</p>
-      <select
-        id={"s" + index.toString()}
-        defaultValue={JSON.stringify("Выбрать")}
-      >
-        <option disabled value={JSON.stringify("Выбрать")}>
-          Выбрать
-        </option>
-        {stations?.map((station) => (
-          <option
-            key={station.name + index.toString()}
-            value={JSON.stringify(station)}
-          >
-            {station.name}
-          </option>
-        ))}
-      </select>
-      <button
-        type="button"
-        id={index.toString()}
-        className="cancelStation"
-        onClick={deleteHandler}
-      >
-        <img src={cancelImg} id={index.toString()} />
-      </button>
-    </div>
-  );
-};
 
 let daysSelected = new Set();
 
@@ -252,7 +238,7 @@ const DayButton = ({ children, selectHandler, dayVal }) => {
 
   return (
     <button
-      id={"W" + dayVal.toString()}
+      id={"W" + dayVal}
       type="button"
       className={buttonClicked ? "day-selected" : "day"}
       onClick={buttonHandler}
@@ -261,3 +247,11 @@ const DayButton = ({ children, selectHandler, dayVal }) => {
     </button>
   );
 };
+
+function getTimeFromMins(mins) {
+  let hours = Math.trunc(mins / 60);
+  let minutes = mins % 60;
+  hours = hours < 10 ? "0" + hours : hours;
+  minutes = minutes < 10 ? "0" + minutes : minutes;
+  return hours + ":" + minutes;
+}

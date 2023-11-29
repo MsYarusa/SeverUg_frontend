@@ -1,18 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getStations } from "../../../requests/StationsRequests";
+import { getRoutes } from "../../../requests/RoutesRequests";
 
 import StationsList from "./StationsList";
+import AddStation from "./AddStation";
+import UpdateStation from "./UpdateStation";
+import DeleteStation from "./DeleteStation";
 
 const StationsPage = () => {
   // запрашиваем данные из стора
   const stations = useSelector((state) => state.stations.stations);
+  const routes = useSelector((state) => state.routes.routes);
 
   // если стор пуст то делаем запрос на сервер
   const dispatch = useDispatch();
   useEffect(() => {
     if (stations.length === 0) {
       dispatch(getStations());
+    }
+    if (routes.length === 0) {
+      dispatch(getRoutes());
     }
   }, []);
 
@@ -32,17 +40,13 @@ const StationsPage = () => {
 
   // поиск
   const searchHandler = (searchConfig) => {
-    // let search_results = [];
-    // for (let trip of filteredList) {
-    //   let tripFrom = trip.stations.at(0).name.toLowerCase();
-    //   let tripTo = trip.stations.at(-1).name.toLowerCase();
-    //   let searchedFrom = tripFrom.indexOf(searchConfig.from);
-    //   let searchedTo = tripTo.indexOf(searchConfig.to);
-    //   if (searchedFrom === 0 && searchedTo === 0) {
-    //     search_results.push(trip);
-    //   }
-    // }
-    // setSearchedList(search_results);
+    let search_results = [];
+    for (let station of stations) {
+      if (station.name.toLowerCase().indexOf(searchConfig) === 0) {
+        search_results.push(station);
+      }
+    }
+    setSearchedList(search_results);
   };
 
   // открытие окна добавления
@@ -95,16 +99,19 @@ const StationsPage = () => {
         }}
         list={searchedList}
       />
-      {/* {addRoute && <AddTrip cancelHandler={cancelAddHandler} />}
-      {updateRoute && (
-        <UpdateTrip
+      {addStation && <AddStation cancelHandler={cancelAddHandler} />}
+      {updateStation && (
+        <UpdateStation
           cancelHandler={cancelUpdateHandler}
-          data={updateRouteById}
+          data={updateStationById}
         />
       )}
-      {deleteRoute && (
-        <DeleteTrip cancelHandler={cancelDeleteHandler} id={deleteRouteById} />
-      )} */}
+      {deleteStation && (
+        <DeleteStation
+          cancelHandler={cancelDeleteHandler}
+          id={deleteStationById}
+        />
+      )}
     </div>
   );
 };

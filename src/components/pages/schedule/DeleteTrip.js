@@ -1,11 +1,12 @@
-import React from "react";
+import { useDispatch } from "react-redux";
 import { deleteTrip } from "../../../requests/SheduleRequests";
 import "../../cards/Window.css";
 
 const DeleteTrip = ({ cancelHandler, id }) => {
+  const dispatch = useDispatch();
+
   const confirmHaldler = () => {
-    console.log(id);
-    deleteTrip({ id: id });
+    dispatch(deleteTrip({ id: id }));
   };
 
   return (

@@ -10,18 +10,18 @@ const routesSlice = createSlice({
   },
   reducers: {
     addRoute(state, action) {
-      state.schedule.push(action.payload.trip);
+      state.routes.push(action.payload.route);
     },
     updateRoute(state, action) {
-      state.schedule.forEach((item, i, arr) => {
+      state.routes.forEach((item, i, arr) => {
         if (item.id === action.payload.id) {
-          arr[i] = action.payload.trip;
+          arr[i] = action.payload.route;
         }
       });
     },
     removeRoute(state, action) {
-      state.schedule = state.schedule.filter(
-        (trip) => trip.id !== action.payload.id
+      state.routes = state.routes.filter(
+        (route) => route.id !== action.payload.id
       );
     },
   },

@@ -8,7 +8,23 @@ const stationsSlice = createSlice({
     status: null,
     error: null,
   },
-  reducers: {},
+  reducers: {
+    addStation(state, action) {
+      state.stations.push(action.payload.station);
+    },
+    updateStation(state, action) {
+      state.stations.forEach((item, i, arr) => {
+        if (item.id === action.payload.id) {
+          arr[i] = action.payload.station;
+        }
+      });
+    },
+    removeStation(state, action) {
+      state.stations = state.stations.filter(
+        (station) => station.id !== action.payload.id
+      );
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getStations.pending, (state, action) => {
@@ -26,4 +42,6 @@ const stationsSlice = createSlice({
   },
 });
 
+export const { addStation, updateStation, removeStation } =
+  stationsSlice.actions;
 export default stationsSlice.reducer;

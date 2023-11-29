@@ -9,6 +9,24 @@ const ScheduleItem = ({ data, deleteHandler, updateHandler }) => {
     setInfo(!info);
   };
 
+  let totalPrice = SUM(data.road.price);
+
+  let stationsPares = [];
+
+  data.road.stations.slice(1).forEach((item, i, arr) => {
+    const newPair = {
+      id: i,
+      station1: data.road.stations[i].name,
+      station2: item.name,
+      time: getTimeFromMins(
+        SUM(data.road.time.slice(0, i + 1)) +
+          getMinsFromTime(data.departure_time)
+      ),
+      price: SUM(data.road.price.slice(0, i + 1)),
+    };
+    stationsPares.push(newPair);
+  });
+
   let days = daysToString(data.days);
 
   return (
@@ -19,17 +37,23 @@ const ScheduleItem = ({ data, deleteHandler, updateHandler }) => {
         onClick={infoHandler}
         id={data.id}
       >
-        <p id="date">{days}</p>
-        <p id="time">{data.time_to}</p>
-        <p id="current">{data.stations.at(0).name}</p>
-        <p id="dash">—</p>
-        <p id="destination">{data.stations.at(-1).name}</p>
-        <p id="cost">{data.price} руб.</p>
+        <p className="trip-date">{days}</p>
+        <p className="trip-totalTime">{data.departure_time}</p>
+        <p className="trip-departure">{data.road.stations.at(0).name}</p>
+        <p className="trip-dash">—</p>
+        <p className="trip-destination">{data.road.stations.at(-1).name}</p>
+        <p className="trip-cost">{totalPrice} руб.</p>
       </ObjectItem>
       {info && (
-        <ul id="stations">
-          {data.stations?.map((station) => (
-            <p key={station.name}>{station.name}</p>
+        <ul className="info">
+          {stationsPares?.map((pare) => (
+            <div key={pare.id} className="trip-station-pare">
+              <p className="trip-time">{pare.time}</p>
+              <p className="trip-station1">{pare.station1}</p>
+              <p className="trip-dash">—</p>
+              <p className="trip-station2">{pare.station2}</p>
+              <p className="trip-price">{pare.price} руб.</p>
+            </div>
           ))}
         </ul>
       )}
@@ -75,3 +99,24 @@ const daysToString = (data) => {
   });
   return result;
 };
+
+function getTimeFromMins(mins) {
+  let hours = Math.trunc(mins / 60);
+  let minutes = mins % 60;
+  hours = hours < 10 ? "0" + hours : hours;
+  minutes = minutes < 10 ? "0" + minutes : minutes;
+  return hours + ":" + minutes;
+}
+
+function getMinsFromTime(time) {
+  const [hours, minutes] = time.split(":");
+  return Number(hours) * 60 + Number(minutes);
+}
+
+function SUM(array) {
+  let totalPrice = 0;
+  array.forEach((item, i, arr) => {
+    totalPrice += Number(item);
+  });
+  return totalPrice;
+}

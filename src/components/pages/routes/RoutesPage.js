@@ -9,7 +9,11 @@ import AddRoute from "./AddRoute";
 import UpdateRoute from "./UpdateRoute";
 import DeleteRoute from "./DeleteRoute";
 
-let savedSearchedConfig = { from: "", to: "" };
+let savedFilteredConfig = {
+  cost: { from: 0, to: Number.MAX_SAFE_INTEGER },
+  time: { from: 0, to: Number.MAX_SAFE_INTEGER },
+  days: [],
+};
 
 const RoutesPage = () => {
   // запрашиваем данные из стора
@@ -38,8 +42,8 @@ const RoutesPage = () => {
   }, [routes]);
 
   useEffect(() => {
-    searchHandler(savedSearchedConfig);
-  }, [filteredList]);
+    filterHandler(savedFilteredConfig);
+  }, [searchedList]);
 
   // хранение информации об окнах
   const [addRoute, setAddRoute] = useState(false);
@@ -51,8 +55,7 @@ const RoutesPage = () => {
   // поиск
   const searchHandler = (searchConfig) => {
     let search_results = [];
-    savedSearchedConfig = searchConfig;
-    for (let route of filteredList) {
+    for (let route of routes) {
       let from =
         searchConfig.from === ""
           ? route.stations.at(0).name.toLowerCase()
@@ -104,7 +107,8 @@ const RoutesPage = () => {
   // фильтр
   const filterHandler = (filterConfig) => {
     let filter_results = [];
-    for (let route of routes) {
+    savedFilteredConfig = filterConfig;
+    for (let route of searchedList) {
       let totalPrice = 0;
       route.price.forEach((item, i, arr) => {
         totalPrice += Number(item);
@@ -174,7 +178,7 @@ const RoutesPage = () => {
           update: updateRouteHandler,
           delete: deleteRouteHandler,
         }}
-        list={searchedList}
+        list={filteredList}
       />
       {addRoute && <AddRoute cancelHandler={cancelAddHandler} />}
       {updateRoute && (

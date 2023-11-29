@@ -6,7 +6,7 @@ import "../../cards/ObjectSearch.css";
 
 const ScheduleList = ({ searchHandler, list, buttonsHandlers }) => {
   return (
-    <ObjectsList>
+    <ObjectsList list={list}>
       <div className="object-search">
         <SearchFromTo search={searchHandler} />
         <button onClick={buttonsHandlers.add}>Добавить рейс</button>

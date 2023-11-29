@@ -30,107 +30,29 @@ const Schedule = (postReq, getReq, deleteReq, putReq) => {
 export let schedule = [
   {
     id: 1,
-    time_to: "11:30",
-    time_from: null,
-    price: 666.0,
-    days: "1 2 3 4 5 6 0",
-    stations: [
-      {
-        id: 1,
-        name: "School",
-      },
-      {
-        id: 2,
-        name: "FEFU",
-      },
-      {
-        id: 3,
-        name: "Death🤡",
-      },
-    ],
-    driverDTO: null,
-  },
-  {
-    id: 2,
-
-    time_to: "11:30",
-    time_from: null,
-    price: 549,
-    days: "1 2 3 4 5",
-    stations: [
-      {
-        id: 1,
-        name: "School",
-      },
-      {
-        id: 2,
-        name: "FEFU",
-      },
-      {
-        id: 3,
-        name: "STICK YOUR FINGER IN MY BACK_END",
-      },
-    ],
-    driverDTO: null,
-  },
-  {
-    id: 3,
-
-    time_to: "15:40",
-    time_from: null,
-    price: 549,
-    days: "1 2 3 4 5",
-    stations: [
-      {
-        id: 3,
-        name: "STICK YOUR FINGER IN MY BACK_END",
-      },
-      {
-        id: 2,
-        name: "FEFU",
-      },
-      {
-        id: 1,
-        name: "School",
-      },
-    ],
-    driverDTO: null,
-  },
-  {
-    id: 4,
-    time_to: "12:00",
-    time_from: null,
-    price: 499,
-    days: "6 0",
-    stations: [
-      {
-        id: 1,
-        name: "School",
-      },
-      {
-        id: 3,
-        name: "STICK YOUR FINGER IN MY BACK_END",
-      },
-    ],
-    driverDTO: null,
-  },
-  {
-    id: 5,
-    time_to: "16:30",
-    time_from: null,
-    price: 499,
-    days: "6 0",
-    stations: [
-      {
-        id: 3,
-        name: "STICK YOUR FINGER IN MY BACK_END",
-      },
-      {
-        id: 1,
-        name: "School",
-      },
-    ],
-    driverDTO: null,
+    departure_time: "20:23",
+    days: "4 5",
+    driver: null,
+    road: {
+      id: 1,
+      price: ["22", "23"],
+      time: ["20", "23"],
+      stations: [
+        {
+          id: 1,
+          name: "School",
+        },
+        {
+          id: 2,
+          name: "FEFU",
+        },
+        {
+          id: 3,
+          name: "Вертодром",
+        },
+      ],
+      sort: "1 2 3",
+    },
   },
 ];
 

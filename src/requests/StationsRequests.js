@@ -1,12 +1,17 @@
 import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import {
+  addStation,
+  updateStation,
+  removeStation,
+} from "../store/stationsSlice";
 
 // тесты
 import { stations } from "../tests/TestStations";
 
 // ПОЛУЧЕНИЕ ВСЕХ СТАНЦИЙ
 export const getStations = createAsyncThunk(
-  "schedule/getStations",
+  "stations/getStations",
   async (_, { rejectWithValue }) => {
     // отправление запроса
     let data = [];
@@ -29,5 +34,73 @@ export const getStations = createAsyncThunk(
     }
 
     return data;
+  }
+);
+
+// ДОБАВЛЕНИЕ СТАНЦИИ
+export const postStation = createAsyncThunk(
+  "stations/postStation",
+  async ({ name }, { rejectWithValue, dispatch }) => {
+    let station = null;
+    //отправление запроса
+    await axios
+      .post("https://spacekot.ru/apishechka/schedule/stations", {
+        name: name,
+      })
+      .then((res) => {
+        console.log("статус: ", res.message);
+        station = res.data;
+      })
+      .catch((error) => {
+        console.error("ошибка: ", error.message);
+        return rejectWithValue(error.message);
+      });
+
+    // добавление станции в стор
+    dispatch(addStation({ station: station }));
+  }
+);
+
+// ИЗМЕНЕНИЯ ДАННЫХ СТАНЦИИ
+export const putStation = createAsyncThunk(
+  "stations/putStation",
+  async ({ id, name }, { rejectWithValue, dispatch }) => {
+    let station = null;
+    //отправление запроса
+    await axios
+      .put(`https://spacekot.ru/apishechka/schedule/stations/${id}`, {
+        name: name,
+      })
+      .then((res) => {
+        console.log("статус: ", res.message);
+        station = res.data;
+      })
+      .catch((error) => {
+        console.error("ошибка: ", error.message);
+        return rejectWithValue(error.message);
+      });
+
+    // обновление станции в сторе
+    dispatch(updateStation({ id: id, station: station }));
+  }
+);
+
+// УДАЛЕНИЕ СТАНЦИИ
+export const deleteStation = createAsyncThunk(
+  "stations/deleteStation",
+  async ({ id }, { rejectWithValue, dispatch }) => {
+    //отправление запроса
+    await axios
+      .delete(`https://spacekot.ru/apishechka/schedule/stations/${id}`)
+      .then((res) => {
+        console.log("статус: ", res.message);
+      })
+      .catch((error) => {
+        console.error("ошибка: ", error.message);
+        return rejectWithValue(error.message);
+      });
+
+    // удаление станции из стора
+    dispatch(removeStation({ id: id }));
   }
 );

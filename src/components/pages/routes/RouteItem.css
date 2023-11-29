@@ -1,3 +1,9 @@
+.route-index {
+  position: absolute;
+  left: 2%;
+  text-align: end;
+}
+
 .route-start {
   position: absolute;
   right: 80%;
@@ -43,7 +49,7 @@
   text-align: end;
 }
 
-.route-stations .route-dash {
+.info .route-dash {
   text-align: justify;
   position: absolute;
   font-size: 25px;
@@ -52,7 +58,7 @@
 
 .route-station2 {
   position: absolute;
-  left: 30.5%;
+  left: 28.5%;
   max-width: 20%;
 }
 
@@ -63,7 +69,7 @@
   text-align: end;
 }
 
-.route-stations .route-slash {
+.info .route-slash {
   position: absolute;
   right: 39.5%;
 }
@@ -74,32 +80,7 @@
   max-width: 10%;
 }
 
-ul .route-stations {
-  margin-top: -50px;
-  margin-bottom: 24px;
-  padding-top: 46px;
-  width: 90%;
-  height: fit-content;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  background-color: #6f808d;
-  border-bottom-left-radius: 16px;
-  border-bottom-right-radius: 16px;
-  list-style: none;
-}
-
-.route-stations p {
-  color: #fff;
-  margin: 0;
-  font-family: Montserrat;
-  font-size: 15px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 110%;
-}
-
-.route-stations .route-station-pare {
+.info .route-station-pare {
   display: flex;
   align-items: center;
   justify-content: space-around;

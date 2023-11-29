@@ -5,7 +5,7 @@ import cancelImg from "../../cards/buttonImgs/close.svg";
 
 let filterConfig = {
   cost: { from: 0, to: Number.MAX_SAFE_INTEGER },
-  time: { from: 0, to: 23.59 },
+  time: { from: 0, to: Number.MAX_SAFE_INTEGER },
   days: [],
 };
 
@@ -24,13 +24,21 @@ const ScheduleFilter = ({ onFilter }) => {
       filterConfig.cost = { from: filterConfig.cost.from, to: value };
     }
     if (id === "min-time") {
-      let [hours, mins] = value.split(":");
-      value = Number(hours) + Number(mins) / 100;
+      if (value === "") {
+        value = 0;
+      } else {
+        let [hours, mins] = value.split(":");
+        value = Number(hours) * 60 + Number(mins);
+      }
       filterConfig.time = { from: value, to: filterConfig.time.to };
     }
     if (id === "max-time") {
-      let [hours, mins] = value.split(":");
-      value = Number(hours) + Number(mins) / 100;
+      if (value === "") {
+        value = Number.MAX_SAFE_INTEGER;
+      } else {
+        let [hours, mins] = value.split(":");
+        value = Number(hours) * 60 + Number(mins);
+      }
       filterConfig.time = { from: filterConfig.time.from, to: value };
     }
     if (id.indexOf("date") !== -1) {
@@ -44,7 +52,7 @@ const ScheduleFilter = ({ onFilter }) => {
     console.log(extraDateFilters);
     filterConfig = {
       cost: { from: 0, to: Number.MAX_SAFE_INTEGER },
-      time: { from: 0, to: 23.59 },
+      time: { from: 0, to: Number.MAX_SAFE_INTEGER },
       days: [],
     };
     setExtraDateFilters([0]);

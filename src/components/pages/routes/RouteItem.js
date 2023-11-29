@@ -9,6 +9,15 @@ const RouteItem = ({ data, deleteHandler, updateHandler }) => {
     setInfo(!info);
   };
 
+  console.log(data.id);
+
+  let index = 0;
+  if (typeof data.id === "string") {
+    index = data.id.split(" ")[0];
+  } else {
+    index = data.id;
+  }
+
   let totalPrice = 0;
   data.price.forEach((item, i, arr) => {
     totalPrice += Number(item);
@@ -40,6 +49,7 @@ const RouteItem = ({ data, deleteHandler, updateHandler }) => {
         onClick={infoHandler}
         id={data.id}
       >
+        <p className="route-index">№{index}</p>
         <p className="route-start">{data.stations.at(0).name}</p>
         <p className="route-dash">—</p>
         <p className="route-destination">{data.stations.at(-1).name}</p>
@@ -48,7 +58,7 @@ const RouteItem = ({ data, deleteHandler, updateHandler }) => {
         <p className="route-totalPrice">{totalPrice} руб.</p>
       </ObjectItem>
       {info && (
-        <ul className="route-stations">
+        <ul className="info">
           {stationsPares?.map((pare) => (
             <div key={pare.id} className="route-station-pare">
               <p className="route-station1">{pare.station1}</p>
