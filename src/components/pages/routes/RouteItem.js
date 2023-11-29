@@ -70,6 +70,7 @@ export default RouteItem;
 function getTimeFromMins(mins) {
   let hours = Math.trunc(mins / 60);
   let minutes = mins % 60;
-  let time = hours < 10 ? "0" + hours + ":" + minutes : hours + ":" + minutes;
-  return time;
+  hours = hours < 10 ? "0" + hours : hours;
+  minutes = minutes < 10 ? "0" + minutes : minutes;
+  return hours + ":" + minutes;
 }

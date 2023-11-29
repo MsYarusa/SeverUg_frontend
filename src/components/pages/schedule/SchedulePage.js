@@ -58,7 +58,6 @@ const SchedulePage = () => {
   };
 
   const filterHandler = (filterConfig) => {
-    console.log(filterConfig);
     let filter_results = [];
     for (let trip of schedule) {
       let costOk =
@@ -78,7 +77,6 @@ const SchedulePage = () => {
         dateOk = trip.days.indexOf(day) !== -1 || dateOk;
       }
 
-      console.log(" dateOk ", dateOk, " timeOk ", timeOk, " costOk ", costOk);
       if (dateOk && timeOk && costOk) {
         filter_results.push(trip);
       }

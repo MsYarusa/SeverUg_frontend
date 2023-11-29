@@ -40,7 +40,8 @@ export const getRoutes = createAsyncThunk(
     for (let route of data) {
       let sortedStations = [];
       for (let i of route.sort) {
-        sortedStations.push(route.stations[i - 1]);
+        let station = route.stations.find((station) => station.id === i);
+        sortedStations.push(station);
       }
       route.stations = sortedStations;
     }

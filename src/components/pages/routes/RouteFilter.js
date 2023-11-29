@@ -3,7 +3,7 @@ import "../../pages/schedule/ScheduleFilter.css";
 
 let filterConfig = {
   cost: { from: 0, to: Number.MAX_SAFE_INTEGER },
-  time: { from: 0, to: 23.59 },
+  time: { from: 0, to: Number.MAX_SAFE_INTEGER },
 };
 
 const ScheduleFilter = ({ onFilter }) => {
@@ -12,20 +12,29 @@ const ScheduleFilter = ({ onFilter }) => {
     let value = event.target.value;
 
     if (id === "min-cost") {
+      value = value === "" ? 0 : value;
       filterConfig.cost = { from: value, to: filterConfig.cost.to };
     }
     if (id === "max-cost") {
       value = value === "" ? Number.MAX_SAFE_INTEGER : value;
-      filterConfig.cost = { from: filterConfig.cost.from, to: value };
+      filterConfig.cost = { from: filterConfig.cost.from, to: Number(value) };
     }
     if (id === "min-time") {
-      let [hours, mins] = value.split(":");
-      value = Number(hours) + Number(mins) / 100;
+      if (value === "") {
+        value = 0;
+      } else {
+        let [hours, mins] = value.split(":");
+        value = Number(hours) * 60 + Number(mins);
+      }
       filterConfig.time = { from: value, to: filterConfig.time.to };
     }
     if (id === "max-time") {
-      let [hours, mins] = value.split(":");
-      value = Number(hours) + Number(mins) / 100;
+      if (value === "") {
+        value = Number.MAX_SAFE_INTEGER;
+      } else {
+        let [hours, mins] = value.split(":");
+        value = Number(hours) * 60 + Number(mins);
+      }
       filterConfig.time = { from: filterConfig.time.from, to: value };
     }
 
@@ -35,7 +44,7 @@ const ScheduleFilter = ({ onFilter }) => {
   const clearHandler = () => {
     filterConfig = {
       cost: { from: 0, to: Number.MAX_SAFE_INTEGER },
-      time: { from: 0, to: 23.59 },
+      time: { from: 0, to: Number.MAX_SAFE_INTEGER },
     };
     onFilter(filterConfig);
   };

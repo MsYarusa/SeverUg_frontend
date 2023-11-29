@@ -5,6 +5,11 @@ import { getStations } from "../../../requests/StationsRequests";
 
 import RoutesList from "./RoutesList";
 import RouteFilter from "./RouteFilter";
+import AddRoute from "./AddRoute";
+import UpdateRoute from "./UpdateRoute";
+import DeleteRoute from "./DeleteRoute";
+
+let savedSearchedConfig = { from: "", to: "" };
 
 const RoutesPage = () => {
   // запрашиваем данные из стора
@@ -33,7 +38,7 @@ const RoutesPage = () => {
   }, [routes]);
 
   useEffect(() => {
-    setSearchedList(filteredList);
+    searchHandler(savedSearchedConfig);
   }, [filteredList]);
 
   // хранение информации об окнах
@@ -45,43 +50,85 @@ const RoutesPage = () => {
 
   // поиск
   const searchHandler = (searchConfig) => {
-    // let search_results = [];
-    // for (let trip of filteredList) {
-    //   let tripFrom = trip.stations.at(0).name.toLowerCase();
-    //   let tripTo = trip.stations.at(-1).name.toLowerCase();
-    //   let searchedFrom = tripFrom.indexOf(searchConfig.from);
-    //   let searchedTo = tripTo.indexOf(searchConfig.to);
-    //   if (searchedFrom === 0 && searchedTo === 0) {
-    //     search_results.push(trip);
-    //   }
-    // }
-    // setSearchedList(search_results);
+    let search_results = [];
+    savedSearchedConfig = searchConfig;
+    for (let route of filteredList) {
+      let from =
+        searchConfig.from === ""
+          ? route.stations.at(0).name.toLowerCase()
+          : searchConfig.from;
+      let to =
+        searchConfig.to === ""
+          ? route.stations.at(-1).name.toLowerCase()
+          : searchConfig.to;
+
+      // проверяем на совпадение с начальными станциями
+      let fromRoutes = [];
+      route.stations.slice(0, -1).forEach((item, i, arr) => {
+        let routeFrom = item.name.toLowerCase();
+        let searchedFrom = routeFrom.indexOf(from);
+        if (searchedFrom === 0) {
+          let newRoute = {
+            id: route.id + " from" + item.name,
+            price: route.price.slice(i),
+            time: route.time.slice(i),
+            stations: route.stations.slice(i),
+          };
+          fromRoutes.push(newRoute);
+        }
+      });
+
+      // проверяем на совпадение с конечными станциями
+      let newRoutes = [];
+      for (let fromRoute of fromRoutes) {
+        fromRoute.stations?.slice(1).forEach((item, i, arr) => {
+          let routeTo = item.name.toLowerCase();
+          let searchedTo = routeTo.indexOf(to);
+          if (searchedTo === 0) {
+            let newRoute = {
+              id: fromRoute.id + "to" + item.name,
+              price: fromRoute.price.slice(0, i + 1),
+              time: fromRoute.time.slice(0, i + 1),
+              stations: fromRoute.stations.slice(0, i + 2),
+            };
+            newRoutes.push(newRoute);
+          }
+        });
+      }
+      // сохраняем подходящие результаты
+      search_results = [...search_results, ...newRoutes];
+    }
+    setSearchedList(search_results);
   };
 
   // фильтр
   const filterHandler = (filterConfig) => {
-    // console.log(filterConfig);
-    // let filter_results = [];
-    // for (let trip of schedule) {
-    //   let costOk =
-    //     filterConfig.cost.from <= trip.price &&
-    //     trip.price <= filterConfig.cost.to;
-    //   let [hours, mins] = trip.time_to.split(":");
-    //   let time = Number(hours) + Number(mins) / 100;
-    //   let timeOk =
-    //     filterConfig.time.from <= time ||
-    //     (!filterConfig.time.from && time <= filterConfig.time.to) ||
-    //     !filterConfig.time.to;
-    //   let dateOk = filterConfig.days.length === 0;
-    //   for (let day of filterConfig.days) {
-    //     dateOk = trip.days.indexOf(day) !== -1 || dateOk;
-    //   }
-    //   console.log(" dateOk ", dateOk, " timeOk ", timeOk, " costOk ", costOk);
-    //   if (dateOk && timeOk && costOk) {
-    //     filter_results.push(trip);
-    //   }
-    // }
-    // setFilteredList(filter_results);
+    let filter_results = [];
+    for (let route of routes) {
+      let totalPrice = 0;
+      route.price.forEach((item, i, arr) => {
+        totalPrice += Number(item);
+      });
+
+      let totalTime = 0;
+      route.time.forEach((item, i, arr) => {
+        totalTime += Number(item);
+      });
+
+      let costOk =
+        filterConfig.cost.from <= totalPrice &&
+        totalPrice <= filterConfig.cost.to;
+
+      let timeOk =
+        filterConfig.time.from <= totalTime &&
+        totalTime <= filterConfig.time.to;
+
+      if (timeOk && costOk) {
+        filter_results.push(route);
+      }
+    }
+    console.log(filter_results);
+    setFilteredList(filter_results);
   };
 
   // открытие окна добавления
@@ -91,13 +138,7 @@ const RoutesPage = () => {
 
   // открытие окна обновления
   const updateRouteHandler = (id) => {
-    let route = null;
-    for (let r of routes) {
-      if (r.id === id) {
-        route = r;
-        break;
-      }
-    }
+    let route = routes.find((route) => route.id === id);
     setUpdateRouteById(route);
     setUpdateRoute(true);
   };
@@ -135,16 +176,16 @@ const RoutesPage = () => {
         }}
         list={searchedList}
       />
-      {/* {addRoute && <AddTrip cancelHandler={cancelAddHandler} />}
+      {addRoute && <AddRoute cancelHandler={cancelAddHandler} />}
       {updateRoute && (
-        <UpdateTrip
+        <UpdateRoute
           cancelHandler={cancelUpdateHandler}
-          data={updateRouteById}
+          route={updateRouteById}
         />
       )}
       {deleteRoute && (
-        <DeleteTrip cancelHandler={cancelDeleteHandler} id={deleteRouteById} />
-      )} */}
+        <DeleteRoute cancelHandler={cancelDeleteHandler} id={deleteRouteById} />
+      )}
     </div>
   );
 };
