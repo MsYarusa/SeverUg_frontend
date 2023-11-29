@@ -1,0 +1,12 @@
+.station-name {
+  position: absolute;
+  left: 10%;
+}
+
+.station-item__container {
+  width: 48%;
+}
+
+.station-item__container .object-item {
+  width: 100%;
+}

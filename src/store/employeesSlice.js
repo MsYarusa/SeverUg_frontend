@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getEmployees } from "../components/employees/GetEmployees";
+import { getEmployees } from "../components/pages/employees/GetEmployees";
 
 const employeesSlice = createSlice({
   name: "employees",

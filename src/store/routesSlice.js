@@ -1,25 +1,25 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getSchedule } from "../requests/SheduleRequests";
+import { getRoutes } from "../requests/RoutesRequests";
 
-const scheduleSlice = createSlice({
-  name: "schedule",
+const routesSlice = createSlice({
+  name: "routes",
   initialState: {
-    schedule: [],
+    routes: [],
     status: null,
     error: null,
   },
   reducers: {
-    addTrip(state, action) {
+    addRoute(state, action) {
       state.schedule.push(action.payload.trip);
     },
-    updateTrip(state, action) {
+    updateRoute(state, action) {
       state.schedule.forEach((item, i, arr) => {
         if (item.id === action.payload.id) {
           arr[i] = action.payload.trip;
         }
       });
     },
-    removeTrip(state, action) {
+    removeRoute(state, action) {
       state.schedule = state.schedule.filter(
         (trip) => trip.id !== action.payload.id
       );
@@ -27,20 +27,20 @@ const scheduleSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getSchedule.pending, (state, action) => {
+      .addCase(getRoutes.pending, (state, action) => {
         state.status = "loading";
         state.error = null;
       })
-      .addCase(getSchedule.fulfilled, (state, action) => {
+      .addCase(getRoutes.fulfilled, (state, action) => {
         state.status = "resolved";
-        state.schedule = action.payload;
+        state.routes = action.payload;
       })
-      .addCase(getSchedule.rejected, (state, action) => {
+      .addCase(getRoutes.rejected, (state, action) => {
         state.status = "rejected";
         state.error = action.payload;
       });
   },
 });
 
-export const { addTrip, updateTrip, removeTrip } = scheduleSlice.actions;
-export default scheduleSlice.reducer;
+export const { addRoute, updateRoute, removeRoute } = routesSlice.actions;
+export default routesSlice.reducer;

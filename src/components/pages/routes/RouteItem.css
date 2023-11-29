@@ -1,0 +1,111 @@
+.route-start {
+  position: absolute;
+  right: 80%;
+  max-width: 20%;
+  text-align: end;
+}
+
+.route-dash {
+  text-align: justify;
+  position: absolute;
+  font-size: 30px;
+  left: 23%;
+}
+
+.route-destination {
+  position: absolute;
+  left: 30%;
+  max-width: 20%;
+}
+
+.route-totalTime {
+  position: absolute;
+  right: 40%;
+  max-width: 10%;
+  text-align: end;
+}
+
+.route-slash {
+  position: absolute;
+  right: 38%;
+}
+
+.route-totalPrice {
+  position: absolute;
+  left: 63%;
+  max-width: 10%;
+}
+
+.route-station1 {
+  position: absolute;
+  right: 75.5%;
+  max-width: 20%;
+  text-align: end;
+}
+
+.route-stations .route-dash {
+  text-align: justify;
+  position: absolute;
+  font-size: 25px;
+  left: 26%;
+}
+
+.route-station2 {
+  position: absolute;
+  left: 30.5%;
+  max-width: 20%;
+}
+
+.route-time {
+  position: absolute;
+  right: 41%;
+  max-width: 10%;
+  text-align: end;
+}
+
+.route-stations .route-slash {
+  position: absolute;
+  right: 39.5%;
+}
+
+.route-price {
+  position: absolute;
+  left: 62%;
+  max-width: 10%;
+}
+
+ul .route-stations {
+  margin-top: -50px;
+  margin-bottom: 24px;
+  padding-top: 46px;
+  width: 90%;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #6f808d;
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+  list-style: none;
+}
+
+.route-stations p {
+  color: #fff;
+  margin: 0;
+  font-family: Montserrat;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 110%;
+}
+
+.route-stations .route-station-pare {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 90%;
+  min-height: 20px;
+  height: fit-content;
+  margin-top: 0px;
+  margin-bottom: 15px;
+}

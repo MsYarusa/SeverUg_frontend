@@ -1,11 +1,13 @@
-import SchedulePage from "./components/schedule/SchedulePage";
-import LoginPage from "./components/login/LoginPage";
-import HomePage from "./components/home/HomePage";
+import SchedulePage from "./components/pages/schedule/SchedulePage";
+import LoginPage from "./components/pages/login/LoginPage";
+import HomePage from "./components/pages/home/HomePage";
 import { Routes, Route } from "react-router-dom";
 import Layout from "./components/layout/Layout";
 import RequireAuth from "./hoc/RequireAuth";
-import EmployeesPage from "./components/employees/EmployeesPage";
+import EmployeesPage from "./components/pages/employees/EmployeesPage";
 import NotFound from "./components/cards/NotFound";
+import RoutesPage from "./components/pages/routes/RoutesPage";
+import StationsPage from "./components/pages/stations/StationsPage";
 
 function App() {
   return (
@@ -22,6 +24,8 @@ function App() {
         <Route index element={<HomePage />} />
         <Route path="employees" element={<EmployeesPage />} />
         <Route path="schedule" element={<SchedulePage />} />
+        <Route path="routes" element={<RoutesPage />} />
+        <Route path="stations" element={<StationsPage />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>
