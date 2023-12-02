@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { putTrip } from "../../../requests/SheduleRequests";
-import "../../cards/Window.css";
-import "./AddUpdateTrip.css";
+import { putTrip } from "../../../requests/ScheduleRequests";
+
+import "../../cards/objectStyles/Window.css";
+import "./scheduleStyles/AddUpdateTrip.css";
 
 const UpdateTrip = ({ cancelHandler, data }) => {
-  const dispatch = useDispatch;
+  const dispatch = useDispatch();
   const routes = useSelector((state) => state.routes.routes);
 
   const [selectedRoute, setSelectedRoute] = useState({
@@ -59,20 +60,20 @@ const UpdateTrip = ({ cancelHandler, data }) => {
     setRouteOk(routeOK);
 
     if (daysOK && timeOK && routeOK) {
-      console.log({
-        id: data.id,
-        days: daysSelected,
-        time: time,
-        road_id: route.id,
-      });
-      // dispatch(
-      //   putTrip({
-      //     id: data.id,
-      //     days: daysSelected,
-      //     time: time,
-      //     road_id: route.id,
-      //   })
-      // );
+      // console.log({
+      //   id: data.id,
+      //   days: daysSelected,
+      //   time: time,
+      //   road_id: route.id,
+      // });
+      dispatch(
+        putTrip({
+          id: data.id,
+          days: daysSelected,
+          time: time,
+          road_id: route.id,
+        })
+      );
       cancelHandler();
     }
   };
@@ -81,7 +82,7 @@ const UpdateTrip = ({ cancelHandler, data }) => {
     <div className="window__container">
       <form className="window" onSubmit={submitHandler}>
         <div className="window__inner">
-          <label id="main">Добавление рейса</label>
+          <label id="main">Изменение рейса</label>
           <label>Дни работы рейса:</label>
           <Days selectHandler={setDaysSelected} />
           <p className={daysOk ? "error-disabled" : "error"}>
@@ -106,7 +107,7 @@ const UpdateTrip = ({ cancelHandler, data }) => {
             </option>
             {routes?.map((route) => (
               <option key={route.id} value={JSON.stringify(route)}>
-                {console.log(route)}№{route.id} "{route.stations.at(0).name} —{" "}
+                №{route.id} "{route.stations.at(0).name} —{" "}
                 {route.stations.at(-1).name}"
               </option>
             ))}

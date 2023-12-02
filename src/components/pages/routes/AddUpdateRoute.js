@@ -1,16 +1,48 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import cancelImg from "../../cards/buttonImgs/close.svg";
-import { postRoute } from "../../../requests/RoutesRequests";
+import { putRoute } from "../../../requests/RoutesRequests";
+import { updateTrip } from "../../../store/scheduleSlice";
 
 import "../../cards/objectStyles/Window.css";
 import "../schedule/scheduleStyles/AddUpdateTrip.css";
 
-const AddRoute = ({ cancelHandler }) => {
+const AddUpdateRoute = ({ cancelHandler, route }) => {
   const dispatch = useDispatch();
   const stations = useSelector((state) => state.stations.stations);
+  const schedule = useSelector((state) => state.schedule.schedule);
 
   const [stationIndexes, setStationIndexes] = useState([1]);
+  // восстановление данных
+  const [restoreSelects, setRestoreSelects] = useState(false);
+
+  useEffect(() => {
+    if (route) {
+      document.getElementById("s" + 0).value = JSON.stringify(
+        route.stations.at(0)
+      );
+    }
+    let defaultIndexes = [];
+    for (let i = 0; i < route.stations.length - 1; i++) {
+      defaultIndexes = [...defaultIndexes, i + 1];
+    }
+
+    setStationIndexes(defaultIndexes);
+    setRestoreSelects(true);
+  }, [route]);
+
+  useEffect(() => {
+    for (let index of stationIndexes) {
+      document.getElementById("s" + index).value = JSON.stringify(
+        route.stations.at(index)
+      );
+      document.getElementById("upd-time " + index).value = getTimeFromMins(
+        route.time[index - 1]
+      );
+      document.getElementById("upd-cost " + index).value =
+        route.price[index - 1];
+    }
+  }, [restoreSelects]);
 
   // валидация
   const [stationsOk, setStationsOk] = useState(true);
@@ -26,12 +58,15 @@ const AddRoute = ({ cancelHandler }) => {
     let stationsForSave = [];
     for (let index of stationIndexes) {
       if (event.target.id !== index.toString()) {
-        stationsForSave.push(document.getElementById("s" + index).value);
+        stationsForSave.push(
+          document.getElementById("s" + index.toString()).value
+        );
       }
     }
     setStationIndexes(stationIndexes.slice(0, -1));
     for (let index of stationIndexes) {
-      document.getElementById("s" + index).value = stationsForSave[index - 1];
+      document.getElementById("s" + index.toString()).value =
+        stationsForSave[index - 1];
     }
   };
 
@@ -39,6 +74,7 @@ const AddRoute = ({ cancelHandler }) => {
     event.preventDefault();
 
     let stationsForSave = [];
+    let indexesForSave = [];
     let timeForSave = [];
     let costForSave = [];
     let containsNullStation = false;
@@ -47,7 +83,8 @@ const AddRoute = ({ cancelHandler }) => {
 
     let firstStation = JSON.parse(document.getElementById("s" + 0).value);
     if (firstStation !== "Выбрать") {
-      stationsForSave.push(Number(firstStation.id));
+      indexesForSave.push(Number(firstStation.id));
+      stationsForSave.push(firstStation);
     } else {
       containsNullStation = true;
     }
@@ -56,12 +93,13 @@ const AddRoute = ({ cancelHandler }) => {
       // получаем станции
       let station = JSON.parse(document.getElementById("s" + index).value);
       if (station !== "Выбрать") {
-        stationsForSave.push(Number(station.id));
+        indexesForSave.push(Number(station.id));
+        stationsForSave.push(station);
       } else {
         containsNullStation = true;
       }
       // получаем время
-      let time = document.getElementById("add-time " + index).value;
+      let time = document.getElementById("upd-time " + index).value;
       if (time !== "") {
         let [hours, minutes] = time.split(":");
         time = Number(hours) * 60 + Number(minutes);
@@ -70,7 +108,7 @@ const AddRoute = ({ cancelHandler }) => {
         containsNullTime = true;
       }
       // получаем стоимость
-      let cost = document.getElementById("add-cost " + index).value;
+      let cost = document.getElementById("upd-cost " + index).value;
       if (cost !== "") {
         costForSave.push(cost);
       } else {
@@ -89,18 +127,34 @@ const AddRoute = ({ cancelHandler }) => {
       !containsNullTime &&
       !containsNullCost
     ) {
-      console.log({
+      const NewRoute = {
+        id: route.id,
         price: costForSave.join(" "),
         time: timeForSave.join(" "),
-        sort: stationsForSave.join(" "),
-        stations_id: stationsForSave,
-      });
+        stations: stationsForSave,
+        sort: indexesForSave.join(" "),
+      };
+
+      for (let trip of schedule) {
+        if (trip.road.id === route.id) {
+          let NewTrip = {
+            id: trip.id,
+            departure_time: trip.departure_time,
+            days: trip.days,
+            driver: trip.driver,
+            road: NewRoute,
+          };
+          dispatch(updateTrip({ id: trip.id, trip: NewTrip }));
+        }
+      }
+
       dispatch(
-        postRoute({
+        putRoute({
+          id: route.id,
           price: costForSave.join(" "),
           time: timeForSave.join(" "),
-          sort: stationsForSave.join(" "),
-          stations_id: stationsForSave,
+          sort: indexesForSave.join(" "),
+          stations_id: indexesForSave,
         })
       );
       cancelHandler();
@@ -124,7 +178,7 @@ const AddRoute = ({ cancelHandler }) => {
     <div className="window__container">
       <form className="window" onSubmit={submitHandler}>
         <div className="window__inner">
-          <label id="main">Добавление маршрута</label>
+          <label id="main">Изменение маршрута</label>
           <label id="routes-label">Список остановок:</label>
           <div className="routes">
             <Station
@@ -136,13 +190,21 @@ const AddRoute = ({ cancelHandler }) => {
             {stationIndexes &&
               stationIndexes?.map((index) => (
                 <div key={index} className="stations__container">
-                  <div className="label-input" key={"add-time " + index}>
+                  <div className="label-input" key={"upd-time " + index}>
                     <label>Время в пути:</label>
-                    <input type="time" id={"add-time " + index} />
+                    <input
+                      type="time"
+                      id={"upd-time " + index}
+                      //   className={timeOk ? "" : "error-border"}
+                    />
                   </div>
-                  <div className="label-input" key={"add-cost " + index}>
+                  <div className="label-input" key={"upd-cost " + index}>
                     <label>Стоимость за проезд:</label>
-                    <input type="number" id={"add-cost " + index} />
+                    <input
+                      type="number"
+                      id={"upd-cost " + index}
+                      //   className={costOk ? "" : "error-border"}
+                    />
                     <p>руб.</p>
                   </div>
                   <Station
@@ -181,7 +243,7 @@ const AddRoute = ({ cancelHandler }) => {
   );
 };
 
-export default AddRoute;
+export default AddUpdateRoute;
 
 const Station = ({ stations, index, deleteHandler }) => {
   return (
@@ -216,3 +278,11 @@ const Station = ({ stations, index, deleteHandler }) => {
     </div>
   );
 };
+
+function getTimeFromMins(mins) {
+  let hours = Math.trunc(mins / 60);
+  let minutes = mins % 60;
+  hours = hours < 10 ? "0" + hours : hours;
+  minutes = minutes < 10 ? "0" + minutes : minutes;
+  return hours + ":" + minutes;
+}

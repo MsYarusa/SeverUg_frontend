@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import ObjectFilter from "../../cards/ObjectFilter";
-import "./ScheduleFilter.css";
+
 import cancelImg from "../../cards/buttonImgs/close.svg";
+import "./scheduleStyles/ScheduleFilter.css";
 
 let filterConfig = {
   cost: { from: 0, to: Number.MAX_SAFE_INTEGER },

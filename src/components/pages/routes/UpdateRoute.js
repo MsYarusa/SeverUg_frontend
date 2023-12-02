@@ -2,12 +2,15 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import cancelImg from "../../cards/buttonImgs/close.svg";
 import { putRoute } from "../../../requests/RoutesRequests";
-import "../../cards/Window.css";
-import "../schedule/AddUpdateTrip.css";
+import { updateTrip } from "../../../store/scheduleSlice";
+
+import "../../cards/objectStyles/Window.css";
+import "../schedule/scheduleStyles/AddUpdateTrip.css";
 
 const UpdateRoute = ({ cancelHandler, route }) => {
   const dispatch = useDispatch();
   const stations = useSelector((state) => state.stations.stations);
+  const schedule = useSelector((state) => state.schedule.schedule);
 
   const [stationIndexes, setStationIndexes] = useState([1]);
   // восстановление данных
@@ -71,6 +74,7 @@ const UpdateRoute = ({ cancelHandler, route }) => {
     event.preventDefault();
 
     let stationsForSave = [];
+    let indexesForSave = [];
     let timeForSave = [];
     let costForSave = [];
     let containsNullStation = false;
@@ -79,7 +83,8 @@ const UpdateRoute = ({ cancelHandler, route }) => {
 
     let firstStation = JSON.parse(document.getElementById("s" + 0).value);
     if (firstStation !== "Выбрать") {
-      stationsForSave.push(Number(firstStation.id));
+      indexesForSave.push(Number(firstStation.id));
+      stationsForSave.push(firstStation);
     } else {
       containsNullStation = true;
     }
@@ -88,7 +93,8 @@ const UpdateRoute = ({ cancelHandler, route }) => {
       // получаем станции
       let station = JSON.parse(document.getElementById("s" + index).value);
       if (station !== "Выбрать") {
-        stationsForSave.push(Number(station.id));
+        indexesForSave.push(Number(station.id));
+        stationsForSave.push(station);
       } else {
         containsNullStation = true;
       }
@@ -121,19 +127,34 @@ const UpdateRoute = ({ cancelHandler, route }) => {
       !containsNullTime &&
       !containsNullCost
     ) {
-      console.log({
+      const NewRoute = {
+        id: route.id,
         price: costForSave.join(" "),
         time: timeForSave.join(" "),
-        sort: stationsForSave.join(" "),
-        stations_id: stationsForSave,
-      });
+        stations: stationsForSave,
+        sort: indexesForSave.join(" "),
+      };
+
+      for (let trip of schedule) {
+        if (trip.road.id === route.id) {
+          let NewTrip = {
+            id: trip.id,
+            departure_time: trip.departure_time,
+            days: trip.days,
+            driver: trip.driver,
+            road: NewRoute,
+          };
+          dispatch(updateTrip({ id: trip.id, trip: NewTrip }));
+        }
+      }
+
       dispatch(
         putRoute({
           id: route.id,
           price: costForSave.join(" "),
           time: timeForSave.join(" "),
-          sort: stationsForSave.join(" "),
-          stations_id: stationsForSave,
+          sort: indexesForSave.join(" "),
+          stations_id: indexesForSave,
         })
       );
       cancelHandler();
@@ -157,7 +178,7 @@ const UpdateRoute = ({ cancelHandler, route }) => {
     <div className="window__container">
       <form className="window" onSubmit={submitHandler}>
         <div className="window__inner">
-          <label id="main">Добавление маршрута</label>
+          <label id="main">Изменение маршрута</label>
           <label id="routes-label">Список остановок:</label>
           <div className="routes">
             <Station

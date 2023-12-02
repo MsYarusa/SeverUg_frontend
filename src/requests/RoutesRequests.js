@@ -11,23 +11,23 @@ export const getRoutes = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     // получение данных
     let data = [];
-    // await axios
-    //   .get("https://spacekot.ru/apishechka/road")
-    //   .then((res) => {
-    //     console.log("статус: ", res.message);
-    //     console.log("данные: ", res.data);
-    //     data = res.data;
-    //   })
-    //   .catch((error) => {
-    //     console.error("ошибка: ", error.message);
-    //     return rejectWithValue(error.message);
-    //   });
+    await axios
+      .get("https://spacekot.ru/apishechka/road")
+      .then((res) => {
+        console.log("статус: успешно");
+        console.log("данные: ", res.data);
+        data = res.data;
+      })
+      .catch((error) => {
+        console.error("ошибка: ", error.message);
+        return rejectWithValue(error.message);
+      });
 
-    try {
-      data = routes;
-    } catch (error) {
-      return rejectWithValue(error.message);
-    }
+    // try {
+    //   data = routes;
+    // } catch (error) {
+    //   return rejectWithValue(error.message);
+    // }
 
     // восстанавливаем последовательность станций
     for (let route of data) {
@@ -64,7 +64,7 @@ export const postRoute = createAsyncThunk(
         stations_id: stations_id,
       })
       .then((res) => {
-        console.log("статус: ", res.message);
+        console.log("статус: успешно");
         route = res.data;
       })
       .catch((error) => {
@@ -94,7 +94,7 @@ export const putRoute = createAsyncThunk(
         stations_id: stations_id,
       })
       .then((res) => {
-        console.log("статус: ", res.message);
+        console.log("статус: успешно");
         route = res.data;
       })
       .catch((error) => {
@@ -115,7 +115,7 @@ export const deleteRoute = createAsyncThunk(
     await axios
       .delete(`https://spacekot.ru/apishechka/road/${id}`)
       .then((res) => {
-        console.log("статус: ", res.message);
+        console.log("статус: успешно");
       })
       .catch((error) => {
         console.error("ошибка: ", error.message);

@@ -2,12 +2,15 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { putStation } from "../../../requests/StationsRequests";
 import { updateRoute } from "../../../store/routesSlice";
-import "../../cards/Window.css";
-import "./AddUpdateStation.css";
+import { updateTrip } from "../../../store/scheduleSlice";
+
+import "../../cards/objectStyles/Window.css";
+import "./stationStyles/AddUpdateStation.css";
 
 const UpdateStation = ({ cancelHandler, data }) => {
   const dispatch = useDispatch();
   const routes = useSelector((state) => state.routes.routes);
+  const schedule = useSelector((state) => state.schedule.schedule);
 
   useEffect(() => {
     if (data) {
@@ -27,40 +30,53 @@ const UpdateStation = ({ cancelHandler, data }) => {
 
     if (nameOk) {
       // локально изменяем станции в маршрутах, связанных с этой станцией
-      let routesWithStation = [];
       for (let route of routes) {
         if (route.stations.find((station) => station.id === data.id)) {
-          routesWithStation.push(route);
+          let newStations = [];
+          route.stations.forEach((item, i, arr) => {
+            let newStation = {
+              id: item.id,
+              name: item.name,
+            };
+            if (item.id === data.id) {
+              newStation.name = name;
+            }
+            newStations.push(newStation);
+          });
+
+          const NewRoute = {
+            id: route.id,
+            price: route.price,
+            time: route.time,
+            stations: newStations,
+            sort: route.sort,
+          };
+          dispatch(updateRoute({ id: route.id, route: NewRoute }));
+
+          for (let trip of schedule) {
+            if (trip.road.id === route.id) {
+              let NewTrip = {
+                id: trip.id,
+                departure_time: trip.departure_time,
+                days: trip.days,
+                driver: trip.driver,
+                road: NewRoute,
+              };
+              dispatch(updateTrip({ id: trip.id, trip: NewTrip }));
+            }
+          }
         }
       }
-
-      for (let route of routesWithStation) {
-        route.stations.forEach((item, i, arr) => {
-          if (item.id === data.id) {
-            arr[i].name = name;
-          }
-        });
-
-        const NewRoute = {
-          id: route.id,
-          price: route.price,
-          time: route.time,
-          stations: route.stations,
-          sort: route.sort,
-        };
-        dispatch(updateRoute({ id: route.id, route: NewRoute }));
-      }
-
-      console.log({
-        id: name.id,
-        name: name,
-      });
-      //   dispatch(
-      //     putStation({
-      //       id: name.id,
-      //       name: name,
-      //     })
-      //   );
+      // console.log({
+      //   id: name.id,
+      //   name: name,
+      // });
+      dispatch(
+        putStation({
+          id: data.id,
+          name: name,
+        })
+      );
       cancelHandler();
     }
   };
@@ -69,7 +85,7 @@ const UpdateStation = ({ cancelHandler, data }) => {
     <div className="window__container">
       <form className="window" onSubmit={submitHandler}>
         <div className="window__inner">
-          <label id="main">Добавление станции</label>
+          <label id="main">Изменение станции</label>
           <div className="station-input" key={"station-name__container"}>
             <label>Название станции:</label>
             <input

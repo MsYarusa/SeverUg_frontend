@@ -1,5 +1,6 @@
 import ObjectItem from "../../cards/ObjectItem";
-import "./StationItem.css";
+
+import "./stationStyles/StationItem.css";
 
 const StationItem = ({ data, deleteHandler, updateHandler }) => {
   return (

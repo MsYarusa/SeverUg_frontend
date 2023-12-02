@@ -1,8 +1,8 @@
 import ObjectsList from "../../cards/ObjectsList";
 import SearchFromTo from "../../cards/ObjectSearchFromTo";
 import RouteItem from "./RouteItem";
-import LinkButton from "../../cards/LinkButton";
-import "../../cards/ObjectSearch.css";
+import { Link } from "react-router-dom";
+import "../../cards/objectStyles/ObjectSearch.css";
 
 const RoutesList = ({ searchHandler, list, buttonsHandlers }) => {
   return (
@@ -10,9 +10,9 @@ const RoutesList = ({ searchHandler, list, buttonsHandlers }) => {
       <div className="object-search">
         <SearchFromTo search={searchHandler} />
         <button onClick={buttonsHandlers.add}>Добавить маршрут</button>
-        <LinkButton to="/stations" style={{ textDecoration: "none" }}>
+        <Link to="/stations" style={{ textDecoration: "none" }}>
           <p>Список станций</p>
-        </LinkButton>
+        </Link>
       </div>
       {list?.map((item) => (
         <RouteItem

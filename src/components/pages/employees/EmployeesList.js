@@ -1,7 +1,7 @@
 import List from "../../cards/ObjectsList";
 import Search from "../../cards/ObjectSearchByName";
 import Employee from "./Employee";
-import "../../cards/ObjectSearch.css";
+import "../../cards/objectStyles/ObjectSearch.css";
 
 const EmployeesList = ({ searchHandler, addEmployeeHandler, list }) => {
   return (

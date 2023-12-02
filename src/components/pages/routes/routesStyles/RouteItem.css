@@ -6,7 +6,7 @@
 
 .route-start {
   position: absolute;
-  right: 80%;
+  right: 77%;
   max-width: 20%;
   text-align: end;
 }
@@ -15,12 +15,12 @@
   text-align: justify;
   position: absolute;
   font-size: 30px;
-  left: 23%;
+  left: 26%;
 }
 
 .route-destination {
   position: absolute;
-  left: 30%;
+  left: 33%;
   max-width: 20%;
 }
 
@@ -44,7 +44,7 @@
 
 .route-station1 {
   position: absolute;
-  right: 75.5%;
+  right: 73.5%;
   max-width: 20%;
   text-align: end;
 }
@@ -53,12 +53,12 @@
   text-align: justify;
   position: absolute;
   font-size: 25px;
-  left: 26%;
+  left: 29%;
 }
 
 .route-station2 {
   position: absolute;
-  left: 28.5%;
+  left: 32.5%;
   max-width: 20%;
 }
 

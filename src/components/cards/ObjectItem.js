@@ -1,7 +1,6 @@
-import React from "react";
-import "./ObjectItem.css";
 import deleteImg from "./buttonImgs/delete.svg";
 import updateImg from "./buttonImgs/update.svg";
+import "./objectStyles/ObjectItem.css";
 
 const ObjectItem = ({
   children,
@@ -27,11 +26,11 @@ const ObjectItem = ({
     <div className="object-item" onClick={onClick}>
       {children}
       <div id="buttons">
-        <button id={"upd " + id.toString()} onClick={updateClickedHandler}>
-          <img src={updateImg} id={"upd " + id.toString()} />
+        <button id={"upd " + id} onClick={updateClickedHandler}>
+          <img src={updateImg} id={"upd " + id} />
         </button>
-        <button id={"del " + id.toString()} onClick={deleteClickedHandler}>
-          <img src={deleteImg} id={"del " + id.toString()} />
+        <button id={"del " + id} onClick={deleteClickedHandler}>
+          <img src={deleteImg} id={"del " + id} />
         </button>
       </div>
     </div>

@@ -1,8 +1,6 @@
-import React from "react";
-import "./Footer.css";
-
-import phone from "./phoneImg.svg";
-import email from "./emailImg.svg";
+import phone from "./layoutImgs/phoneImg.svg";
+import email from "./layoutImgs/emailImg.svg";
+import "./layoutStyles/Footer.css";
 
 const Footer = () => {
   return (

@@ -1,5 +1,6 @@
 import ObjectFilter from "../../cards/ObjectFilter";
-import "../../pages/schedule/ScheduleFilter.css";
+
+import "../schedule/scheduleStyles/ScheduleFilter.css";
 
 let filterConfig = {
   cost: { from: 0, to: Number.MAX_SAFE_INTEGER },

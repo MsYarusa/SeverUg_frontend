@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { postStation } from "../../../requests/StationsRequests";
-import "../../cards/Window.css";
-import "./AddUpdateStation.css";
+
+import "../../cards/objectStyles/Window.css";
+import "./stationStyles/AddUpdateStation.css";
 
 const AddStation = ({ cancelHandler }) => {
   const dispatch = useDispatch();
@@ -19,14 +20,14 @@ const AddStation = ({ cancelHandler }) => {
     setNameOk(nameOk);
 
     if (nameOk) {
-      console.log({
-        name: name,
-      });
-      // dispatch(
-      //   postStation({
-      //     name: name,
-      //   })
-      // );
+      // console.log({
+      //   name: name,
+      // });
+      dispatch(
+        postStation({
+          name: name,
+        })
+      );
       cancelHandler();
     }
   };

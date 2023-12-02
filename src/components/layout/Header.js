@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import Logo from "./Logo";
-import userImg from "./userImg.svg";
-import logOut from "./LogOut.svg";
 import { useSelector } from "react-redux";
-import "./Header.css";
+
+import Logo from "./Logo";
+
+import userImg from "./layoutImgs/userImg.svg";
+import logOut from "./layoutImgs/LogOut.svg";
+import "./layoutStyles/Header.css";
 
 const Header = () => {
   const user = useSelector((state) => state.user.user);

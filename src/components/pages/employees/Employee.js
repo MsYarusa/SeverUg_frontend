@@ -1,6 +1,6 @@
 import React from "react";
 import ObjectItem from "../../cards/ObjectItem";
-import "./Employee.css";
+import "./employeesStyles/Employee.css";
 
 const Employee = ({ data }) => {
   const printDelete = () => {

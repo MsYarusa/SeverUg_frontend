@@ -1,9 +1,10 @@
 import ObjectsList from "../../cards/ObjectsList";
 import StationItem from "./StationItem";
 import SearchByName from "../../cards/ObjectSearchByName";
-import LinkButton from "../../cards/LinkButton";
-import "../../cards/ObjectSearch.css";
-import "./StationsList.css";
+import { Link } from "react-router-dom";
+
+import "../../cards/objectStyles/ObjectSearch.css";
+import "./stationStyles/StationsList.css";
 
 const StationsList = ({ searchHandler, list, buttonsHandlers }) => {
   return (
@@ -15,9 +16,9 @@ const StationsList = ({ searchHandler, list, buttonsHandlers }) => {
             placeholder={"Название станции"}
           />
           <button onClick={buttonsHandlers.add}>Добавить станцию</button>
-          <LinkButton to="/routes" style={{ textDecoration: "none" }}>
+          <Link to={-1} style={{ textDecoration: "none" }}>
             <p>Вернуться к маршрутам</p>
-          </LinkButton>
+          </Link>
         </div>
         <ul className="stations-grid">
           {list?.map((item) => (

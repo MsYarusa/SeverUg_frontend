@@ -1,4 +1,4 @@
-import "./ObjectFilter.css";
+import "./objectStyles/ObjectFilter.css";
 
 const ObjectFilter = ({ children }) => {
   const submitHandler = (event) => {

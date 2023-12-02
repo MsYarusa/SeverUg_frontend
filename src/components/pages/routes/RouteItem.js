@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import ObjectItem from "../../cards/ObjectItem";
-import "./RouteItem.css";
+
+import "./routesStyles/RouteItem.css";
 
 const RouteItem = ({ data, deleteHandler, updateHandler }) => {
   const [info, setInfo] = useState();
@@ -8,8 +9,6 @@ const RouteItem = ({ data, deleteHandler, updateHandler }) => {
   const infoHandler = () => {
     setInfo(!info);
   };
-
-  console.log(data.id);
 
   let index = 0;
   if (typeof data.id === "string") {

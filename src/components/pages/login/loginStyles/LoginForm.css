@@ -20,7 +20,7 @@
   box-shadow: 0px 4px 100px 0px rgba(0, 0, 0, 0.3);
   background-size: cover;
   background-position: center;
-  background-image: url("./loginFormImg.svg");
+  background-image: url("../loginImgs/loginFormImg.svg");
 }
 
 .login-form {

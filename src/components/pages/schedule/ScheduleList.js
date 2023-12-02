@@ -2,7 +2,7 @@ import React from "react";
 import ObjectsList from "../../cards/ObjectsList";
 import SearchFromTo from "../../cards/ObjectSearchFromTo";
 import ScheduleItem from "./ScheduleItem";
-import "../../cards/ObjectSearch.css";
+import "../../cards/objectStyles/ObjectSearch.css";
 
 const ScheduleList = ({ searchHandler, list, buttonsHandlers }) => {
   return (

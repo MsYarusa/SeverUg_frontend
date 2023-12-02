@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getSchedule } from "../../../requests/SheduleRequests";
+import { getSchedule } from "../../../requests/ScheduleRequests";
 import { getRoutes } from "../../../requests/RoutesRequests";
 
 import ScheduleFilter from "./ScheduleFilter";
 import ScheduleList from "./ScheduleList";
-import "../../cards/ObjectPage.css";
 import AddTrip from "./AddTrip";
 import UpdateTrip from "./UpdateTrip";
 import DeleteTrip from "./DeleteTrip";
+import "../../cards/objectStyles/ObjectPage.css";
 
 let savedFilteredConfig = {
   cost: { from: 0, to: Number.MAX_SAFE_INTEGER },

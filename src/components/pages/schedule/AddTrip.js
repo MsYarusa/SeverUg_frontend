@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { postTrip } from "../../../requests/SheduleRequests";
-import "../../cards/Window.css";
-import "./AddUpdateTrip.css";
+import { postTrip } from "../../../requests/ScheduleRequests";
+
+import "../../cards/objectStyles/Window.css";
+import "./scheduleStyles/AddUpdateTrip.css";
 
 const AddTrip = ({ cancelHandler }) => {
-  const dispatch = useDispatch;
+  const dispatch = useDispatch();
   const routes = useSelector((state) => state.routes.routes);
 
   const [selectedRoute, setSelectedRoute] = useState({
@@ -42,18 +43,18 @@ const AddTrip = ({ cancelHandler }) => {
     setRouteOk(routeOK);
 
     if (daysOK && timeOK && routeOK) {
-      console.log({
-        days: daysSelected,
-        time: time,
-        road_id: route.id,
-      });
-      // dispatch(
-      //   postTrip({
-      //     days: daysSelected,
-      //     time: time,
-      //     road_id: route.id,
-      //   })
-      // );
+      // console.log({
+      //   days: daysSelected,
+      //   time: time,
+      //   road_id: route.id,
+      // });
+      dispatch(
+        postTrip({
+          days: daysSelected,
+          time: time,
+          road_id: route.id,
+        })
+      );
       cancelHandler();
     }
   };

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import ObjectItem from "../../cards/ObjectItem";
-import "./ScheduleItem.css";
+
+import "./scheduleStyles/ScheduleItem.css";
 
 const ScheduleItem = ({ data, deleteHandler, updateHandler }) => {
   const [info, setInfo] = useState();
@@ -11,6 +12,10 @@ const ScheduleItem = ({ data, deleteHandler, updateHandler }) => {
 
   let totalPrice = SUM(data.road.price);
 
+  let arrivalTime = getTimeFromMins(
+    SUM(data.road.time) + getMinsFromTime(data.departure_time)
+  );
+
   let stationsPares = [];
 
   data.road.stations.slice(1).forEach((item, i, arr) => {
@@ -18,7 +23,10 @@ const ScheduleItem = ({ data, deleteHandler, updateHandler }) => {
       id: i,
       station1: data.road.stations[i].name,
       station2: item.name,
-      time: getTimeFromMins(
+      dep_time: getTimeFromMins(
+        SUM(data.road.time.slice(0, i)) + getMinsFromTime(data.departure_time)
+      ),
+      arr_time: getTimeFromMins(
         SUM(data.road.time.slice(0, i + 1)) +
           getMinsFromTime(data.departure_time)
       ),
@@ -38,7 +46,9 @@ const ScheduleItem = ({ data, deleteHandler, updateHandler }) => {
         id={data.id}
       >
         <p className="trip-date">{days}</p>
-        <p className="trip-totalTime">{data.departure_time}</p>
+        <p className="trip-departure-time">
+          {data.departure_time} / {arrivalTime}
+        </p>
         <p className="trip-departure">{data.road.stations.at(0).name}</p>
         <p className="trip-dash">—</p>
         <p className="trip-destination">{data.road.stations.at(-1).name}</p>
@@ -48,7 +58,9 @@ const ScheduleItem = ({ data, deleteHandler, updateHandler }) => {
         <ul className="info">
           {stationsPares?.map((pare) => (
             <div key={pare.id} className="trip-station-pare">
-              <p className="trip-time">{pare.time}</p>
+              <p className="trip-time">
+                {pare.dep_time} / {pare.arr_time}
+              </p>
               <p className="trip-station1">{pare.station1}</p>
               <p className="trip-dash">—</p>
               <p className="trip-station2">{pare.station2}</p>

@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import makePasswordVisible_active from "./passImgVis.svg";
-import makePasswordVisible_unactive from "./passImgUnvis.svg";
-import "./LoginForm.css";
 import { useDispatch, useSelector } from "react-redux";
 import { getUser } from "../../../requests/UserRequest";
+
+import makePasswordVisible_active from "./loginImgs/passImgVis.svg";
+import makePasswordVisible_unactive from "./loginImgs/passImgUnvis.svg";
+import "./loginStyles/LoginForm.css";
 
 const LoginForm = () => {
   const dispatch = useDispatch();
@@ -13,6 +14,10 @@ const LoginForm = () => {
   const [password, setPassword] = useState("");
   const [passwordIsVisible, setPasswordIsVisible] = useState(false);
   const [authFailed, setAuthFailed] = useState(false);
+
+  if (status === "rejected" && !authFailed) {
+    setAuthFailed(true);
+  }
 
   const changeLoginHandler = (event) => {
     setLogin(event.target.value);
@@ -25,10 +30,6 @@ const LoginForm = () => {
   const makePasswordVisibleHandler = () => {
     setPasswordIsVisible(!passwordIsVisible);
   };
-
-  if (status === "rejected" && !authFailed) {
-    setAuthFailed(true);
-  }
 
   const submitHandler = (event) => {
     event.preventDefault();

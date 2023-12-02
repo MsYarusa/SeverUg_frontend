@@ -1,11 +1,11 @@
-import buses from "./buses.svg";
-import employees from "./employees.svg";
-import routes from "./routes.svg";
-import schedule from "./schedule.svg";
-import profit from "./profit.svg";
-import successfulTrips from "./successfulTrips.svg";
-import canceledTrips from "./canceledTrips.svg";
-import tickets from "./tickets.svg";
+import buses from "./buttonImgs/buses.svg";
+import employees from "./buttonImgs/employees.svg";
+import routes from "./buttonImgs/routes.svg";
+import schedule from "./buttonImgs/schedule.svg";
+import profit from "./buttonImgs/profit.svg";
+import successfulTrips from "./buttonImgs/successfulTrips.svg";
+import canceledTrips from "./buttonImgs/canceledTrips.svg";
+import tickets from "./buttonImgs/tickets.svg";
 
 export const admin_data = [
   {

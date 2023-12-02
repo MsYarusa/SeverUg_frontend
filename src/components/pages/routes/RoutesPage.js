@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getRoutes } from "../../../requests/RoutesRequests";
 import { getStations } from "../../../requests/StationsRequests";
+import { getSchedule } from "../../../requests/ScheduleRequests";
 
 import RoutesList from "./RoutesList";
 import RouteFilter from "./RouteFilter";
 import AddRoute from "./AddRoute";
 import UpdateRoute from "./UpdateRoute";
 import DeleteRoute from "./DeleteRoute";
+import "../../cards/objectStyles/ObjectPage.css";
 
 let savedFilteredConfig = {
   cost: { from: 0, to: Number.MAX_SAFE_INTEGER },
@@ -16,9 +18,11 @@ let savedFilteredConfig = {
 };
 
 const RoutesPage = () => {
+  //ДАННЫЕ
   // запрашиваем данные из стора
   const routes = useSelector((state) => state.routes.routes);
   const stations = useSelector((state) => state.stations.stations);
+  const schedule = useSelector((state) => state.schedule.schedule);
 
   // если стор пуст то делаем запрос на сервер
   const dispatch = useDispatch();
@@ -29,8 +33,12 @@ const RoutesPage = () => {
     if (stations.length === 0) {
       dispatch(getStations());
     }
+    if (schedule.length === 0) {
+      dispatch(getSchedule());
+    }
   }, []);
 
+  // ПОИСК И ФИЛЬТР
   // хранение отфильтрованного списка
   const [filteredList, setFilteredList] = useState(routes);
   const [searchedList, setSearchedList] = useState(routes);
@@ -44,13 +52,6 @@ const RoutesPage = () => {
   useEffect(() => {
     filterHandler(savedFilteredConfig);
   }, [searchedList]);
-
-  // хранение информации об окнах
-  const [addRoute, setAddRoute] = useState(false);
-  const [updateRoute, setUpdateRoute] = useState(false);
-  const [deleteRoute, setDeleteRoute] = useState(false);
-  const [deleteRouteById, setDeleteRouteById] = useState(-1);
-  const [updateRouteById, setUpdateRouteById] = useState(null);
 
   // поиск
   const searchHandler = (searchConfig) => {
@@ -135,6 +136,15 @@ const RoutesPage = () => {
     setFilteredList(filter_results);
   };
 
+  // РАБОТА С ИНФОРМАЦИЕЙ (ОКНА)
+  // хранение информации об окнах
+  const [addRoute, setAddRoute] = useState(false);
+  const [updateRoute, setUpdateRoute] = useState(false);
+  const [deleteRoute, setDeleteRoute] = useState(false);
+  const [deleteRouteById, setDeleteRouteById] = useState(-1);
+  const [updateRouteById, setUpdateRouteById] = useState(null);
+
+  //ОТКРЫТИЕ ОКОН
   // открытие окна добавления
   const addRouteHandler = () => {
     setAddRoute(true);
@@ -153,6 +163,7 @@ const RoutesPage = () => {
     setDeleteRoute(true);
   };
 
+  //ЗАКРЫТИЕ ОКОН
   // закрытие окна добавления
   const cancelAddHandler = () => {
     setAddRoute(false);

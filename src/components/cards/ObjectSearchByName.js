@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+
 import searchImg from "./buttonImgs/search.svg";
-import "./ObjectSearch.css";
+import "./objectStyles/ObjectSearch.css";
 
 const SearchByName = ({ search, placeholder }) => {
   const [inputData, setInputData] = useState("");

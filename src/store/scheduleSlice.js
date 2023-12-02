@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getSchedule } from "../requests/SheduleRequests";
+import { getSchedule } from "../requests/ScheduleRequests";
 
 const scheduleSlice = createSlice({
   name: "schedule",

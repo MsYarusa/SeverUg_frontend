@@ -2,16 +2,19 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getStations } from "../../../requests/StationsRequests";
 import { getRoutes } from "../../../requests/RoutesRequests";
+import { getSchedule } from "../../../requests/ScheduleRequests";
 
 import StationsList from "./StationsList";
 import AddStation from "./AddStation";
 import UpdateStation from "./UpdateStation";
 import DeleteStation from "./DeleteStation";
+import "../../cards/objectStyles/ObjectPage.css";
 
 const StationsPage = () => {
   // запрашиваем данные из стора
   const stations = useSelector((state) => state.stations.stations);
   const routes = useSelector((state) => state.routes.routes);
+  const schedule = useSelector((state) => state.schedule.schedule);
 
   // если стор пуст то делаем запрос на сервер
   const dispatch = useDispatch();
@@ -21,6 +24,9 @@ const StationsPage = () => {
     }
     if (routes.length === 0) {
       dispatch(getRoutes());
+    }
+    if (schedule.length === 0) {
+      dispatch(getSchedule());
     }
   }, []);
 

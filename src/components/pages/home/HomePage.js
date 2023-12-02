@@ -1,6 +1,6 @@
-import React from "react";
 import GridLayout from "./GridLayout";
-import "./HomePage.css";
+
+import "./homeStyles/HomePage.css";
 
 const HomePage = () => {
   return (
