@@ -1,29 +1,31 @@
 import { useDispatch } from "react-redux";
-import { deleteTrip } from "../../../requests/ScheduleRequests";
+import { deleteTrip } from "../../../store/requests/ScheduleRequests";
+
+import DeleteObject from "../../cards/AddUpdateDeleteObjects";
+
 import "../../cards/objectStyles/Window.css";
 
 const DeleteTrip = ({ cancelHandler, id }) => {
   const dispatch = useDispatch();
 
-  const confirmHaldler = () => {
+  // подтверждение удаления
+  const confirmHaldler = (event) => {
+    event.preventDefault();
+    // отправка запроса на удаление
     dispatch(deleteTrip({ id: id }));
+    // закрытие окна
     cancelHandler();
   };
 
   return (
-    <div className="window__container">
-      <div className="window">
-        <p>Подтвердите удаление рейса</p>
-        <div id="buttons">
-          <button id="cancel" onClick={cancelHandler}>
-            Отмена
-          </button>
-          <button id="confirmation" onClick={confirmHaldler}>
-            Подтвердить
-          </button>
-        </div>
-      </div>
-    </div>
+    <DeleteObject
+      cancelHandler={cancelHandler}
+      submitHandler={confirmHaldler}
+      errorMessage={() => {}}
+      noErrors={true}
+    >
+      <p>Подтвердите удаление рейса</p>
+    </DeleteObject>
   );
 };
 

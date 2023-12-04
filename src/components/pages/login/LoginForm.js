@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getUser } from "../../../requests/UserRequest";
+import { getUser } from "../../../store/requests/UserRequest";
 
 import makePasswordVisible_active from "./loginImgs/passImgVis.svg";
 import makePasswordVisible_unactive from "./loginImgs/passImgUnvis.svg";

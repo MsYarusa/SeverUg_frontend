@@ -1,9 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
-import userReducer from "./userSlice";
-import scheduleReducer from "./scheduleSlice";
-import employeesReducer from "./employeesSlice";
-import stationsReducer from "./stationsSlice";
-import routesReducer from "./routesSlice";
+import userReducer from "./slicies/userSlice";
+import scheduleReducer from "./slicies/scheduleSlice";
+import employeesReducer from "./slicies/employeesSlice";
+import stationsReducer from "./slicies/stationsSlice";
+import routesReducer from "./slicies/routesSlice";
 
 export default configureStore({
   reducer: {

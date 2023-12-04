@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import cancelImg from "../../cards/buttonImgs/close.svg";
-import { putRoute } from "../../../requests/RoutesRequests";
-import { updateTrip } from "../../../store/scheduleSlice";
+import { putRoute } from "../../../store/requests/RoutesRequests";
+import { updateRouteInTrip } from "../../../store/slicies/scheduleSlice";
 
+import cancelImg from "../../cards/buttonImgs/close.svg";
 import "../../cards/objectStyles/Window.css";
 import "../schedule/scheduleStyles/AddUpdateTrip.css";
 
-const UpdateRoute = ({ cancelHandler, route }) => {
+const UpdateRoute = ({ cancelHandler, data }) => {
   const dispatch = useDispatch();
   const stations = useSelector((state) => state.stations.stations);
   const schedule = useSelector((state) => state.schedule.schedule);
@@ -17,30 +17,30 @@ const UpdateRoute = ({ cancelHandler, route }) => {
   const [restoreSelects, setRestoreSelects] = useState(false);
 
   useEffect(() => {
-    if (route) {
+    if (data) {
       document.getElementById("s" + 0).value = JSON.stringify(
-        route.stations.at(0)
+        data.stations.at(0)
       );
     }
     let defaultIndexes = [];
-    for (let i = 0; i < route.stations.length - 1; i++) {
+    for (let i = 0; i < data.stations.length - 1; i++) {
       defaultIndexes = [...defaultIndexes, i + 1];
     }
 
     setStationIndexes(defaultIndexes);
     setRestoreSelects(true);
-  }, [route]);
+  }, [data]);
 
   useEffect(() => {
     for (let index of stationIndexes) {
       document.getElementById("s" + index).value = JSON.stringify(
-        route.stations.at(index)
+        data.stations.at(index)
       );
       document.getElementById("upd-time " + index).value = getTimeFromMins(
-        route.time[index - 1]
+        data.time[index - 1]
       );
       document.getElementById("upd-cost " + index).value =
-        route.price[index - 1];
+        data.price[index - 1];
     }
   }, [restoreSelects]);
 
@@ -127,30 +127,17 @@ const UpdateRoute = ({ cancelHandler, route }) => {
       !containsNullTime &&
       !containsNullCost
     ) {
-      const NewRoute = {
-        id: route.id,
+      const newRoute = {
+        id: data.id,
         price: costForSave.join(" "),
         time: timeForSave.join(" "),
         stations: stationsForSave,
         sort: indexesForSave.join(" "),
       };
-
-      for (let trip of schedule) {
-        if (trip.road.id === route.id) {
-          let NewTrip = {
-            id: trip.id,
-            departure_time: trip.departure_time,
-            days: trip.days,
-            driver: trip.driver,
-            road: NewRoute,
-          };
-          dispatch(updateTrip({ id: trip.id, trip: NewTrip }));
-        }
-      }
-
+      dispatch(updateRouteInTrip({ id: data.id, id: newRoute }));
       dispatch(
         putRoute({
-          id: route.id,
+          id: data.id,
           price: costForSave.join(" "),
           time: timeForSave.join(" "),
           sort: indexesForSave.join(" "),

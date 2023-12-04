@@ -24,6 +24,23 @@ const scheduleSlice = createSlice({
         (trip) => trip.id !== action.payload.id
       );
     },
+    updateRouteInTrip(state, action) {
+      state.schedule.forEach((item, i, arr) => {
+        if (item.road.id === action.payload.id) {
+          arr[i].road = action.payload.route;
+        }
+      });
+    },
+    updateStationInTrip(state, action) {
+      state.schedule.forEach((trip, i, arr) => {
+        let station = trip.road.stations.find(
+          (station) => station.id === action.payload.id
+        );
+        if (station) {
+          station.name = action.payload.name;
+        }
+      });
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -42,5 +59,11 @@ const scheduleSlice = createSlice({
   },
 });
 
-export const { addTrip, updateTrip, removeTrip } = scheduleSlice.actions;
+export const {
+  addTrip,
+  updateTrip,
+  removeTrip,
+  updateRouteInTrip,
+  updateStationInTrip,
+} = scheduleSlice.actions;
 export default scheduleSlice.reducer;

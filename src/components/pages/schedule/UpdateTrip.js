@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { putTrip } from "../../../requests/ScheduleRequests";
+import { putTrip } from "../../../store/requests/ScheduleRequests";
 
 import "../../cards/objectStyles/Window.css";
 import "./scheduleStyles/AddUpdateTrip.css";

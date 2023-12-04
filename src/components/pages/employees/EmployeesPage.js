@@ -4,7 +4,7 @@ import { getEmployees } from "../../../requests/EmployeesRequests";
 
 import EmployeeFilter from "./EmployeeFilter";
 import EmployeesList from "./EmployeesList";
-import "../../cards/objectStyles/ObjectPage.css";
+import "../../cards/objectStyles/ObjectsPage.css";
 
 const EmployeesPage = () => {
   const dispatch = useDispatch();

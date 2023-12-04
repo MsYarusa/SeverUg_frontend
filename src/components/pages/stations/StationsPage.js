@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getStations } from "../../../requests/StationsRequests";
-import { getRoutes } from "../../../requests/RoutesRequests";
-import { getSchedule } from "../../../requests/ScheduleRequests";
+import { getStations } from "../../../store/requests/StationsRequests";
+import { getRoutes } from "../../../store/requests/RoutesRequests";
+import { getSchedule } from "../../../store/requests/ScheduleRequests";
 
 import StationsList from "./StationsList";
-import AddStation from "./AddStation";
-import UpdateStation from "./UpdateStation";
+import AddUpdateStation from "./AddUpdateStation";
 import DeleteStation from "./DeleteStation";
-import "../../cards/objectStyles/ObjectPage.css";
+import ObjectsPage from "../../cards/ObjectsPage";
 
 const StationsPage = () => {
   // запрашиваем данные из стора
@@ -37,13 +36,6 @@ const StationsPage = () => {
     setSearchedList(stations);
   }, [stations]);
 
-  // хранение информации об окнах
-  const [addStation, setAddStation] = useState(false);
-  const [updateStation, setUpdateStation] = useState(false);
-  const [deleteStation, setDeleteStation] = useState(false);
-  const [deleteStationById, setDeleteStationById] = useState(-1);
-  const [updateStationById, setUpdateStationById] = useState(null);
-
   // поиск
   const searchHandler = (searchConfig) => {
     let search_results = [];
@@ -55,70 +47,17 @@ const StationsPage = () => {
     setSearchedList(search_results);
   };
 
-  // открытие окна добавления
-  const addStationHandler = () => {
-    setAddStation(true);
-  };
-
-  // открытие окна обновления
-  const updateStationHandler = (id) => {
-    let station = null;
-    for (let r of stations) {
-      if (r.id === id) {
-        station = r;
-        break;
-      }
-    }
-    setUpdateStationById(station);
-    setUpdateStation(true);
-  };
-
-  // открытие окна удаления
-  const deleteStationHandler = (id) => {
-    setDeleteStationById(id);
-    setDeleteStation(true);
-  };
-
-  // закрытие окна добавления
-  const cancelAddHandler = () => {
-    setAddStation(false);
-  };
-
-  // закрытие окна обновления
-  const cancelUpdateHandler = () => {
-    setUpdateStation(false);
-  };
-
-  // закрытие окна удаления
-  const cancelDeleteHandler = () => {
-    setDeleteStation(false);
-  };
-
   return (
-    <div className="page">
-      <StationsList
-        searchHandler={searchHandler}
-        buttonsHandlers={{
-          add: addStationHandler,
-          update: updateStationHandler,
-          delete: deleteStationHandler,
-        }}
-        list={searchedList}
-      />
-      {addStation && <AddStation cancelHandler={cancelAddHandler} />}
-      {updateStation && (
-        <UpdateStation
-          cancelHandler={cancelUpdateHandler}
-          data={updateStationById}
-        />
-      )}
-      {deleteStation && (
-        <DeleteStation
-          cancelHandler={cancelDeleteHandler}
-          id={deleteStationById}
-        />
-      )}
-    </div>
+    <ObjectsPage
+      AddUpdateObject={AddUpdateStation}
+      DeleteObject={DeleteStation}
+      ObjectFilter={null}
+      ObjectsList={StationsList}
+      filterHandler={null}
+      searchHandler={searchHandler}
+      list={searchedList}
+      objects={stations}
+    />
   );
 };
 

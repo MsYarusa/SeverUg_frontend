@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { putStation } from "../../../requests/StationsRequests";
-import { updateRoute } from "../../../store/routesSlice";
-import { updateTrip } from "../../../store/scheduleSlice";
+import { useDispatch } from "react-redux";
+import { putStation } from "../../../store/requests/StationsRequests";
+import { updateStationInRoute } from "../../../store/slicies/routesSlice";
+import { updateStationInTrip } from "../../../store/slicies/scheduleSlice";
 
 import "../../cards/objectStyles/Window.css";
 import "./stationStyles/AddUpdateStation.css";
 
 const UpdateStation = ({ cancelHandler, data }) => {
   const dispatch = useDispatch();
-  const routes = useSelector((state) => state.routes.routes);
-  const schedule = useSelector((state) => state.schedule.schedule);
 
   useEffect(() => {
     if (data) {
@@ -30,47 +28,9 @@ const UpdateStation = ({ cancelHandler, data }) => {
 
     if (nameOk) {
       // локально изменяем станции в маршрутах, связанных с этой станцией
-      for (let route of routes) {
-        if (route.stations.find((station) => station.id === data.id)) {
-          let newStations = [];
-          route.stations.forEach((item, i, arr) => {
-            let newStation = {
-              id: item.id,
-              name: item.name,
-            };
-            if (item.id === data.id) {
-              newStation.name = name;
-            }
-            newStations.push(newStation);
-          });
+      dispatch(updateStationInRoute({ id: data.id, name: name }));
+      dispatch(updateStationInTrip({ id: data.id, name: name }));
 
-          const NewRoute = {
-            id: route.id,
-            price: route.price,
-            time: route.time,
-            stations: newStations,
-            sort: route.sort,
-          };
-          dispatch(updateRoute({ id: route.id, route: NewRoute }));
-
-          for (let trip of schedule) {
-            if (trip.road.id === route.id) {
-              let NewTrip = {
-                id: trip.id,
-                departure_time: trip.departure_time,
-                days: trip.days,
-                driver: trip.driver,
-                road: NewRoute,
-              };
-              dispatch(updateTrip({ id: trip.id, trip: NewTrip }));
-            }
-          }
-        }
-      }
-      // console.log({
-      //   id: name.id,
-      //   name: name,
-      // });
       dispatch(
         putStation({
           id: data.id,

@@ -27,9 +27,7 @@ const axios = require("axios").default;
 // console.log(a);
 // console.log(typeof "dsd");
 
-let a = [1, 2, 3, 4];
-if (a.find((elem) => elem === 5)) {
-  console.log("sdds");
-} else {
-  console.log("lllll");
-}
+let array = [{ g: 1 }, { g: 2 }, { g: 3 }, { g: 4 }, { g: 5 }];
+let b = array.find((item) => item.g === 3);
+b.g = 6;
+console.log(array);

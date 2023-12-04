@@ -1,9 +1,9 @@
 import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { addRoute, updateRoute, removeRoute } from "../store/routesSlice";
+import { addRoute, updateRoute, removeRoute } from "../slicies/routesSlice";
 
 // тесты
-import { routes } from "../tests/TestRoutes";
+import { routes } from "../../tests/TestRoutes";
 
 // ПОЛУЧЕНИЕ ВСЕХ МАРШРУТОВ
 export const getRoutes = createAsyncThunk(
@@ -11,23 +11,23 @@ export const getRoutes = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     // получение данных
     let data = [];
-    await axios
-      .get("https://spacekot.ru/apishechka/road")
-      .then((res) => {
-        console.log("статус: успешно");
-        console.log("данные: ", res.data);
-        data = res.data;
-      })
-      .catch((error) => {
-        console.error("ошибка: ", error.message);
-        return rejectWithValue(error.message);
-      });
+    // await axios
+    //   .get("https://spacekot.ru/apishechka/road")
+    //   .then((res) => {
+    //     console.log("статус: успешно");
+    //     console.log("данные: ", res.data);
+    //     data = res.data;
+    //   })
+    //   .catch((error) => {
+    //     console.error("ошибка: ", error.message);
+    //     return rejectWithValue(error.message);
+    //   });
 
-    // try {
-    //   data = routes;
-    // } catch (error) {
-    //   return rejectWithValue(error.message);
-    // }
+    try {
+      data = routes;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
 
     // восстанавливаем последовательность станций
     for (let route of data) {

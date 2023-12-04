@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import cancelImg from "../../cards/buttonImgs/close.svg";
-import { postRoute } from "../../../requests/RoutesRequests";
+import { postRoute } from "../../../store/requests/RoutesRequests";
 
+import cancelImg from "../../cards/buttonImgs/close.svg";
 import "../../cards/objectStyles/Window.css";
 import "../schedule/scheduleStyles/AddUpdateTrip.css";
 

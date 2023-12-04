@@ -1,21 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getRoutes } from "../../../requests/RoutesRequests";
-import { getStations } from "../../../requests/StationsRequests";
-import { getSchedule } from "../../../requests/ScheduleRequests";
+import { getRoutes } from "../../../store/requests/RoutesRequests";
+import { getStations } from "../../../store/requests/StationsRequests";
+import { getSchedule } from "../../../store/requests/ScheduleRequests";
+import { searchFromTo } from "../../../extraFunctions/SearchHandlers";
 
 import RoutesList from "./RoutesList";
 import RouteFilter from "./RouteFilter";
-import AddRoute from "./AddRoute";
-import UpdateRoute from "./UpdateRoute";
+import AddUpdateRoute from "./AddUpdateRoute";
 import DeleteRoute from "./DeleteRoute";
-import "../../cards/objectStyles/ObjectPage.css";
-
-let savedFilteredConfig = {
-  cost: { from: 0, to: Number.MAX_SAFE_INTEGER },
-  time: { from: 0, to: Number.MAX_SAFE_INTEGER },
-  days: [],
-};
+import ObjectsPage from "../../cards/ObjectsPage";
 
 const RoutesPage = () => {
   //ДАННЫЕ
@@ -40,75 +34,41 @@ const RoutesPage = () => {
 
   // ПОИСК И ФИЛЬТР
   // хранение отфильтрованного списка
-  const [filteredList, setFilteredList] = useState(routes);
   const [searchedList, setSearchedList] = useState(routes);
+  const [filteredList, setFilteredList] = useState(routes);
+  // сохранение параметров фильтра
+  const [savedFilteredConfig, setSavedFilteredConfig] = useState({
+    cost: { from: 0, to: Number.MAX_SAFE_INTEGER },
+    time: { from: 0, to: Number.MAX_SAFE_INTEGER },
+    days: [],
+  });
 
   // задаем начальные значения отфильтрованных списков
   useEffect(() => {
     setFilteredList(routes);
     setSearchedList(routes);
   }, [routes]);
-
+  // после поиска необходимо отфильтровать список с учетом сохраненных параметров
   useEffect(() => {
     filterHandler(savedFilteredConfig);
   }, [searchedList]);
 
-  // поиск
+  // поиск (фильтрация по названию)
   const searchHandler = (searchConfig) => {
     let search_results = [];
     for (let route of routes) {
-      let from =
-        searchConfig.from === ""
-          ? route.stations.at(0).name.toLowerCase()
-          : searchConfig.from;
-      let to =
-        searchConfig.to === ""
-          ? route.stations.at(-1).name.toLowerCase()
-          : searchConfig.to;
-
-      // проверяем на совпадение с начальными станциями
-      let fromRoutes = [];
-      route.stations.slice(0, -1).forEach((item, i, arr) => {
-        let routeFrom = item.name.toLowerCase();
-        let searchedFrom = routeFrom.indexOf(from);
-        if (searchedFrom === 0) {
-          let newRoute = {
-            id: route.id + " from" + item.name,
-            price: route.price.slice(i),
-            time: route.time.slice(i),
-            stations: route.stations.slice(i),
-          };
-          fromRoutes.push(newRoute);
-        }
-      });
-
-      // проверяем на совпадение с конечными станциями
-      let newRoutes = [];
-      for (let fromRoute of fromRoutes) {
-        fromRoute.stations?.slice(1).forEach((item, i, arr) => {
-          let routeTo = item.name.toLowerCase();
-          let searchedTo = routeTo.indexOf(to);
-          if (searchedTo === 0) {
-            let newRoute = {
-              id: fromRoute.id + "to" + item.name,
-              price: fromRoute.price.slice(0, i + 1),
-              time: fromRoute.time.slice(0, i + 1),
-              stations: fromRoute.stations.slice(0, i + 2),
-            };
-            newRoutes.push(newRoute);
-          }
-        });
-      }
-      // сохраняем подходящие результаты
-      search_results = [...search_results, ...newRoutes];
+      search_results = [
+        ...search_results,
+        ...searchFromTo({ route: route, searchConfig: searchConfig }).routes,
+      ];
     }
     setSearchedList(search_results);
   };
 
-  // фильтр
+  // фильтр (фильтрация по характеристикам)
   const filterHandler = (filterConfig) => {
     let filter_results = [];
-    savedFilteredConfig = filterConfig;
+    setSavedFilteredConfig(filterConfig);
     for (let route of searchedList) {
       let totalPrice = 0;
       route.price.forEach((item, i, arr) => {
@@ -132,76 +92,20 @@ const RoutesPage = () => {
         filter_results.push(route);
       }
     }
-    console.log(filter_results);
     setFilteredList(filter_results);
   };
 
-  // РАБОТА С ИНФОРМАЦИЕЙ (ОКНА)
-  // хранение информации об окнах
-  const [addRoute, setAddRoute] = useState(false);
-  const [updateRoute, setUpdateRoute] = useState(false);
-  const [deleteRoute, setDeleteRoute] = useState(false);
-  const [deleteRouteById, setDeleteRouteById] = useState(-1);
-  const [updateRouteById, setUpdateRouteById] = useState(null);
-
-  //ОТКРЫТИЕ ОКОН
-  // открытие окна добавления
-  const addRouteHandler = () => {
-    setAddRoute(true);
-  };
-
-  // открытие окна обновления
-  const updateRouteHandler = (id) => {
-    let route = routes.find((route) => route.id === id);
-    setUpdateRouteById(route);
-    setUpdateRoute(true);
-  };
-
-  // открытие окна удаления
-  const deleteRouteHandler = (id) => {
-    setDeleteRouteById(id);
-    setDeleteRoute(true);
-  };
-
-  //ЗАКРЫТИЕ ОКОН
-  // закрытие окна добавления
-  const cancelAddHandler = () => {
-    setAddRoute(false);
-  };
-
-  // закрытие окна обновления
-  const cancelUpdateHandler = () => {
-    setUpdateRoute(false);
-  };
-
-  // закрытие окна удаления
-  const cancelDeleteHandler = () => {
-    setDeleteRoute(false);
-  };
-
   return (
-    <div className="page">
-      <RouteFilter onFilter={filterHandler} />
-      <RoutesList
-        searchHandler={searchHandler}
-        buttonsHandlers={{
-          add: addRouteHandler,
-          update: updateRouteHandler,
-          delete: deleteRouteHandler,
-        }}
-        list={filteredList}
-      />
-      {addRoute && <AddRoute cancelHandler={cancelAddHandler} />}
-      {updateRoute && (
-        <UpdateRoute
-          cancelHandler={cancelUpdateHandler}
-          route={updateRouteById}
-        />
-      )}
-      {deleteRoute && (
-        <DeleteRoute cancelHandler={cancelDeleteHandler} id={deleteRouteById} />
-      )}
-    </div>
+    <ObjectsPage
+      AddUpdateObject={AddUpdateRoute}
+      DeleteObject={DeleteRoute}
+      ObjectFilter={RouteFilter}
+      ObjectsList={RoutesList}
+      filterHandler={filterHandler}
+      searchHandler={searchHandler}
+      list={filteredList}
+      objects={routes}
+    />
   );
 };
 

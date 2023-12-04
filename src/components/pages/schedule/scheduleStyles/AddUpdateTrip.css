@@ -133,6 +133,7 @@ select {
   padding: 2px 2px;
   align-items: space-between;
   overflow: auto;
+  overflow-x: hidden;
   gap: 10px;
   -ms-overflow-style: none; /* IE и Edge */
   scrollbar-width: none; /* Firefox */

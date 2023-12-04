@@ -1,9 +1,9 @@
 import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { addTrip, updateTrip, removeTrip } from "../store/scheduleSlice";
+import { addTrip, updateTrip, removeTrip } from "../slicies/scheduleSlice";
 
 // тесты
-import { schedule } from "../tests/TestSchedule";
+import { schedule } from "../../tests/TestSchedule";
 
 // ПОЛУЧЕНИЕ ВСЕГО РАСПИСАНИЯ
 export const getSchedule = createAsyncThunk(
@@ -11,19 +11,19 @@ export const getSchedule = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     //получение данных
     let data = [];
-    await axios
-      .get("https://spacekot.ru/apishechka/trip")
-      .then((res) => {
-        console.log("статус: успешно");
-        console.log("данные: ", res.data);
-        data = res.data;
-      })
-      .catch((error) => {
-        console.error("ошибка: ", error.message);
-        return rejectWithValue(error.message);
-      });
+    // await axios
+    //   .get("https://spacekot.ru/apishechka/trip")
+    //   .then((res) => {
+    //     console.log("статус: успешно");
+    //     console.log("данные: ", res.data);
+    //     data = res.data;
+    //   })
+    //   .catch((error) => {
+    //     console.error("ошибка: ", error.message);
+    //     return rejectWithValue(error.message);
+    //   });
 
-    // let data = schedule;
+    data = schedule;
 
     // обработка массива дней недели
     for (let trip of data) {

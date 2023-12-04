@@ -24,6 +24,16 @@ const routesSlice = createSlice({
         (route) => route.id !== action.payload.id
       );
     },
+    updateStationInRoute(state, action) {
+      state.routes.forEach((route, i, arr) => {
+        let station = route.stations.find(
+          (station) => station.id === action.payload.id
+        );
+        if (station) {
+          station.name = action.payload.name;
+        }
+      });
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -42,5 +52,6 @@ const routesSlice = createSlice({
   },
 });
 
-export const { addRoute, updateRoute, removeRoute } = routesSlice.actions;
+export const { addRoute, updateRoute, removeRoute, updateStationInRoute } =
+  routesSlice.actions;
 export default routesSlice.reducer;

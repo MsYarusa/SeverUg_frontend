@@ -4,10 +4,10 @@ import {
   addStation,
   updateStation,
   removeStation,
-} from "../store/stationsSlice";
+} from "../slicies/stationsSlice";
 
 // тесты
-import { stations } from "../tests/TestStations";
+import { stations } from "../../tests/TestStations";
 
 // ПОЛУЧЕНИЕ ВСЕХ СТАНЦИЙ
 export const getStations = createAsyncThunk(
@@ -15,22 +15,22 @@ export const getStations = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     // отправление запроса
     let data = [];
-    await axios
-      .get("https://spacekot.ru/apishechka/stations")
-      .then((res) => {
-        console.log("статус: успешно");
-        data = res.data;
-      })
-      .catch((error) => {
-        console.error(error);
-        return rejectWithValue(error.message);
-      });
+    // await axios
+    //   .get("https://spacekot.ru/apishechka/stations")
+    //   .then((res) => {
+    //     console.log("статус: успешно");
+    //     data = res.data;
+    //   })
+    //   .catch((error) => {
+    //     console.error(error);
+    //     return rejectWithValue(error.message);
+    //   });
 
-    // try {
-    //   data = stations;
-    // } catch (error) {
-    //   return rejectWithValue(error.message);
-    // }
+    try {
+      data = stations;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
 
     return data;
   }

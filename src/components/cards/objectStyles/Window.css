@@ -37,8 +37,10 @@
 
 .window__inner {
   max-height: 700px;
-  display: flex;
+  max-width: 500px;
   width: fit-content;
+  display: flex;
+
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
@@ -46,7 +48,9 @@
 }
 
 .window p {
+  text-align: center;
   margin-bottom: 10px;
+  max-width: 400px;
 }
 
 .window .error {

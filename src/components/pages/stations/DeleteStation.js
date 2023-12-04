@@ -1,18 +1,24 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteStation } from "../../../requests/StationsRequests";
-import { removeRoute } from "../../../store/routesSlice";
-import { removeTrip } from "../../../store/scheduleSlice";
+import { deleteStation } from "../../../store/requests/StationsRequests";
+import { removeRoute } from "../../../store/slicies/routesSlice";
+import { removeTrip } from "../../../store/slicies/scheduleSlice";
+
+import DeleteObject from "../../cards/AddUpdateDeleteObjects";
 import "../../cards/objectStyles/Window.css";
 
 const DeleteStation = ({ cancelHandler, id }) => {
   const dispatch = useDispatch();
+  // получение данных из стора
   const routes = useSelector((state) => state.routes.routes);
   const schedule = useSelector((state) => state.schedule.schedule);
 
+  // флаг, показывающий наличие связанных рейсов и маршрутов
   const [stationIsUsed, setStationIsUsed] = useState(false);
 
-  const confirmHaldler = () => {
+  // валидация (проверка на наличии связанных рейсов и маршрутов)
+  const confirmHaldler = (event) => {
+    event.preventDefault();
     let stationIsUsed = false;
     for (let route of routes) {
       if (route.stations.find((station) => station.id === id)) {
@@ -22,51 +28,49 @@ const DeleteStation = ({ cancelHandler, id }) => {
     }
 
     if (!stationIsUsed) {
+      // если связанных рейсов и маршрутов нет, то отправляем запрос на удаление станции
       dispatch(deleteStation({ id: id }));
       cancelHandler();
     } else {
+      // если связанные рейсы и машруты есть, то поднимаем флаг о их наличии
       setStationIsUsed(true);
     }
   };
 
-  const secondConfirmHaldler = () => {
+  // отправка запроса при подтверждении удаления связанных рейсов и машрутов
+  const secondConfirmHaldler = (event) => {
+    event.preventDefault();
+    // удаляем связанные маршруты локально
     for (let route of routes) {
       if (route.stations.find((station) => station.id === id)) {
         dispatch(removeRoute({ id: route.id }));
       }
     }
-
+    // удаляем связанные рейсы локально
     for (let trip of schedule) {
       if (trip.road.stations.find((station) => station.id === id)) {
         dispatch(removeTrip({ id: trip.id }));
       }
     }
-
+    // отправляем запрос на удаление станции
     dispatch(deleteStation({ id: id }));
+    // закрытие окна
     cancelHandler();
   };
 
   return (
-    <div className="window__container">
-      <div className="window">
-        <p>
-          {stationIsUsed
-            ? "Вместе со станцией буду удалены \n все связанные маршруты и рейсы"
-            : "Подтвердите удаление станции \n"}
-        </p>
-        <div id="buttons">
-          <button id="cancel" onClick={cancelHandler}>
-            Отмена
-          </button>
-          <button
-            id="confirmation"
-            onClick={stationIsUsed ? secondConfirmHaldler : confirmHaldler}
-          >
-            Подтвердить
-          </button>
-        </div>
-      </div>
-    </div>
+    <DeleteStation
+      cancelHandler={cancelHandler}
+      submitHandler={stationIsUsed ? secondConfirmHaldler : confirmHaldler}
+      errorMessage={() => {}}
+      noErrors={true}
+    >
+      <p>
+        {stationIsUsed
+          ? "Вместе со станцией буду удалены все связанные маршруты и рейсы"
+          : "Подтвердите удаление станции"}
+      </p>
+    </DeleteStation>
   );
 };
 

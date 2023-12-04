@@ -1,32 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getSchedule } from "../../../requests/ScheduleRequests";
-import { getRoutes } from "../../../requests/RoutesRequests";
+import { getSchedule } from "../../../store/requests/ScheduleRequests";
+import { getRoutes } from "../../../store/requests/RoutesRequests";
+import {
+  getTimeFromMins,
+  getMinsFromTime,
+  sum,
+} from "../../../extraFunctions/TimeAndPriceHandlers";
+import { searchFromTo } from "../../../extraFunctions/SearchHandlers";
 
 import ScheduleFilter from "./ScheduleFilter";
 import ScheduleList from "./ScheduleList";
-import AddTrip from "./AddTrip";
-import UpdateTrip from "./UpdateTrip";
+import AddUpdateTrip from "./AddUpdateTrip";
 import DeleteTrip from "./DeleteTrip";
-import "../../cards/objectStyles/ObjectPage.css";
-
-let savedFilteredConfig = {
-  cost: { from: 0, to: Number.MAX_SAFE_INTEGER },
-  time: { from: 0, to: Number.MAX_SAFE_INTEGER },
-  days: [],
-};
+import ObjectsPage from "../../cards/ObjectsPage";
 
 const SchedulePage = () => {
-  const dispatch = useDispatch();
+  //ДАННЫЕ
+  // запрашиваем данные из стора
   const schedule = useSelector((state) => state.schedule.schedule);
   const routes = useSelector((state) => state.routes.routes);
 
-  const [addTrip, setAddTrip] = useState(false);
-  const [updateTrip, setUpdateTrip] = useState(false);
-  const [deleteTrip, setDeleteTrip] = useState(false);
-  const [deleteTripById, setDeleteTripById] = useState(-1);
-  const [updateTripById, setUpdateTripById] = useState(null);
-
+  // если стор пуст то делаем запрос на сервер
+  const dispatch = useDispatch();
   useEffect(() => {
     if (routes.length === 0) {
       dispatch(getRoutes());
@@ -34,92 +30,62 @@ const SchedulePage = () => {
     if (schedule.length === 0) {
       dispatch(getSchedule());
     }
-  }, [dispatch]);
+  }, []);
 
+  // ПОИСК И ФИЛЬТР
+  // хранение отфильтрованного списка
   const [filteredList, setFilteredList] = useState(schedule);
   const [searchedList, setSearchedList] = useState(schedule);
+  // сохранение параметров фильтра
+  const [savedFilteredConfig, setSavedFilteredConfig] = useState({
+    cost: { from: 0, to: Number.MAX_SAFE_INTEGER },
+    time: { from: 0, to: Number.MAX_SAFE_INTEGER },
+    days: [],
+  });
 
+  // задаем начальные значения отфильтрованных списков
   useEffect(() => {
     setFilteredList(schedule);
     setSearchedList(schedule);
   }, [schedule]);
-
+  // после поиска необходимо отфильтровать список с учетом сохраненных параметров
   useEffect(() => {
     filterHandler(savedFilteredConfig);
   }, [searchedList]);
 
+  // поиск (фильтрация по названию)
   const searchHandler = (searchConfig) => {
     let search_results = [];
     for (let trip of schedule) {
-      let from =
-        searchConfig.from === ""
-          ? trip.road.stations.at(0).name.toLowerCase()
-          : searchConfig.from;
-      let to =
-        searchConfig.to === ""
-          ? trip.road.stations.at(-1).name.toLowerCase()
-          : searchConfig.to;
-
-      // проверяем на совпадение с начальными станциями
-      let fromTrips = [];
-      trip.road.stations.slice(0, -1).forEach((item, i, arr) => {
-        let tripFrom = item.name.toLowerCase();
-        let searchedFrom = tripFrom.indexOf(from);
-        if (searchedFrom === 0) {
-          let newRoute = {
-            id: trip.road.id + " from" + item.name,
-            price: trip.road.price.slice(i),
-            time: trip.road.time.slice(i),
-            stations: trip.road.stations.slice(i),
-          };
-          let newTrip = {
-            id: trip.id,
-            departure_time: getTimeFromMins(
-              sum(trip.road.time.slice(0, i)) +
-                getMinsFromTime(trip.departure_time)
-            ),
-            days: trip.days,
-            driver: trip.driver,
-            road: newRoute,
-          };
-          fromTrips.push(newTrip);
-        }
+      let searchData = searchFromTo({
+        route: trip.road,
+        searchConfig: searchConfig,
       });
-
-      // проверяем на совпадение с конечными станциями
+      let newRoutes = searchData.routes;
+      let departureTime = searchData.departureTime;
       let newTrips = [];
-      for (let fromTrip of fromTrips) {
-        fromTrip.road.stations?.slice(1).forEach((item, i, arr) => {
-          let tripTo = item.name.toLowerCase();
-          let searchedTo = tripTo.indexOf(to);
-          if (searchedTo === 0) {
-            let newRoute = {
-              id: fromTrip.road.id + "to" + item.name,
-              price: fromTrip.road.price.slice(0, i + 1),
-              time: fromTrip.road.time.slice(0, i + 1),
-              stations: fromTrip.road.stations.slice(0, i + 2),
-            };
-            let newTrip = {
-              id: fromTrip.id + " T",
-              departure_time: fromTrip.departure_time,
-              days: fromTrip.days,
-              driver: fromTrip.driver,
-              road: newRoute,
-            };
-            newTrips.push(newTrip);
-          }
+
+      newRoutes.forEach((item, i, arr) => {
+        newTrips.push({
+          id: trip.id,
+          departure_time: getTimeFromMins(
+            departureTime[i] + getMinsFromTime(trip.departure_time)
+          ),
+          days: trip.days,
+          driver: trip.driver,
+          road: item,
         });
-      }
-      // сохраняем подходящие результаты
+      });
       search_results = [...search_results, ...newTrips];
     }
 
     setSearchedList(search_results);
   };
 
+  // фильтр (фильтрация по характеристикам)
   const filterHandler = (filterConfig) => {
     let filter_results = [];
-    savedFilteredConfig = filterConfig;
+    setSavedFilteredConfig(filterConfig);
     for (let trip of searchedList) {
       let tripTotalPrice = sum(trip.road.price);
       let costOk =
@@ -145,81 +111,18 @@ const SchedulePage = () => {
     setFilteredList(filter_results);
   };
 
-  const addTripHandler = () => {
-    setAddTrip(true);
-  };
-
-  const updateTripHandler = (id) => {
-    let trip = null;
-    for (let t of schedule) {
-      if (t.id == id) {
-        trip = t;
-        break;
-      }
-    }
-    setUpdateTripById(trip);
-    setUpdateTrip(true);
-  };
-
-  const deleteTripHandler = (id) => {
-    setDeleteTripById(id);
-    setDeleteTrip(true);
-  };
-
-  const cancelAddHandler = () => {
-    setAddTrip(false);
-  };
-
-  const cancelUpdateHandler = () => {
-    setUpdateTrip(false);
-  };
-
-  const cancelDeleteHandler = () => {
-    setDeleteTrip(false);
-  };
-
   return (
-    <div className="page">
-      <ScheduleFilter onFilter={filterHandler} />
-      <ScheduleList
-        searchHandler={searchHandler}
-        buttonsHandlers={{
-          add: addTripHandler,
-          update: updateTripHandler,
-          delete: deleteTripHandler,
-        }}
-        list={filteredList}
-      />
-      {addTrip && <AddTrip cancelHandler={cancelAddHandler} />}
-      {updateTrip && (
-        <UpdateTrip cancelHandler={cancelUpdateHandler} data={updateTripById} />
-      )}
-      {deleteTrip && (
-        <DeleteTrip cancelHandler={cancelDeleteHandler} id={deleteTripById} />
-      )}
-    </div>
+    <ObjectsPage
+      AddUpdateObject={AddUpdateTrip}
+      DeleteObject={DeleteTrip}
+      ObjectFilter={ScheduleFilter}
+      ObjectsList={ScheduleList}
+      filterHandler={filterHandler}
+      searchHandler={searchHandler}
+      list={filteredList}
+      objects={schedule}
+    />
   );
 };
 
 export default SchedulePage;
-
-function sum(array) {
-  let totalPrice = 0;
-  array.forEach((item, i, arr) => {
-    totalPrice += Number(item);
-  });
-  return totalPrice;
-}
-
-function getTimeFromMins(mins) {
-  let hours = Math.trunc(mins / 60);
-  let minutes = mins % 60;
-  hours = hours < 10 ? "0" + hours : hours;
-  minutes = minutes < 10 ? "0" + minutes : minutes;
-  return hours + ":" + minutes;
-}
-
-function getMinsFromTime(time) {
-  const [hours, minutes] = time.split(":");
-  return Number(hours) * 60 + Number(minutes);
-}
