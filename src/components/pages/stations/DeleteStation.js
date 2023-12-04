@@ -59,7 +59,7 @@ const DeleteStation = ({ cancelHandler, id }) => {
   };
 
   return (
-    <DeleteStation
+    <DeleteObject
       cancelHandler={cancelHandler}
       submitHandler={stationIsUsed ? secondConfirmHaldler : confirmHaldler}
       errorMessage={() => {}}
@@ -70,7 +70,7 @@ const DeleteStation = ({ cancelHandler, id }) => {
           ? "Вместе со станцией буду удалены все связанные маршруты и рейсы"
           : "Подтвердите удаление станции"}
       </p>
-    </DeleteStation>
+    </DeleteObject>
   );
 };
 

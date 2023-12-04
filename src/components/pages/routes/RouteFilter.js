@@ -1,82 +1,76 @@
+import { useState } from "react";
+import { getMinsFromTime } from "../../../extraFunctions/TimeAndPriceHandlers";
+
+import { TimeInput, CostInput } from "../schedule/FilterInputs";
 import ObjectFilter from "../../cards/ObjectFilter";
 
 import "../schedule/scheduleStyles/ScheduleFilter.css";
 
-let filterConfig = {
-  cost: { from: 0, to: Number.MAX_SAFE_INTEGER },
-  time: { from: 0, to: Number.MAX_SAFE_INTEGER },
-};
-
 const ScheduleFilter = ({ onFilter }) => {
+  // хранение параметров фильтра
+  const [filterConfig, setFilterConfig] = useState({
+    cost: { from: 0, to: Number.MAX_SAFE_INTEGER },
+    time: { from: 0, to: Number.MAX_SAFE_INTEGER },
+  });
+
+  // отправка параметров фильтра родителю
   const filterHandler = (event) => {
+    // получаем id элемента в котором произошли изменения и значение
     let id = event.target.id;
     let value = event.target.value;
+    // создаем переменную куда будем сохранять новые параметры
+    let newFilterConfig = filterConfig;
 
+    // в зависимости от типа инпута соохраняем значение в соответствующее поле
     if (id === "min-cost") {
+      // проверка на пустую строку
       value = value === "" ? 0 : value;
-      filterConfig.cost = { from: value, to: filterConfig.cost.to };
+      newFilterConfig.cost = { from: value, to: filterConfig.cost.to };
     }
     if (id === "max-cost") {
       value = value === "" ? Number.MAX_SAFE_INTEGER : value;
-      filterConfig.cost = { from: filterConfig.cost.from, to: Number(value) };
+      newFilterConfig.cost = {
+        from: filterConfig.cost.from,
+        to: Number(value),
+      };
     }
     if (id === "min-time") {
       if (value === "") {
         value = 0;
       } else {
-        let [hours, mins] = value.split(":");
-        value = Number(hours) * 60 + Number(mins);
+        value = getMinsFromTime(value);
       }
-      filterConfig.time = { from: value, to: filterConfig.time.to };
+      newFilterConfig.time = { from: value, to: filterConfig.time.to };
     }
     if (id === "max-time") {
       if (value === "") {
         value = Number.MAX_SAFE_INTEGER;
       } else {
-        let [hours, mins] = value.split(":");
-        value = Number(hours) * 60 + Number(mins);
+        value = getMinsFromTime(value);
       }
-      filterConfig.time = { from: filterConfig.time.from, to: value };
+      newFilterConfig.time = { from: filterConfig.time.from, to: value };
     }
-
-    onFilter(filterConfig);
+    // изменяем старые
+    setFilterConfig(newFilterConfig);
+    // передача параметров родителю
+    onFilter(newFilterConfig);
   };
 
+  // сброс параметров фильтра
   const clearHandler = () => {
-    filterConfig = {
+    let newFilterConfig = {
       cost: { from: 0, to: Number.MAX_SAFE_INTEGER },
       time: { from: 0, to: Number.MAX_SAFE_INTEGER },
     };
-    onFilter(filterConfig);
+    setFilterConfig(newFilterConfig);
+    // отправка новых параметров родителю
+    onFilter(newFilterConfig);
   };
 
   return (
-    <ObjectFilter>
-      <div className="cost">
-        <label>Общая стоимость:</label>
-        <div>
-          <label>От</label>
-          <input id="min-cost" type="number" onChange={filterHandler} />
-          <p>руб.</p>
-        </div>
-        <div>
-          <label>До</label>
-          <input id="max-cost" type="number" onChange={filterHandler} />
-          <p>руб.</p>
-        </div>
-      </div>
-      <div className="time">
-        <label>Время в пути:</label>
-        <div>
-          <label>От</label>
-          <input id="min-time" type="time" onChange={filterHandler} />
-          <label>До</label>
-          <input id="max-time" type="time" onChange={filterHandler} />
-        </div>
-      </div>
-      <button id="clear" type="reset" onClick={clearHandler}>
-        Сбросить
-      </button>
+    <ObjectFilter clearHandler={clearHandler}>
+      <CostInput onChange={filterHandler} />
+      <TimeInput onChange={filterHandler} />
     </ObjectFilter>
   );
 };
