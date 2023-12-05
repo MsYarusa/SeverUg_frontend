@@ -55,7 +55,9 @@ const EmployeesPage = () => {
       // получем фамилию, имя, отчество сотрудников и сохраняем их в список
       let lastName = emp.last_name.toLowerCase().split(" ");
       let firstName = emp.first_name.toLowerCase().split(" ");
-      let fatherName = emp.father_name.toLowerCase().split(" ");
+      let fatherName = emp.father_name
+        ? emp.father_name.toLowerCase().split(" ")
+        : "";
       let empData = [...lastName, ...firstName, ...fatherName];
       empData.filter((item) => item !== "");
       // копируем данные фильтра

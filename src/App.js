@@ -8,6 +8,7 @@ import EmployeesPage from "./components/pages/employees/EmployeesPage";
 import NotFound from "./components/cards/NotFound";
 import RoutesPage from "./components/pages/routes/RoutesPage";
 import StationsPage from "./components/pages/stations/StationsPage";
+import BusesPage from "./components/pages/buses/BusesPage";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path="schedule" element={<SchedulePage />} />
         <Route path="routes" element={<RoutesPage />} />
         <Route path="stations" element={<StationsPage />} />
+        <Route path="buses" element={<BusesPage />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>

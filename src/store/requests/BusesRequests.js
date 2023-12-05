@@ -10,7 +10,7 @@ export const getBuses = createAsyncThunk(
   "buses/getBuses",
   async (_, { rejectWithValue }) => {
     // получение данных
-    let data = { buses: [] };
+    let data = { buses: [], models: [] };
     // try {
     //   await axios
     //     .get("https://spacekot.ru/apishechka/buses")
@@ -32,6 +32,13 @@ export const getBuses = createAsyncThunk(
     } catch (error) {
       return rejectWithValue(error.message);
     }
+
+    // получаем множество всех ролей
+    let models = new Set();
+    for (let bus of data.buses) {
+      models.add(bus.model);
+    }
+    data.models = [...models];
 
     return data;
   }

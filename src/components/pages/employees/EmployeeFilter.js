@@ -15,9 +15,8 @@ const EmployeeFilter = ({ onFilter }) => {
 
   // обработка инпутов фильтров
   const filterHandler = (event) => {
-    // получаем id элемента в котором произошли изменения и значение
+    // получаем id элемента в котором произошли изменения
     let id = event.target.id;
-    let value = event.target.value;
 
     // создаем переменную куда будем сохранять новые параметры
     let newFilterConfig = filterConfig;
@@ -84,9 +83,15 @@ const EmployeeFilter = ({ onFilter }) => {
         rolesForSave[index];
     }
 
+    // флаг говорящий о том что все поля неопределены
+    let onlyDefault = true;
+    if (rolesForSave.find((role) => role !== "Выбрать")) {
+      onlyDefault = false;
+    }
+
     // изменяем параметры фильтра
     let newFilterConfig = filterConfig;
-    newFilterConfig.roles = rolesForSave;
+    newFilterConfig.roles = onlyDefault ? roles : rolesForSave;
     setFilterConfig(newFilterConfig);
     onFilter(newFilterConfig);
   };

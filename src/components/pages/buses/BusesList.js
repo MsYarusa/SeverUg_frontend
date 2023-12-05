@@ -1,20 +1,21 @@
 import ObjectList from "../../cards/ObjectsList";
 import SearchByName from "../../cards/ObjectSearchByName";
-import Employee from "./Employee";
+import BusItem from "./BusItem";
 
 import "../../cards/objectStyles/ObjectSearch.css";
 
-const EmployeesList = ({ searchHandler, list, buttonsHandlers }) => {
+const BusesList = ({ searchHandler, list, buttonsHandlers }) => {
   return (
     <ObjectList list={list}>
       <div className="object-search">
-        <SearchByName search={searchHandler} placeholder="ФИО сотрудника" />
-        <button onClick={buttonsHandlers.add}>
-          Зарегистрировать сотрудника
-        </button>
+        <SearchByName
+          search={searchHandler}
+          placeholder="Номер автобуса или ФИО водителя"
+        />
+        <button onClick={buttonsHandlers.add}>Добавить автобус</button>
       </div>
       {list?.map((item) => (
-        <Employee
+        <BusItem
           key={item.id}
           data={item}
           deleteHandler={buttonsHandlers.delete}
@@ -25,4 +26,4 @@ const EmployeesList = ({ searchHandler, list, buttonsHandlers }) => {
   );
 };
 
-export default EmployeesList;
+export default BusesList;

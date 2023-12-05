@@ -1,0 +1,26 @@
+.bus-code {
+  position: absolute;
+  left: 5%;
+}
+
+.bus-status {
+  position: absolute;
+  left: 70%;
+}
+
+.bus-info__container {
+  position: relative;
+  width: 100%;
+  height: 19px;
+  margin-bottom: 15px;
+}
+
+.bus-driver {
+  position: absolute;
+  left: 5%;
+}
+
+.bus-model {
+  position: absolute;
+  left: 5%;
+}

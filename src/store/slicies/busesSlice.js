@@ -5,6 +5,7 @@ const busesSlice = createSlice({
   name: "buses",
   initialState: {
     buses: [],
+    models: [],
     status: null,
     error: null,
   },
@@ -32,6 +33,7 @@ const busesSlice = createSlice({
       .addCase(getBuses.fulfilled, (state, action) => {
         state.status = "resolved";
         state.buses = action.payload.buses;
+        state.models = action.payload.models;
       })
       .addCase(getBuses.rejected, (state, action) => {
         state.status = "rejected";
@@ -40,5 +42,5 @@ const busesSlice = createSlice({
   },
 });
 
-export const { addBuses, updateBuses, removeBuses } = busesSlice.actions;
+export const { addBus, updateBus, removeBus } = busesSlice.actions;
 export default busesSlice.reducer;

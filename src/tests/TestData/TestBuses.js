@@ -5,6 +5,15 @@ export const buses = [
     code: "H102OH",
     status: "active",
     numberOfSits: 43,
+    driver: {
+      id: 2,
+      first_name: "Vladimir",
+      last_name: "Putin",
+      father_name: "Vladimirovich",
+      email: "russia1991@rf.ru",
+      login: "russianBear",
+      role: "driver",
+    },
   },
   {
     id: 2,
@@ -12,6 +21,7 @@ export const buses = [
     code: "K698IO",
     status: "active",
     numberOfSits: 43,
+    driver: null,
   },
   {
     id: 3,
@@ -19,5 +29,14 @@ export const buses = [
     code: "L192OI",
     status: "active",
     numberOfSits: 52,
+    driver: {
+      id: 4,
+      first_name: "Chimin",
+      last_name: "Pak Cha Yen",
+      father_name: null,
+      email: "BTS_Chimin@tinder.com",
+      login: "Olly",
+      role: "driver",
+    },
   },
 ];
