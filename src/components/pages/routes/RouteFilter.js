@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { getMinsFromTime } from "../../../extraFunctions/TimeAndPriceHandlers";
+import { getMinsFromTime } from "../../../extraFunctions/ExtraFunctions";
 
 import { TimeInput, CostInput } from "../schedule/FilterInputs";
 import ObjectFilter from "../../cards/ObjectFilter";

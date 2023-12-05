@@ -45,24 +45,3 @@
 .time label {
   margin: 15px 0px;
 }
-
-.date button {
-  display: flex;
-  align-items: center;
-  width: 30px;
-  height: 30px;
-  margin: 0;
-  margin-right: 10px;
-}
-
-.date button img {
-  width: 30px;
-  height: 30px;
-}
-
-.date button img:hover {
-  width: 34px;
-  height: 34px;
-  cursor: pointer;
-  margin-left: -2px;
-}

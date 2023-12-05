@@ -26,8 +26,5 @@ const axios = require("axios").default;
 // let a = new Date("2023-11-01");
 // console.log(a);
 // console.log(typeof "dsd");
-
-let array = [{ g: 1 }, { g: 2 }, { g: 3 }, { g: 4 }, { g: 5 }];
-let b = array.find((item) => item.g === 3);
-b.g = 6;
-console.log(array);
+let f = 1;
+console.log(!f);

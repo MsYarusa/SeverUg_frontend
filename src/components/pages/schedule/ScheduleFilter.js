@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getMinsFromTime } from "../../../extraFunctions/TimeAndPriceHandlers";
+import { getMinsFromTime } from "../../../extraFunctions/ExtraFunctions";
 
 import { TimeInput, CostInput } from "../schedule/FilterInputs";
 import ObjectFilter from "../../cards/ObjectFilter";
@@ -136,7 +136,7 @@ export default ScheduleFilter;
 // комопнент отвечающий за вывод даты
 const DateSelect = ({ id, onChange, deleteHandler, isOnly }) => {
   return (
-    <div className="date">
+    <div className="extra-input">
       <label>Дата:</label>
       <input type="date" id={"date-" + id.toString()} onChange={onChange} />
       {!isOnly && (

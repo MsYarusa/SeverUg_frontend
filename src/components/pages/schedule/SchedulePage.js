@@ -6,7 +6,7 @@ import {
   getTimeFromMins,
   getMinsFromTime,
   sum,
-} from "../../../extraFunctions/TimeAndPriceHandlers";
+} from "../../../extraFunctions/ExtraFunctions";
 import { searchFromTo } from "../../../extraFunctions/SearchHandlers";
 
 import ScheduleFilter from "./ScheduleFilter";

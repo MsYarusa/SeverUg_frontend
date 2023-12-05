@@ -71,7 +71,7 @@
   cursor: pointer;
 }
 
-.object-search #clear {
+.object-search #clear-search {
   position: absolute;
   right: 0;
   min-width: 72px;
@@ -88,11 +88,11 @@
   background: #6f808d;
 }
 
-.object-search #clear p {
+.object-search #clear-search p {
   margin: 0px 10px;
 }
 
-.object-search #clear img {
+.object-search #clear-search img {
   width: 50px;
   height: 50px;
 }

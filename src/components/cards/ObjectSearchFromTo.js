@@ -13,12 +13,12 @@ const SearchFromTo = ({ search }) => {
 
   const inputFromHandler = (event) => {
     setInputFrom(event.target.value.toLowerCase());
-    search({ from: event.target.value.toLowerCase(), to: inputTo });
+    search({ from: event.target.value.toLowerCase().trim(), to: inputTo });
   };
 
   const inputToHandler = (event) => {
     setInputTo(event.target.value.toLowerCase());
-    search({ from: inputFrom, to: event.target.value.toLowerCase() });
+    search({ from: inputFrom, to: event.target.value.toLowerCase().trim() });
   };
 
   const clearHandler = () => {
@@ -45,7 +45,7 @@ const SearchFromTo = ({ search }) => {
         value={inputTo}
         onChange={inputToHandler}
       />
-      <button id="clear" onClick={clearHandler}>
+      <button id="clear-search" onClick={clearHandler}>
         {inputFrom || inputTo ? <p>Сбросить</p> : <img src={searchImg} />}
       </button>
     </form>

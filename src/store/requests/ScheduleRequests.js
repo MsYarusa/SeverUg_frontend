@@ -3,7 +3,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { addTrip, updateTrip, removeTrip } from "../slicies/scheduleSlice";
 
 // тесты
-import { schedule } from "../../tests/TestSchedule";
+import { schedule } from "../../tests/TestData/TestSchedule";
 
 // ПОЛУЧЕНИЕ ВСЕГО РАСПИСАНИЯ
 export const getSchedule = createAsyncThunk(
@@ -11,19 +11,27 @@ export const getSchedule = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     //получение данных
     let data = [];
-    // await axios
-    //   .get("https://spacekot.ru/apishechka/trip")
-    //   .then((res) => {
-    //     console.log("статус: успешно");
-    //     console.log("данные: ", res.data);
-    //     data = res.data;
-    //   })
-    //   .catch((error) => {
-    //     console.error("ошибка: ", error.message);
-    //     return rejectWithValue(error.message);
-    //   });
+    // try {
+    //   await axios
+    //     .get("https://spacekot.ru/apishechka/trip")
+    //     .then((res) => {
+    //       console.log("статус: успешно");
+    //       console.log("данные: ", res.data);
+    //       data = res.data;
+    //     })
+    //     .catch((error) => {
+    //       console.error("ошибка: ", error.message);
+    //       throw new Error(error.message);
+    //     });
+    // } catch (error) {
+    //   return rejectWithValue(error.message);
+    // }
 
-    data = schedule;
+    try {
+      data = schedule;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
 
     // обработка массива дней недели
     for (let trip of data) {
@@ -62,20 +70,24 @@ export const postTrip = createAsyncThunk(
     let trip = null;
 
     //отправление запроса
-    await axios
-      .post("https://spacekot.ru/apishechka/trip", {
-        departure_time: time,
-        days: days,
-        road_id: road_id,
-      })
-      .then((res) => {
-        console.log("статус: успешно");
-        trip = res.data;
-      })
-      .catch((error) => {
-        console.error("ошибка: ", error.message);
-        return rejectWithValue(error.message);
-      });
+    try {
+      await axios
+        .post("https://spacekot.ru/apishechka/trip", {
+          departure_time: time,
+          days: days,
+          road_id: road_id,
+        })
+        .then((res) => {
+          console.log("статус: успешно");
+          trip = res.data;
+        })
+        .catch((error) => {
+          console.error("ошибка: ", error.message);
+          throw new Error(error.message);
+        });
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
 
     // обработка массива дней недели
     if (typeof trip.days === "string") {
@@ -109,20 +121,24 @@ export const putTrip = createAsyncThunk(
     let trip = null;
 
     //отправление запроса
-    await axios
-      .put(`https://spacekot.ru/apishechka/trip/${id}`, {
-        departure_time: time,
-        days: days,
-        road_id: road_id,
-      })
-      .then((res) => {
-        console.log("статус: успешно");
-        trip = res.data;
-      })
-      .catch((error) => {
-        console.error("ошибка: ", error.message);
-        return rejectWithValue(error.message);
-      });
+    try {
+      await axios
+        .put(`https://spacekot.ru/apishechka/trip/${id}`, {
+          departure_time: time,
+          days: days,
+          road_id: road_id,
+        })
+        .then((res) => {
+          console.log("статус: успешно");
+          trip = res.data;
+        })
+        .catch((error) => {
+          console.error("ошибка: ", error.message);
+          throw new Error(error.message);
+        });
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
 
     // обработка массива дней недели
     if (typeof trip.days === "string") {
@@ -154,15 +170,19 @@ export const deleteTrip = createAsyncThunk(
   "schedule/deleteTrip",
   async ({ id }, { rejectWithValue, dispatch }) => {
     //отправление запроса
-    await axios
-      .delete(`https://spacekot.ru/apishechka/trip/${id}`)
-      .then((res) => {
-        console.log("статус: успешно");
-      })
-      .catch((error) => {
-        console.error("ошибка: ", error.message);
-        return rejectWithValue(error.message);
-      });
+    try {
+      await axios
+        .delete(`https://spacekot.ru/apishechka/trip/${id}`)
+        .then((res) => {
+          console.log("статус: успешно");
+        })
+        .catch((error) => {
+          console.error("ошибка: ", error.message);
+          throw new Error(error.message);
+        });
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
 
     // удаление рейса из стора
     dispatch(removeTrip({ id: id }));

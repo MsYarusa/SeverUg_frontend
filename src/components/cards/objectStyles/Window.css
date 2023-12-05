@@ -74,8 +74,16 @@
 }
 
 .window #main {
+  text-align: center;
   font-size: 30px;
   font-weight: 700;
+  line-height: 130%;
+}
+
+.window .secondary-label {
+  align-self: center;
+  font-size: 22px;
+  font-weight: 600;
   line-height: 130%;
 }
 
@@ -125,6 +133,29 @@
   line-height: 110%;
   cursor: pointer;
   padding-right: 5px;
+}
+
+.label-input {
+  position: relative;
+  min-width: 100%;
+  min-height: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.label-input label {
+  margin: 0;
+}
+
+.label-input input {
+  position: absolute;
+  left: 58%;
+  width: 30%;
+}
+
+.label-input p {
+  margin: 0;
 }
 
 .window input::-webkit-outer-spin-button,

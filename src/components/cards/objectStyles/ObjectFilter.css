@@ -5,7 +5,7 @@
   margin-top: 200px;
   margin-bottom: 100px;
   padding-top: 25px;
-  width: 350px;
+  width: 380px;
   height: fit-content;
   flex-shrink: 0;
 
@@ -84,7 +84,7 @@
 }
 
 .object-filter select {
-  width: 50%;
+  width: 45%;
   height: 50px;
 
   -moz-appearance: none;
@@ -92,9 +92,11 @@
 
   border: none;
   outline: none;
-  border-radius: 30px;
+  border-radius: 16px;
+  background: #ededee;
 
   color: #5c5c5c;
+  background: #fff;
   font-family: Montserrat;
   text-align: center;
   font-size: 19px;
@@ -124,6 +126,27 @@
   line-height: 110%;
   cursor: pointer;
   padding-right: 5px;
+}
+
+.extra-input button {
+  display: flex;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  margin: 0;
+  margin-right: 10px;
+}
+
+.extra-input button img {
+  width: 30px;
+  height: 30px;
+}
+
+.extra-input button img:hover {
+  width: 34px;
+  height: 34px;
+  cursor: pointer;
+  margin-left: -2px;
 }
 
 .object-filter input::-webkit-outer-spin-button,

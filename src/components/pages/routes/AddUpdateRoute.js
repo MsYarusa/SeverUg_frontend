@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { putRoute } from "../../../store/requests/RoutesRequests";
 import { postRoute } from "../../../store/requests/RoutesRequests";
 import { updateRouteInTrip } from "../../../store/slicies/scheduleSlice";
-import { getTimeFromMins } from "../../../extraFunctions/TimeAndPriceHandlers";
+import { getTimeFromMins } from "../../../extraFunctions/ExtraFunctions";
 
 import { StationSelector, CostTimeInputs } from "../schedule/StationInputs";
 import AddUpdateObject from "../../cards/AddUpdateDeleteObjects";
@@ -214,7 +214,9 @@ const AddUpdateRoute = ({ cancelHandler, data }) => {
       <label id="main">
         {data ? "Изменение маршрута" : "Добавление маршрута"}
       </label>
-      <label id="routes-label">Список остановок:</label>
+      <label id="routes-label" className="secondary-label">
+        Список остановок:
+      </label>
       <div className="routes">
         <StationSelector
           stations={stations}

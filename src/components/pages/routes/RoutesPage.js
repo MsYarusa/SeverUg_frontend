@@ -48,6 +48,7 @@ const RoutesPage = () => {
     setFilteredList(routes);
     setSearchedList(routes);
   }, [routes]);
+
   // после поиска необходимо отфильтровать список с учетом сохраненных параметров
   useEffect(() => {
     filterHandler(savedFilteredConfig);

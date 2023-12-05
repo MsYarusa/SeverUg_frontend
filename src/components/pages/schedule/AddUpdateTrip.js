@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { postTrip } from "../../../store/requests/ScheduleRequests";
 import { putTrip } from "../../../store/requests/ScheduleRequests";
-import { getTimeFromMins } from "../../../extraFunctions/TimeAndPriceHandlers";
+import { getTimeFromMins } from "../../../extraFunctions/ExtraFunctions";
 
 import { StationSelector, CostTimeInputs } from "./StationInputs";
 import AddUpdateObject from "../../cards/AddUpdateDeleteObjects";

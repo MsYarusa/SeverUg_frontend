@@ -11,7 +11,7 @@ const SearchByName = ({ search, placeholder }) => {
   };
 
   const inputHandler = (event) => {
-    search(event.target.value.toLowerCase());
+    search(event.target.value.toLowerCase().trim());
     setInputData(event.target.value);
   };
 
@@ -30,7 +30,7 @@ const SearchByName = ({ search, placeholder }) => {
         placeholder={placeholder}
         onChange={inputHandler}
       />
-      <button id="clear" onClick={clearHandler}>
+      <button id="clear-search" onClick={clearHandler}>
         {inputData ? <p>Сбросить</p> : <img src={searchImg} />}
       </button>
     </form>

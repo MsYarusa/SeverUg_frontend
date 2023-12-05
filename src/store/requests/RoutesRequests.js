@@ -3,7 +3,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { addRoute, updateRoute, removeRoute } from "../slicies/routesSlice";
 
 // тесты
-import { routes } from "../../tests/TestRoutes";
+import { routes } from "../../tests/TestData/TestRoutes";
 
 // ПОЛУЧЕНИЕ ВСЕХ МАРШРУТОВ
 export const getRoutes = createAsyncThunk(
@@ -11,17 +11,21 @@ export const getRoutes = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     // получение данных
     let data = [];
-    // await axios
-    //   .get("https://spacekot.ru/apishechka/road")
-    //   .then((res) => {
-    //     console.log("статус: успешно");
-    //     console.log("данные: ", res.data);
-    //     data = res.data;
-    //   })
-    //   .catch((error) => {
-    //     console.error("ошибка: ", error.message);
-    //     return rejectWithValue(error.message);
-    //   });
+    // try {
+    //   await axios
+    //     .get("https://spacekot.ru/apishechka/road")
+    //     .then((res) => {
+    //       console.log("статус: успешно");
+    //       console.log("данные: ", res.data);
+    //       data = res.data;
+    //     })
+    //     .catch((error) => {
+    //       console.error("ошибка: ", error.message);
+    //       throw new Error(error.message);
+    //     });
+    // } catch (error) {
+    //   return rejectWithValue(error.message);
+    // }
 
     try {
       data = routes;
@@ -56,21 +60,25 @@ export const postRoute = createAsyncThunk(
   async ({ price, time, sort, stations_id }, { rejectWithValue, dispatch }) => {
     let route = null;
     //отправление запроса
-    await axios
-      .post("https://spacekot.ru/apishechka/road", {
-        price: price,
-        time: time,
-        sort: sort,
-        stations_id: stations_id,
-      })
-      .then((res) => {
-        console.log("статус: успешно");
-        route = res.data;
-      })
-      .catch((error) => {
-        console.error("ошибка: ", error.message);
-        return rejectWithValue(error.message);
-      });
+    try {
+      await axios
+        .post("https://spacekot.ru/apishechka/road", {
+          price: price,
+          time: time,
+          sort: sort,
+          stations_id: stations_id,
+        })
+        .then((res) => {
+          console.log("статус: успешно");
+          route = res.data;
+        })
+        .catch((error) => {
+          console.error("ошибка: ", error.message);
+          throw new Error(error.message);
+        });
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
 
     // добавление маршрута в стор
     dispatch(addRoute({ route: route }));
@@ -86,21 +94,25 @@ export const putRoute = createAsyncThunk(
   ) => {
     let route = null;
     //отправление запроса
-    await axios
-      .put(`https://spacekot.ru/apishechka/road/${id}`, {
-        price: price,
-        time: time,
-        sort: sort,
-        stations_id: stations_id,
-      })
-      .then((res) => {
-        console.log("статус: успешно");
-        route = res.data;
-      })
-      .catch((error) => {
-        console.error("ошибка: ", error.message);
-        return rejectWithValue(error.message);
-      });
+    try {
+      await axios
+        .put(`https://spacekot.ru/apishechka/road/${id}`, {
+          price: price,
+          time: time,
+          sort: sort,
+          stations_id: stations_id,
+        })
+        .then((res) => {
+          console.log("статус: успешно");
+          route = res.data;
+        })
+        .catch((error) => {
+          console.error("ошибка: ", error.message);
+          throw new Error(error.message);
+        });
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
 
     // обновление маршрута в сторе
     dispatch(updateRoute({ id: id, route: route }));
@@ -112,15 +124,19 @@ export const deleteRoute = createAsyncThunk(
   "routes/deleteRoute",
   async ({ id }, { rejectWithValue, dispatch }) => {
     //отправление запроса
-    await axios
-      .delete(`https://spacekot.ru/apishechka/road/${id}`)
-      .then((res) => {
-        console.log("статус: успешно");
-      })
-      .catch((error) => {
-        console.error("ошибка: ", error.message);
-        return rejectWithValue(error.message);
-      });
+    try {
+      await axios
+        .delete(`https://spacekot.ru/apishechka/road/${id}`)
+        .then((res) => {
+          console.log("статус: успешно");
+        })
+        .catch((error) => {
+          console.error("ошибка: ", error.message);
+          throw new Error(error.message);
+        });
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
 
     // удаление маршрута из стора
     dispatch(removeRoute({ id: id }));

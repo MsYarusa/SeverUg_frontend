@@ -1,15 +1,19 @@
 import React, { useState } from "react";
+import { getTimeFromMins, sum } from "../../../extraFunctions/ExtraFunctions";
+
 import ObjectItem from "../../cards/ObjectItem";
 
 import "./routesStyles/RouteItem.css";
 
 const RouteItem = ({ data, deleteHandler, updateHandler }) => {
+  // РАБОТА С ДОПОЛЬНИТЕЛЬНОЙ ИНФОРМАЦИЕЙ
   const [info, setInfo] = useState();
 
   const infoHandler = () => {
     setInfo(!info);
   };
 
+  // ОБРАБОТКА ДАННЫХ
   let index = 0;
   if (typeof data.id === "string") {
     index = data.id.split(" ")[0];
@@ -17,15 +21,9 @@ const RouteItem = ({ data, deleteHandler, updateHandler }) => {
     index = data.id;
   }
 
-  let totalPrice = 0;
-  data.price.forEach((item, i, arr) => {
-    totalPrice += Number(item);
-  });
+  let totalPrice = sum(data.price);
 
-  let totalTime = 0;
-  data.time.forEach((item, i, arr) => {
-    totalTime += Number(item);
-  });
+  let totalTime = sum(data.time);
 
   let stationsPares = [];
 
@@ -75,11 +73,3 @@ const RouteItem = ({ data, deleteHandler, updateHandler }) => {
 };
 
 export default RouteItem;
-
-function getTimeFromMins(mins) {
-  let hours = Math.trunc(mins / 60);
-  let minutes = mins % 60;
-  hours = hours < 10 ? "0" + hours : hours;
-  minutes = minutes < 10 ? "0" + minutes : minutes;
-  return hours + ":" + minutes;
-}

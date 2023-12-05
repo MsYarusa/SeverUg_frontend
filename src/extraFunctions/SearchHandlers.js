@@ -1,4 +1,4 @@
-import { sum } from "./TimeAndPriceHandlers";
+import { sum } from "./ExtraFunctions";
 
 export function searchFromTo({ route, searchConfig }) {
   // в случае если параметры поиска не указаны, просто выводим маршрут целиком
