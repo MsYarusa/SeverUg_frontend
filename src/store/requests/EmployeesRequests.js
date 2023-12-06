@@ -15,27 +15,27 @@ export const getEmployees = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     // получение данных
     let data = { roles: [], employees: [] };
-    // try {
-    //   await axios
-    //     .get("https://spacekot.ru/apishechka/user")
-    //     .then((res) => {
-    //       console.log("статус: успешно");
-    //       console.log("данные: ", res.data);
-    //       data.employees = res.data;
-    //     })
-    //     .catch((error) => {
-    //       console.error("ошибка: ", error.message);
-    //       throw new Error("Server Error!");
-    //     });
-    // } catch (error) {
-    //   return rejectWithValue(error.message);
-    // }
-
     try {
-      data.employees = employees;
+      await axios
+        .get("https://spacekot.ru/apishechka/user")
+        .then((res) => {
+          console.log("статус: успешно");
+          console.log("данные: ", res.data);
+          data.employees = res.data;
+        })
+        .catch((error) => {
+          console.error("ошибка: ", error.message);
+          throw new Error("Server Error!");
+        });
     } catch (error) {
       return rejectWithValue(error.message);
     }
+
+    // try {
+    //   data.employees = employees;
+    // } catch (error) {
+    //   return rejectWithValue(error.message);
+    // }
 
     // получаем множество всех ролей
     let roles = new Set();

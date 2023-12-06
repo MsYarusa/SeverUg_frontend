@@ -33,11 +33,12 @@ const BusItem = ({ data, deleteHandler, updateHandler }) => {
       {info && (
         <ul className="info">
           <div className="bus-info__container">
-            <p className="bus-driver">ФИО водителя: {driverName}</p>
+            <p className="bus-driver-label">ФИО водителя:</p>
+            <p className="bus-driver-info">{driverName}</p>
           </div>
           <div className="bus-info__container">
-            <p className="bus-model">
-              Модель автобуса:
+            <p className="bus-model-label">Модель автобуса:</p>
+            <p className="bus-model-info">
               {" " + data.model} — {data.numberOfSits} мест.
             </p>
           </div>

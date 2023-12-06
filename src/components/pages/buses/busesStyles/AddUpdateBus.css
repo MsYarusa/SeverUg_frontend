@@ -1,0 +1,19 @@
+.bus-input {
+  max-width: 400px;
+}
+
+.bus-input select {
+  max-width: 47%;
+}
+
+.bus-input input {
+  position: static;
+
+  max-width: 45%;
+  width: 47%;
+  height: 48px;
+}
+
+.bus-input label {
+  width: 50%;
+}

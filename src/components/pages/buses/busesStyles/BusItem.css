@@ -15,12 +15,22 @@
   margin-bottom: 15px;
 }
 
-.bus-driver {
+.bus-driver-label {
   position: absolute;
   left: 5%;
 }
 
-.bus-model {
+.bus-driver-info {
+  position: absolute;
+  left: 20%;
+}
+
+.bus-model-label {
   position: absolute;
   left: 5%;
+}
+
+.bus-model-info {
+  position: absolute;
+  left: 20%;
 }

@@ -11,27 +11,27 @@ export const getRoutes = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     // получение данных
     let data = [];
-    // try {
-    //   await axios
-    //     .get("https://spacekot.ru/apishechka/road")
-    //     .then((res) => {
-    //       console.log("статус: успешно");
-    //       console.log("данные: ", res.data);
-    //       data = res.data;
-    //     })
-    //     .catch((error) => {
-    //       console.error("ошибка: ", error.message);
-    //       throw new Error(error.message);
-    //     });
-    // } catch (error) {
-    //   return rejectWithValue(error.message);
-    // }
-
     try {
-      data = routes;
+      await axios
+        .get("https://spacekot.ru/apishechka/road")
+        .then((res) => {
+          console.log("статус: успешно");
+          console.log("данные: ", res.data);
+          data = res.data;
+        })
+        .catch((error) => {
+          console.error("ошибка: ", error.message);
+          throw new Error(error.message);
+        });
     } catch (error) {
       return rejectWithValue(error.message);
     }
+
+    // try {
+    //   data = routes;
+    // } catch (error) {
+    //   return rejectWithValue(error.message);
+    // }
 
     // восстанавливаем последовательность станций
     for (let route of data) {

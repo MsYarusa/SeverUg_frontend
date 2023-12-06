@@ -154,8 +154,10 @@
   width: 30%;
 }
 
-.label-input p {
+.label-input label {
   margin: 0;
+  text-align: end;
+  max-width: 50%;
 }
 
 .window input::-webkit-outer-spin-button,

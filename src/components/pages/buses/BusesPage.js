@@ -91,7 +91,6 @@ const BusesPage = () => {
 
   // фильтр (фильтрация по характеристикам)
   const filterHandler = (filterConfig) => {
-    console.log(filterConfig);
     let search_results = [];
     setSavedFilteredConfig(filterConfig);
     // если к нам пришел пустой список параметров, то отображаем все автобусы
@@ -138,8 +137,6 @@ const BusesPage = () => {
             busStatusOk = bus.status ? true : false;
             break;
         }
-
-        console.log(driverStatusOk, modelOk, busStatusOk);
 
         if (driverStatusOk && modelOk && busStatusOk) {
           search_results.push(bus);

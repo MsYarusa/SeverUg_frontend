@@ -120,16 +120,18 @@ const BusFilter = ({ onFilter }) => {
 
   return (
     <ObjectFilter clearHandler={clearHandler}>
+      <label className="">Водитель:</label>
       <div className="extra-input">
-        <label>Статус водителя:</label>
+        <label>Статус:</label>
         <select defaultValue="Любой" onChange={filterHandler} id="driverStatus">
           <option value="Любой">Любой</option>
           <option value="Не назначен">Не назначен</option>
           <option value="Назначен">Назначен</option>
         </select>
       </div>
+      <label className="">Автобус:</label>
       <div className="extra-input">
-        <label>Статус автобуса:</label>
+        <label>Статус:</label>
         <select defaultValue="Любой" onChange={filterHandler} id="busStatus">
           <option value="Любой">Любой</option>
           <option value="На ремонте">На ремонте</option>
@@ -158,7 +160,7 @@ const BusFilter = ({ onFilter }) => {
           />
         ))}
       <button id="add-filter" onClick={addRoleHandler}>
-        Добавить фильтр
+        Добавить модель
       </button>
     </ObjectFilter>
   );
@@ -177,7 +179,7 @@ const ModelSelect = ({
 }) => {
   return (
     <div className="extra-input" id={"model " + index}>
-      <label>Модель автобуса:</label>
+      <label>Модель:</label>
       <select
         defaultValue={defaultValue}
         onChange={onChange}

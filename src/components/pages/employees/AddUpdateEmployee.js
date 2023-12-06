@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { putEmployee } from "../../../store/requests/EmployeesRequests";
 import { postEmployee } from "../../../store/requests/EmployeesRequests";
 import { translateRole, rolesRU } from "../../../extraFunctions/ExtraFunctions";
@@ -22,10 +22,10 @@ const AddUpdateEmployee = ({ cancelHandler, data }) => {
       document.getElementById("employee-email").value = data.email
         ? data.email
         : "";
-      document.getElementById("employee-phone").value = data.phone
-        ? data.phone
-        : "";
-      document.getElementById("employee-login").value = data.login;
+      // document.getElementById("employee-phone").value = data.phone
+      //   ? data.phone
+      //   : "";
+      // document.getElementById("employee-login").value = data.login;
     }
   }, [data]);
 
@@ -100,31 +100,31 @@ const AddUpdateEmployee = ({ cancelHandler, data }) => {
         father_name: fatherName,
         email: email,
         phone: phone,
-        login: login,
-        password: password,
+        login: data ? "defaultLogin" : login,
+        password: data ? "1234567890" : password,
       };
       if (data) {
         //если был указан сотрудник, то его данные обновляются
-        console.log({
-          id: data.id,
-          employee: newEmployee,
-        });
-        // dispatch(
-        //   putEmployee({
-        //     id: data.id,
-        //     employee: newEmployee,
-        //   })
-        // );
+        // console.log({
+        //   id: data.id,
+        //   employee: newEmployee,
+        // });
+        dispatch(
+          putEmployee({
+            id: data.id,
+            employee: newEmployee,
+          })
+        );
       } else {
         // если начальные значения не были указаны, то создается новый сотрудник
-        console.log({
-          employee: newEmployee,
-        });
-        // dispatch(
-        //   postEmployee({
-        //     employee: newEmployee,
-        //   })
-        // );
+        // console.log({
+        //   employee: newEmployee,
+        // });
+        dispatch(
+          postEmployee({
+            employee: newEmployee,
+          })
+        );
       }
       //закрытие окна
       cancelHandler();

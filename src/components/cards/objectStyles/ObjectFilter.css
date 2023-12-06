@@ -16,6 +16,12 @@
   border-radius: 40px;
   background: #fff;
   box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.25);
+  color: #5c5c5c;
+  font-family: Montserrat;
+  font-size: 19px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 110%;
 }
 
 .object-filter button {
@@ -70,29 +76,40 @@
   background: #ededee;
 
   margin-bottom: 25px;
-
-  color: #5c5c5c;
-  font-family: Montserrat;
-  font-size: 19px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 110%;
 }
 
 .object-filter div label {
+  max-width: 45%;
   margin-left: 10px;
+  text-align: center;
+}
+
+.object-filter > label {
+  max-width: 45%;
+  margin-left: 10px;
+  margin-top: -15px;
+  margin-bottom: 10px;
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 130%;
+  text-align: center;
+}
+
+.object-filter .main-label {
+  max-width: 100%;
+  width: 100%;
 }
 
 .object-filter select {
   width: 45%;
-  height: 50px;
+  height: 55px;
 
   -moz-appearance: none;
   -webkit-appearance: none;
 
   border: none;
   outline: none;
-  border-radius: 16px;
+  border-radius: 12px;
   background: #ededee;
 
   color: #5c5c5c;

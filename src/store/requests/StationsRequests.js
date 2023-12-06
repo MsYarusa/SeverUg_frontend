@@ -15,26 +15,26 @@ export const getStations = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     // отправление запроса
     let data = [];
-    // try {
-    //   await axios
-    //     .get("https://spacekot.ru/apishechka/stations")
-    //     .then((res) => {
-    //       console.log("статус: успешно");
-    //       data = res.data;
-    //     })
-    //     .catch((error) => {
-    //       console.error(error);
-    //       throw new Error(error.message);
-    //     });
-    // } catch (error) {
-    //   return rejectWithValue(error.message);
-    // }
-
     try {
-      data = stations;
+      await axios
+        .get("https://spacekot.ru/apishechka/stations")
+        .then((res) => {
+          console.log("статус: успешно");
+          data = res.data;
+        })
+        .catch((error) => {
+          console.error(error);
+          throw new Error(error.message);
+        });
     } catch (error) {
       return rejectWithValue(error.message);
     }
+
+    // try {
+    //   data = stations;
+    // } catch (error) {
+    //   return rejectWithValue(error.message);
+    // }
 
     return data;
   }
