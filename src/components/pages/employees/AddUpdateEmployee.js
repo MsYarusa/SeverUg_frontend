@@ -100,8 +100,8 @@ const AddUpdateEmployee = ({ cancelHandler, data }) => {
         father_name: fatherName,
         email: email,
         phone: phone,
-        login: data ? "defaultLogin" : login,
-        password: data ? "1234567890" : password,
+        login: data ? (login ? login : "defaultLogin") : login,
+        password: data ? (password ? password : "1234567890") : password,
       };
       if (data) {
         //если был указан сотрудник, то его данные обновляются
@@ -199,6 +199,7 @@ const AddUpdateEmployee = ({ cancelHandler, data }) => {
           type="text"
           placeholder="Логин"
           autoComplete="off"
+          name="user-login"
           className={loginOk ? "base-border" : "error-border"}
         />
         {!data && (
@@ -239,7 +240,8 @@ const PasswordInputs = ({ passwordNotEmpty, confirmFailed }) => {
         id="employee-password"
         type="password"
         placeholder="Пароль"
-        autoComplete="off"
+        autoComplete="new-password"
+        name="user-password"
         className={
           passwordNotEmpty && !confirmFailed ? "base-border" : "error-border"
         }
@@ -248,7 +250,7 @@ const PasswordInputs = ({ passwordNotEmpty, confirmFailed }) => {
         id="employee-password-confirmation"
         type="password"
         placeholder="Подтвердите пароль"
-        autoComplete="off"
+        autoComplete="new-password"
         className={
           passwordNotEmpty && !confirmFailed ? "base-border" : "error-border"
         }

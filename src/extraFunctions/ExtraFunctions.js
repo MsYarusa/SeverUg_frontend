@@ -46,3 +46,22 @@ export function translateRole(role) {
       .russian;
   }
 }
+
+export const busStatusEN = ["active", "unactive"];
+export const busStatusRU = ["активный", "на ремонте"];
+
+export function translateBusStatus(status) {
+  const statusTranslator = [
+    { english: "active", russian: "активный" },
+    { english: "unactive", russian: "на ремонте" },
+  ];
+
+  if (busStatusRU.find((statusRU) => statusRU === status)) {
+    return statusTranslator.find((translator) => translator.russian === status)
+      .english;
+  }
+  if (busStatusEN.find((statusEN) => statusEN === status)) {
+    return statusTranslator.find((translator) => translator.english === status)
+      .russian;
+  }
+}

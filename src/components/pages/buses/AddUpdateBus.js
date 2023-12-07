@@ -53,22 +53,22 @@ const AddUpdateBus = ({ cancelHandler, data }) => {
         //если был указан сотрудник, то его данные обновляются
         // console.log({
         //   id: data.id,
-        //   employee: newBus,
+        //   bus: newBus,
         // });
         dispatch(
           putBus({
             id: data.id,
-            employee: newBus,
+            bus: newBus,
           })
         );
       } else {
         // если начальные значения не были указаны, то создается новый сотрудник
         // console.log({
-        //   employee: newBus,
+        //   bus: newBus,
         // });
         dispatch(
           postBus({
-            employee: newBus,
+            bus: newBus,
           })
         );
       }

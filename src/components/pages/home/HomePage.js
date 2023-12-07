@@ -1,12 +1,21 @@
 import GridLayout from "./GridLayout";
+import { useSelector } from "react-redux/es/hooks/useSelector";
+import { Navigate } from "react-router-dom";
 
-import "./homeStyles/HomePage.css";
+import "../../cards/objectStyles/ObjectsPage.css";
 
 const HomePage = () => {
+  const user = useSelector((state) => state.user.user);
   return (
-    <div className="home-page">
-      <GridLayout type="admin" />
-    </div>
+    <>
+      {user.role === "cashier" ? (
+        <Navigate to="/tickets" />
+      ) : (
+        <div className="page">
+          <GridLayout role={user.role} />
+        </div>
+      )}
+    </>
   );
 };
 

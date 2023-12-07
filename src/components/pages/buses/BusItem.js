@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import ObjectItem from "../../cards/ObjectItem";
+import { translateBusStatus } from "../../../extraFunctions/ExtraFunctions";
 
 import "./busesStyles/BusItem.css";
 
@@ -28,7 +29,7 @@ const BusItem = ({ data, deleteHandler, updateHandler }) => {
         id={data.id}
       >
         <p className="bus-code"> Автобус №{data.code}</p>
-        <p className="bus-status">статус — {data.status}</p>
+        <p className="bus-status">статус — {translateBusStatus(data.status)}</p>
       </ObjectItem>
       {info && (
         <ul className="info">

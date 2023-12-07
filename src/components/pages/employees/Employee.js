@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import ObjectItem from "../../cards/ObjectItem";
+import { translateRole } from "../../../extraFunctions/ExtraFunctions";
 
 import "./employeesStyles/Employee.css";
 
@@ -22,7 +23,7 @@ const Employee = ({ data, deleteHandler, updateHandler }) => {
         <p className="employee-name">
           {data.last_name} {data.first_name} {data.father_name}
         </p>
-        <p className="employee-role">{data.role}</p>
+        <p className="employee-role">{translateRole(data.role)}</p>
       </ObjectItem>
       {info && (
         <ul className="info">

@@ -49,3 +49,43 @@ export const admin_data = [
     to: "/tickets",
   },
 ];
+
+export const director_data = [
+  {
+    img: profit,
+    text: "Прибыль",
+    to: "/profit",
+  },
+  {
+    img: canceledTrips,
+    text: "Отмененные",
+    to: "/canceled",
+  },
+  {
+    img: successfulTrips,
+    text: "Успешные",
+    to: "/successful",
+  },
+];
+export const manager_data = [
+  {
+    img: buses,
+    text: "Автобусы",
+    to: "/buses",
+  },
+  {
+    img: employees,
+    text: "Сотрудники",
+    to: "/employees",
+  },
+  {
+    img: routes,
+    text: "Маршруты",
+    to: "/routes",
+  },
+  {
+    img: schedule,
+    text: "Расписание",
+    to: "/schedule",
+  },
+];

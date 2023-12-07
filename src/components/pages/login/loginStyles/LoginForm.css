@@ -46,6 +46,7 @@
   width: 25rem;
   padding: 1.5rem;
   border-radius: 16px;
+  outline: none;
   border: 1px solid rgba(0, 0, 0, 0);
   background: #ededee;
   margin-bottom: 3rem;
