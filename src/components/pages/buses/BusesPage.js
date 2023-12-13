@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getBuses } from "../../../store/requests/BusesRequests";
+import { getBuses, getModels } from "../../../store/requests/BusesRequests";
+import { getDrivers } from "../../../store/requests/EmployeesRequests";
 
 import ObjectsPage from "../../cards/ObjectsPage";
 import AddUpdateBus from "./AddUpdateBus";
@@ -13,12 +14,20 @@ const BusesPage = () => {
   //ДАННЫЕ
   // запрашиваем данные из стора
   const buses = useSelector((state) => state.buses.buses);
+  const models = useSelector((state) => state.buses.models);
+  const drivers = useSelector((state) => state.employees.drivers);
 
   // если стор пуст то делаем запрос на сервер
   const dispatch = useDispatch();
   useEffect(() => {
     if (buses.length === 0) {
       dispatch(getBuses());
+    }
+    if (drivers.length === 0) {
+      dispatch(getDrivers());
+    }
+    if (models.length === 0) {
+      dispatch(getModels());
     }
   }, []);
 
@@ -57,11 +66,12 @@ const BusesPage = () => {
       // получем номер автобуса и ФИО водителя (при наличии) и сохраняем их в список
       let code = bus.code.toLowerCase();
       let busData = [code];
-      if (bus.driver) {
-        let firstName = bus.driver.first_name.toLowerCase().split(" ");
-        let lastName = bus.driver.last_name.toLowerCase().split(" ");
-        let fatherName = bus.driver.father_name
-          ? bus.driver.father_name.toLowerCase().split(" ")
+      if (bus.drive_id) {
+        let driver = drivers.find((driver) => driver.id === bus.drive_id);
+        let firstName = driver.first_name.toLowerCase().split(" ");
+        let lastName = driver.last_name.toLowerCase().split(" ");
+        let fatherName = driver.father_name
+          ? driver.father_name.toLowerCase().split(" ")
           : "";
         busData = [...busData, ...lastName, ...firstName, ...fatherName];
       }
@@ -119,10 +129,10 @@ const BusesPage = () => {
             driverStatusOk = true;
             break;
           case "Не назначен":
-            driverStatusOk = bus.driver ? false : true;
+            driverStatusOk = bus.drive_id ? false : true;
             break;
           case "Назначен":
-            driverStatusOk = bus.driver ? true : false;
+            driverStatusOk = bus.drive_id ? true : false;
             break;
         }
 

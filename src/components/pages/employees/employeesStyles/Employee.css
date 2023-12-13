@@ -16,7 +16,12 @@
   margin-bottom: 15px;
 }
 
-.employee-email {
+.employee-info-label {
   position: absolute;
   left: 5%;
+}
+
+.employee-info {
+  position: absolute;
+  left: 43%;
 }

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { SHA256 } from "crypto-js";
 
 // ПОЛУЧЕНИЕ ПОЛЬЗОВАТЕЛЯ
 export const getUser = createAsyncThunk(
@@ -49,7 +50,7 @@ export const getUser = createAsyncThunk(
     //   await axios
     //     .post("https://spacekot.ru/apishechka/login", {
     //       login: login,
-    //       password: password,
+    //       password: SHA256(password),
     //     })
     //     .then((res) => {
     //       console.log("статус: успешно");

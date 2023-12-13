@@ -9,6 +9,7 @@ import {
   updateTimeInRoute,
   updateCostInRoute,
 } from "../slicies/routesSlice";
+import { updateRouteInTrip, removeTripByRoute } from "../slicies/scheduleSlice";
 import { addToTable } from "../../extraFunctions/ExtraFunctions";
 
 // тесты
@@ -80,14 +81,14 @@ export const postRoute = createAsyncThunk(
 export const putRoute = createAsyncThunk(
   "routes/putRoute",
   async ({ id, route }, { rejectWithValue, dispatch }) => {
-    let newRroute = null;
+    let newRoute = null;
     //отправление запроса
     try {
       await axios
         .put(`https://spacekot.ru/apishechka/road/${id}`, route)
         .then((res) => {
           console.log("статус: успешно");
-          newRroute = res.data;
+          newRoute = res.data;
         })
         .catch((error) => {
           console.error("ошибка: ", error.message);
@@ -98,7 +99,8 @@ export const putRoute = createAsyncThunk(
     }
 
     // обновление маршрута в сторе
-    dispatch(updateRoute({ id: id, route: newRroute }));
+    dispatch(updateRoute({ id: id, route: newRoute }));
+    dispatch(updateRouteInTrip({ id: id, route: newRoute }));
   }
 );
 
@@ -123,6 +125,7 @@ export const deleteRoute = createAsyncThunk(
 
     // удаление маршрута из стора
     dispatch(removeRoute({ id: id }));
+    dispatch(removeTripByRoute({ id: id }));
   }
 );
 

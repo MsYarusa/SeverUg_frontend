@@ -1,33 +1,63 @@
 import React, { useState, useEffect } from "react";
+import InputMask from "react-input-mask";
 import { useDispatch } from "react-redux";
-import { putEmployee } from "../../../store/requests/EmployeesRequests";
-import { postEmployee } from "../../../store/requests/EmployeesRequests";
-import { translateRole, rolesRU } from "../../../extraFunctions/ExtraFunctions";
+import {
+  putDriver,
+  putEmployee,
+  postEmployee,
+  postDriver,
+  updateAuthEmployee,
+  updateAuthDriver,
+} from "../../../store/requests/EmployeesRequests";
+import { translateRole, rolesEN } from "../../../extraFunctions/ExtraFunctions";
+import { SHA256 } from "crypto-js";
 
 import AddUpdateObject from "../../cards/AddUpdateDeleteObjects";
 
 import "./employeesStyles/AddUpdateEmployee.css";
 
 const AddUpdateEmployee = ({ cancelHandler, data }) => {
+  //ДОП ДАННЫЕ
+  //переменная хранящая выбранную в данные момент роль
+  const [selectedRole, setSelectedRole] = useState(null);
+
+  const selectRoleHandler = (event) => {
+    let role = event.target.value;
+    setSelectedRole(role);
+  };
+
   // УСТАНОВЛЕНИЕ НАЧАЛЬНЫХ ЗНАЧЕНИЙ (в случае их получения)
   // наполнение инпутов данными
+  const [driverIdRendered, setDriverIdRendered] = useState(false);
+
   useEffect(() => {
     if (data) {
+      setSelectedRole(data.role);
+      setDriverIdRendered(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (data && driverIdRendered) {
       document.getElementById("employee-first-name").value = data.first_name;
       document.getElementById("employee-last-name").value = data.last_name;
       document.getElementById("employee-father-name").value = data.father_name
         ? data.father_name
         : "";
-      document.getElementById("employee-role").value = translateRole(data.role);
+      document.getElementById("employee-role").value = data.role;
+
       document.getElementById("employee-email").value = data.email
         ? data.email
         : "";
-      // document.getElementById("employee-phone").value = data.phone
-      //   ? data.phone
-      //   : "";
-      // document.getElementById("employee-login").value = data.login;
+      document.getElementById("employee-phone").value = data.phone_number
+        ? data.phone_number
+        : "";
+      console.log("1", document.getElementById("employee-phone").value);
+      if (data.role === "driver") {
+        document.getElementById("employee-driver_id").value = data.driver_id;
+      }
     }
-  }, [data]);
+  }, [driverIdRendered]);
 
   //ИЗМЕНЕНИЕ ПАРОЛЯ
   // хранение флага на изменение пароля
@@ -47,6 +77,7 @@ const AddUpdateEmployee = ({ cancelHandler, data }) => {
   const [loginOk, setLoginOk] = useState(true);
   const [passwordNotEmpty, setPasswordNotEmpty] = useState(true);
   const [confirmFailed, setConfirmFailed] = useState(false);
+  const [driverIdOk, setDriverIdOk] = useState(true);
 
   //валидация и отправка формы
   const submitHandler = (event) => {
@@ -58,10 +89,16 @@ const AddUpdateEmployee = ({ cancelHandler, data }) => {
     let role = document.getElementById("employee-role").value;
     let email = document.getElementById("employee-email").value;
     let phone = document.getElementById("employee-phone").value;
-    let login = document.getElementById("employee-login").value;
+    let driverId = "11 11 111111";
+    let login = null;
     let password = null;
     let passwordConfiirmation = null;
+
+    if (role === "driver") {
+      driverId = document.getElementById("employee-driver_id").value;
+    }
     if (!data || changePassword) {
+      login = document.getElementById("employee-login").value;
       password = document.getElementById("employee-password").value;
       passwordConfiirmation = document.getElementById(
         "employee-password-confirmation"
@@ -73,8 +110,11 @@ const AddUpdateEmployee = ({ cancelHandler, data }) => {
     let lastNameOk = lastName !== "";
     let roleOk = role !== "Должность";
     let loginOk = login !== "";
-    let passwordNotEmpty = password !== "" || data;
+    let passwordNotEmpty = password !== "";
     let confirmFailed = password !== passwordConfiirmation;
+    let driverIdOk = driverId !== "";
+
+    password = SHA256(password);
 
     // сохранение флагов
     setFirstNameOk(firstNameOk);
@@ -83,6 +123,7 @@ const AddUpdateEmployee = ({ cancelHandler, data }) => {
     setLoginOk(loginOk);
     setPasswordNotEmpty(passwordNotEmpty);
     setConfirmFailed(confirmFailed);
+    setDriverIdOk(driverIdOk);
 
     // если данные корректны, то происходит отправка запроса
     if (
@@ -91,41 +132,81 @@ const AddUpdateEmployee = ({ cancelHandler, data }) => {
       roleOk &&
       loginOk &&
       passwordNotEmpty &&
+      driverIdOk &&
       !confirmFailed
     ) {
-      const newEmployee = {
-        role: translateRole(role),
-        first_name: firstName,
-        last_name: lastName,
-        father_name: fatherName,
-        email: email,
-        phone: phone,
-        login: data ? (login ? login : "defaultLogin") : login,
-        password: data ? (password ? password : "1234567890") : password,
-      };
-      if (data) {
-        //если был указан сотрудник, то его данные обновляются
-        // console.log({
-        //   id: data.id,
-        //   employee: newEmployee,
-        // });
-        dispatch(
-          putEmployee({
-            id: data.id,
-            employee: newEmployee,
-          })
-        );
+      if (role === "driver") {
+        const newDriver = {
+          driver_id: driverId,
+          login: data ? null : login,
+          password: data ? null : password,
+          first_name: firstName,
+          last_name: lastName,
+          father_name: fatherName,
+          email: email,
+          phone_number: phone,
+          role: "driver",
+        };
+
+        if (data) {
+          dispatch(
+            putDriver({
+              id: data.id,
+              driver: newDriver,
+            })
+          );
+          dispatch(
+            updateAuthDriver({
+              id: data.id,
+              login: login,
+              password: password,
+            })
+          );
+          if (changePassword) {
+          }
+        } else {
+          dispatch(
+            postDriver({
+              driver: newDriver,
+            })
+          );
+        }
       } else {
-        // если начальные значения не были указаны, то создается новый сотрудник
-        // console.log({
-        //   employee: newEmployee,
-        // });
-        dispatch(
-          postEmployee({
-            employee: newEmployee,
-          })
-        );
+        const newEmployee = {
+          role: role,
+          first_name: firstName,
+          last_name: lastName,
+          father_name: fatherName,
+          email: email,
+          phone_number: phone,
+          login: data ? null : login,
+          password: data ? null : password,
+        };
+        if (data) {
+          //если был указан сотрудник, то его данные обновляются
+          dispatch(
+            putEmployee({
+              id: -data.id,
+              employee: newEmployee,
+            })
+          );
+          dispatch(
+            updateAuthEmployee({
+              id: -data.id,
+              login: login,
+              password: password,
+            })
+          );
+        } else {
+          // если начальные значения не были указаны, то создается новый сотрудник
+          dispatch(
+            postEmployee({
+              employee: newEmployee,
+            })
+          );
+        }
       }
+
       //закрытие окна
       cancelHandler();
     }
@@ -170,16 +251,27 @@ const AddUpdateEmployee = ({ cancelHandler, data }) => {
           id="employee-role"
           defaultValue={"Должность"}
           className={roleOk ? "base-border" : "error-border"}
+          onChange={selectRoleHandler}
         >
           <option disabled value={"Должность"}>
             Должность
           </option>
-          {rolesRU?.map((role) => (
+          {rolesEN?.map((role) => (
             <option key={role} value={role}>
-              {role}
+              {translateRole(role)}
             </option>
           ))}
         </select>
+        {selectedRole === "driver" && (
+          <InputMask
+            mask="99 99 999999"
+            id="employee-driver_id"
+            type="text"
+            className={driverIdOk ? "base-border" : "error-border"}
+            placeholder="Водительское удостоверение (серия и номер)"
+            autoComplete="off"
+          />
+        )}
       </div>
 
       <label className="secondary-label">Контактные данные</label>
@@ -190,48 +282,67 @@ const AddUpdateEmployee = ({ cancelHandler, data }) => {
           placeholder="Электронная почта"
           autoComplete="off"
         />
-        <input
+        <InputMask
+          mask="+7 (999) 999-99-99"
           id="employee-phone"
           type="text"
-          placeholder="8 999 999 99 99"
+          placeholder="Мобильный номер"
           autoComplete="off"
         />
       </div>
       <label className="secondary-label">Данные авторизации</label>
       <div id="auth-data" className="employee-inputs">
-        <input
-          id="employee-login"
-          type="text"
-          placeholder="Логин"
-          autoComplete="off"
-          name="user-login"
-          className={loginOk ? "base-border" : "error-border"}
-        />
+        {data && !changePassword && (
+          <>
+            <button
+              id="change-password"
+              type="button"
+              onClick={changePasswordHandler}
+            >
+              Изменить данные авторизации
+            </button>
+          </>
+        )}
         {!data && (
-          <PasswordInputs
-            passwordNotEmpty={passwordNotEmpty}
-            confirmFailed={confirmFailed}
-          />
+          <>
+            <input
+              id="employee-login"
+              type="text"
+              placeholder="Логин"
+              autoComplete="off"
+              name="user-login"
+              className={loginOk ? "base-border" : "error-border"}
+            />
+            <PasswordInputs
+              passwordNotEmpty={passwordNotEmpty}
+              confirmFailed={confirmFailed}
+            />
+          </>
+        )}
+        {changePassword && (
+          <>
+            <button
+              id="change-password"
+              type="button"
+              onClick={changePasswordHandler}
+            >
+              Отмена
+            </button>
+            <input
+              id="employee-login"
+              type="text"
+              placeholder="Логин"
+              autoComplete="off"
+              name="user-login"
+              className={loginOk ? "base-border" : "error-border"}
+            />
+            <PasswordInputs
+              passwordNotEmpty={passwordNotEmpty}
+              confirmFailed={confirmFailed}
+            />
+          </>
         )}
       </div>
-
-      {data && !changePassword && (
-        <>
-          <button
-            id="change-password"
-            type="button"
-            onClick={changePasswordHandler}
-          >
-            Изменить пароль
-          </button>
-        </>
-      )}
-      {changePassword && (
-        <PasswordInputs
-          passwordNotEmpty={passwordNotEmpty}
-          confirmFailed={confirmFailed}
-        />
-      )}
     </AddUpdateObject>
   );
 };

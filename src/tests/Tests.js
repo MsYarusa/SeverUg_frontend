@@ -26,15 +26,12 @@ const axios = require("axios").default;
 // let a = new Date("2023-11-01");
 // console.log(a);
 // console.log(typeof "dsd");
-a = [
-  [1, 2],
-  [3, 4, 5, 6, 7],
-];
-if (a[3]) {
-  a[3][0] = 5;
-} else {
-  let b = [];
-  b[5] = 5;
-  a[3] = b;
+
+const ob = [{ a: 1, b: 2 }];
+let ad = ob;
+for (let o of ad) {
+  o.a = 3;
 }
-console.log(a[3][5]);
+let a = 1;
+
+console.log(-a);

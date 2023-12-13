@@ -5,7 +5,7 @@
 
 .bus-status {
   position: absolute;
-  left: 70%;
+  left: 50%;
 }
 
 .bus-info__container {
@@ -15,22 +15,12 @@
   margin-bottom: 15px;
 }
 
-.bus-driver-label {
+.bus-info-label {
   position: absolute;
   left: 5%;
 }
 
-.bus-driver-info {
-  position: absolute;
-  left: 20%;
-}
-
-.bus-model-label {
-  position: absolute;
-  left: 5%;
-}
-
-.bus-model-info {
+.bus-info {
   position: absolute;
   left: 20%;
 }

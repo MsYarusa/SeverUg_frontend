@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ObjectFilter from "../../cards/ObjectFilter";
 import { useSelector } from "react-redux";
 
@@ -7,6 +7,15 @@ import cancelImg from "../../cards/buttonImgs/close.svg";
 const BusFilter = ({ onFilter }) => {
   // ПОЛУЧЕНИЕ ДАННЫХ ИЗ СТОРА
   const models = useSelector((state) => state.buses.models);
+  const [modelLables, setModelLabels] = useState([]);
+
+  useEffect(() => {
+    let modelLables = [];
+    models.forEach((model, i, arr) => {
+      modelLables.push(model.model);
+    });
+    setModelLabels(modelLables);
+  }, []);
 
   // ПАРАМЕТРЫ ФИЛЬТРА
   // хранение параметров фильтра
@@ -50,7 +59,7 @@ const BusFilter = ({ onFilter }) => {
     }
 
     if (onlyDefault) {
-      newFilterConfig.models = models;
+      newFilterConfig.models = modelLables;
     }
     // изменяем старые параметры в соответствии с новыми
     setFilterConfig(newFilterConfig);
@@ -113,7 +122,7 @@ const BusFilter = ({ onFilter }) => {
 
     // изменяем параметры фильтра
     let newFilterConfig = filterConfig;
-    newFilterConfig.models = onlyDefault ? models : modelsForSave;
+    newFilterConfig.models = onlyDefault ? modelLables : modelsForSave;
     setFilterConfig(newFilterConfig);
     onFilter(newFilterConfig);
   };
@@ -142,7 +151,7 @@ const BusFilter = ({ onFilter }) => {
         key={0}
         index={0}
         defaultValue="Выбрать"
-        models={models}
+        models={modelLables}
         deleteHandler={deleteRoleHandler}
         onChange={filterHandler}
         isOnly={!extraModelFilter.length}
@@ -153,7 +162,7 @@ const BusFilter = ({ onFilter }) => {
             key={index}
             index={index}
             defaultValue="Выбрать"
-            models={models}
+            models={modelLables}
             deleteHandler={deleteRoleHandler}
             onChange={filterHandler}
             isOnly={0}

@@ -10,6 +10,15 @@ import "./busesStyles/AddUpdateBus.css";
 const AddUpdateBus = ({ cancelHandler, data }) => {
   // получение данных из стора
   const models = useSelector((state) => state.buses.models);
+  const [modelLables, setModelLabels] = useState([]);
+
+  useEffect(() => {
+    let modelLables = [];
+    models.forEach((model, i, arr) => {
+      modelLables.push(model.model);
+    });
+    setModelLabels(modelLables);
+  }, []);
 
   // УСТАНОВЛЕНИЕ НАЧАЛЬНЫХ ЗНАЧЕНИЙ (в случае их получения)
   // наполнение инпутов данными
@@ -18,7 +27,7 @@ const AddUpdateBus = ({ cancelHandler, data }) => {
       document.getElementById("bus-model").value = data.model;
       document.getElementById("bus-code").value = data.code;
     }
-  }, [data]);
+  }, []);
 
   const dispatch = useDispatch();
   // ВАЛИДАЦИЯ
@@ -99,7 +108,7 @@ const AddUpdateBus = ({ cancelHandler, data }) => {
           <option disabled value={"Выбрать"}>
             Выбрать
           </option>
-          {models?.map((model) => (
+          {modelLables?.map((model) => (
             <option key={model} value={model}>
               {model}
             </option>
@@ -112,8 +121,19 @@ const AddUpdateBus = ({ cancelHandler, data }) => {
           type="text"
           id="bus-code"
           className={codeOk ? "base-border" : "error-border"}
+          placeholder="Номер"
         />
       </div>
+      {data && (
+        <div className="label-input bus-input">
+          {" "}
+          <label>Статус автобуса: </label>
+          <select id="bus-status" defaultValue="active">
+            <option value="active">активный</option>
+            <option value="unactive">на ремонте</option>
+          </select>
+        </div>
+      )}
     </AddUpdateObject>
   );
 };

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getEmployees } from "../../../store/requests/EmployeesRequests";
+import { getDrivers } from "../../../store/requests/EmployeesRequests";
+import { getBuses } from "../../../store/requests/BusesRequests";
 
 import ObjectsPage from "../../cards/ObjectsPage";
 import AddUpdateEmployee from "./AddUpdateEmployee";
@@ -13,6 +15,8 @@ const EmployeesPage = () => {
   //ДАННЫЕ
   // запрашиваем данные из стора
   const employees = useSelector((state) => state.employees.employees);
+  const drivers = useSelector((state) => state.employees.drivers);
+  const buses = useSelector((state) => state.buses.buses);
 
   // если стор пуст то делаем запрос на сервер
   const dispatch = useDispatch();
@@ -20,12 +24,23 @@ const EmployeesPage = () => {
     if (employees.length === 0) {
       dispatch(getEmployees());
     }
+    if (drivers.length === 0) {
+      dispatch(getDrivers());
+    }
+    if (buses.length === 0) {
+      dispatch(getBuses());
+    }
   }, []);
+
+  const [allEmployees, setAllEmployees] = useState([]);
+  useEffect(() => {
+    setAllEmployees([...employees, ...drivers]);
+  }, [employees, drivers]);
 
   // ПОИСК И ФИЛЬТР
   // хранение отфильтрованного списка
-  const [searchedList, setSearchedList] = useState(employees);
-  const [filteredList, setFilteredList] = useState(employees);
+  const [searchedList, setSearchedList] = useState(allEmployees);
+  const [filteredList, setFilteredList] = useState(allEmployees);
   // сохранение параметров фильтра
   const [savedFilteredConfig, setSavedFilteredConfig] = useState({
     roles: [],
@@ -33,9 +48,9 @@ const EmployeesPage = () => {
 
   // задаем начальные значения отфильтрованных списков
   useEffect(() => {
-    setSearchedList(employees);
-    setFilteredList(employees);
-  }, [employees]);
+    setSearchedList(allEmployees);
+    setFilteredList(allEmployees);
+  }, [allEmployees]);
 
   // после поиска необходимо отфильтровать список с учетом сохраненных параметров
   useEffect(() => {
@@ -51,7 +66,7 @@ const EmployeesPage = () => {
     // массив для сохранения результатов поиска
     let search_results = [];
     // пробегаемся по всем сотрудникам и проверяем их на соответствие параметрам
-    for (let emp of employees) {
+    for (let emp of allEmployees) {
       // получем фамилию, имя, отчество сотрудников и сохраняем их в список
       let lastName = emp.last_name.toLowerCase().split(" ");
       let firstName = emp.first_name.toLowerCase().split(" ");
@@ -114,7 +129,7 @@ const EmployeesPage = () => {
       filterHandler={filterHandler}
       searchHandler={searchHandler}
       list={filteredList}
-      objects={employees}
+      objects={allEmployees}
     />
   );
 };

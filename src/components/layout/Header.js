@@ -47,6 +47,7 @@ const Header = () => {
           <DropdownObject
             label={[user.last_name, user.first_name].join(" ")}
             style="dropdown-user"
+            isLinks={false}
           >
             <div>
               <p>Должность:</p>
@@ -71,7 +72,7 @@ const AdminNavLinks = () => {
       <NavLink to="/">
         <p className="link-label">Главная</p>
       </NavLink>
-      <DropdownObject label="Менеджер" style="dropdown">
+      <DropdownObject label="Менеджер" style="dropdown" isLinks={true}>
         <NavLink to="/buses">
           <p>Автобусы</p>
         </NavLink>
@@ -85,7 +86,7 @@ const AdminNavLinks = () => {
           <p>Расписание</p>
         </NavLink>
       </DropdownObject>
-      <DropdownObject label="Дирекция" style="dropdown">
+      <DropdownObject label="Дирекция" style="dropdown" isLinks={true}>
         <NavLink to="/canceled">
           <p>Отмененные</p>
         </NavLink>
@@ -96,7 +97,7 @@ const AdminNavLinks = () => {
           <p>Успешные</p>
         </NavLink>
       </DropdownObject>
-      <DropdownObject label="Кассир" style="dropdown">
+      <DropdownObject label="Кассир" style="dropdown" isLinks={true}>
         <NavLink to="/tickets">
           <p>Билеты</p>
         </NavLink>
@@ -150,25 +151,23 @@ const CashierNavLinks = () => {
   return <></>;
 };
 
-const DropdownObject = ({ children, label, style }) => {
+const DropdownObject = ({ children, label, style, isLinks }) => {
   const [showDropdown, setShowDropdown] = useState(false);
 
-  const showDropdownHandler = () => {
-    setShowDropdown(!showDropdown);
+  const showDropdownHandler = (event) => {
+    const dropdownDiv = document.getElementById("dropdown__container-" + label);
+    const dropdownIsVisible = document.getElementById("dropdown-" + label);
+    const withinBoundaries = event.composedPath().includes(dropdownDiv);
+
+    if (!withinBoundaries || (dropdownIsVisible && isLinks)) {
+      setShowDropdown(false);
+    } else {
+      setShowDropdown(true);
+    }
   };
 
   useEffect(() => {
-    const dropdownDiv = document.getElementById("dropdown__container-" + label);
-    document.addEventListener("click", (e) => {
-      const withinBoundaries = e.composedPath().includes(dropdownDiv);
-      // console.log("clicked");
-
-      if (!withinBoundaries) {
-        setShowDropdown(false);
-      } else {
-        setShowDropdown(!showDropdown);
-      }
-    });
+    document.addEventListener("click", showDropdownHandler);
   }, []);
 
   return (
@@ -178,7 +177,7 @@ const DropdownObject = ({ children, label, style }) => {
         <img src={showDropdown ? dropup : dropdown} className="dropdown-img" />
       </label>
       {showDropdown && (
-        <div className={style} onClick={showDropdownHandler}>
+        <div id={"dropdown-" + label} className={style}>
           {children}
         </div>
       )}

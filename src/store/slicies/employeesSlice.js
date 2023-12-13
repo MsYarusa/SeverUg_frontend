@@ -40,6 +40,20 @@ const employeesSlice = createSlice({
         (driver) => driver.id !== action.payload.id
       );
     },
+    addBusToDriver(state, action) {
+      state.drivers.forEach((driver, i, arr) => {
+        if (driver.id === action.payload.driver_id) {
+          driver.bus_id = action.payload.bus_id;
+        }
+      });
+    },
+    removeBusInDriver(state, action) {
+      state.drivers.forEach((driver, i, arr) => {
+        if (driver.bus_id === action.payload.id) {
+          driver.bus_id = null;
+        }
+      });
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -77,5 +91,7 @@ export const {
   addDriver,
   updateDriver,
   removeDriver,
+  addBusToDriver,
+  removeBusInDriver,
 } = employeesSlice.actions;
 export default employeesSlice.reducer;

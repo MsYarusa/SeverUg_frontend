@@ -27,8 +27,13 @@
   width: 100%;
 }
 
+#employee-driver_id {
+  width: 100%;
+}
+
 #change-password {
   margin: 0;
+  margin-bottom: 10px;
   min-height: 50px;
-  width: 100%;
+  width: 99%;
 }

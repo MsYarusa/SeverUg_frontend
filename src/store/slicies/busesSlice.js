@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { getBuses, getModels } from "../requests/BusesRequests";
+import { act } from "react-dom/test-utils";
 
 const busesSlice = createSlice({
   name: "buses",
@@ -22,6 +23,20 @@ const busesSlice = createSlice({
     },
     removeBus(state, action) {
       state.buses = state.buses.filter((bus) => bus.id !== action.payload.id);
+    },
+    addDriverToBus(state, action) {
+      state.buses.forEach((bus, i, arr) => {
+        if (bus.id === action.payload.bus_id) {
+          bus.drive_id = action.payload.driver_id;
+        }
+      });
+    },
+    removeDriverInBus(state, action) {
+      state.buses.forEach((bus, i, arr) => {
+        if (bus.drive_id === action.payload.id) {
+          bus.drive_id = null;
+        }
+      });
     },
   },
   extraReducers: (builder) => {
@@ -53,5 +68,11 @@ const busesSlice = createSlice({
   },
 });
 
-export const { addBus, updateBus, removeBus } = busesSlice.actions;
+export const {
+  addBus,
+  updateBus,
+  removeBus,
+  addDriverToBus,
+  removeDriverInBus,
+} = busesSlice.actions;
 export default busesSlice.reducer;

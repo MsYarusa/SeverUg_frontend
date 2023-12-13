@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { putStation } from "../../../store/requests/StationsRequests";
 import { postStation } from "../../../store/requests/StationsRequests";
-import { updateStationInRoute } from "../../../store/slicies/routesSlice";
-import { updateStationInTrip } from "../../../store/slicies/scheduleSlice";
 
 import AddUpdateObject from "../../cards/AddUpdateDeleteObjects";
 
@@ -48,9 +46,6 @@ const AddUpdateStation = ({ cancelHandler, data }) => {
     if (nameOk && noRepeats) {
       if (data) {
         //если станция была указана, то данные станции обновляются
-        // локально подтягиваем изменения в маршрутах и рейсах, связанных с этой станцией
-        dispatch(updateStationInRoute({ id: data.id, name: name }));
-        dispatch(updateStationInTrip({ id: data.id, name: name }));
         // отправка запроса
         dispatch(
           putStation({

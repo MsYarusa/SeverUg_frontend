@@ -270,65 +270,54 @@ const AddUpdateRoute = ({ cancelHandler, data }) => {
       !containsNullTime &&
       !containsNullCost
     ) {
-      // dispatch(postCostGroup(costForAdd));
-      // dispatch(postTimeGroup(timeForAdd));
-      // costForUpdate.forEach((costGroup, i, arr) => {
-      //   dispatch(putCostGroup(costGroup));
-      // });
-      // timeForUpdate.forEach((timeGroup, i, arr) => {
-      //   dispatch(putTimeGroup(timeGroup));
-      // });
+      dispatch(postCostGroup(costForAdd));
+      dispatch(postTimeGroup(timeForAdd));
+      costForUpdate.forEach((costGroup, i, arr) => {
+        dispatch(putCostGroup(costGroup));
+      });
+      timeForUpdate.forEach((timeGroup, i, arr) => {
+        dispatch(putTimeGroup(timeGroup));
+      });
 
-      console.log(
-        " postCostGroup ",
-        costForAdd,
-        " putCostGroup ",
-        costForUpdate
-      );
-      console.log(
-        " postTimeGroup ",
-        timeForAdd,
-        " putTimeGroup ",
-        timeForUpdate
-      );
+      // console.log(
+      //   " postCostGroup ",
+      //   costForAdd,
+      //   " putCostGroup ",
+      //   costForUpdate
+      // );
+      // console.log(
+      //   " postTimeGroup ",
+      //   timeForAdd,
+      //   " putTimeGroup ",
+      //   timeForUpdate
+      // );
 
       if (data) {
         //если был указан маршрут, то данные маршрута обновляются
-        const newRoute = {
-          id: data.id,
-          cost: costForSave.join(" "),
-          time: timeForSave.join(" "),
-          stations: stationsForAdd,
-        };
-        // локальное изменение связанных с маршрутом рейсов
-
-        // dispatch(updateRouteInTrip({ id: data.id, id: newRoute }));
-
         // отправка запроса
+        dispatch(
+          putRoute({
+            id: data.id,
+            route: { stations_id: indexesForAdd },
+          })
+        );
 
-        // dispatch(
-        //   putRoute({
-        //     id: data.id,
-        //     route: { stations_id: indexesForAdd },
-        //   })
-        // );
-
-        console.log(" putRoute ", {
-          id: data.id,
-          route: { stations_id: indexesForAdd },
-        });
+        // console.log(" putRoute ", {
+        //   id: data.id,
+        //   route: { stations_id: indexesForAdd },
+        // });
       } else {
         // если начальные значения не были указаны, то создается новый маршрут
 
-        // dispatch(
-        //   postRoute({
-        //     route: { stations_id: indexesForAdd },
-        //   })
-        // );
+        dispatch(
+          postRoute({
+            route: { stations_id: indexesForAdd },
+          })
+        );
 
-        console.log(" postRoute ", {
-          route: { stations_id: indexesForAdd },
-        });
+        // console.log(" postRoute ", {
+        //   route: { stations_id: indexesForAdd },
+        // });
       }
       //закрытие окна
       cancelHandler();
@@ -338,12 +327,12 @@ const AddUpdateRoute = ({ cancelHandler, data }) => {
   // функция выводящая тип ошибки в случае некорретных входных данных
   const errorMessage = () => {
     switch (true) {
+      case containsNullTime:
+        return "Пустое поле времени";
       case containsNullCost:
         return "Пустое поле стоимости";
       case containsNullStation:
         return "Поля со значением Выбрать (станция не указана)";
-      case containsNullTime:
-        return "Пустое поле времени";
       default:
         return "Необходимо указать минимум две оставновки";
     }

@@ -1,14 +1,11 @@
 import React, { useState } from "react";
 import ObjectFilter from "../../cards/ObjectFilter";
 import { useSelector } from "react-redux";
-import { translateRole } from "../../../extraFunctions/ExtraFunctions";
+import { translateRole, rolesEN } from "../../../extraFunctions/ExtraFunctions";
 
 import cancelImg from "../../cards/buttonImgs/close.svg";
 
 const EmployeeFilter = ({ onFilter }) => {
-  // ПОЛУЧЕНИЕ ДАННЫХ ИЗ СТОРА
-  const roles = useSelector((state) => state.employees.roles);
-
   // ПАРАМЕТРЫ ФИЛЬТРА
   // хранение параметров фильтра
   const [filterConfig, setFilterConfig] = useState({ roles: [] });
@@ -91,7 +88,7 @@ const EmployeeFilter = ({ onFilter }) => {
 
     // изменяем параметры фильтра
     let newFilterConfig = filterConfig;
-    newFilterConfig.roles = onlyDefault ? roles : rolesForSave;
+    newFilterConfig.roles = onlyDefault ? rolesEN : rolesForSave;
     setFilterConfig(newFilterConfig);
     onFilter(newFilterConfig);
   };
@@ -102,7 +99,6 @@ const EmployeeFilter = ({ onFilter }) => {
         key={0}
         index={0}
         defaultValue="Выбрать"
-        roles={roles}
         deleteHandler={deleteRoleHandler}
         onChange={filterHandler}
         isOnly={!extraRoles.length}
@@ -113,7 +109,6 @@ const EmployeeFilter = ({ onFilter }) => {
             key={index}
             index={index}
             defaultValue="Выбрать"
-            roles={roles}
             deleteHandler={deleteRoleHandler}
             onChange={filterHandler}
             isOnly={0}
@@ -132,7 +127,6 @@ export default EmployeeFilter;
 const RoleSelect = ({
   index,
   defaultValue,
-  roles,
   deleteHandler,
   onChange,
   isOnly,
@@ -148,7 +142,7 @@ const RoleSelect = ({
         <option disabled value={defaultValue}>
           {defaultValue}
         </option>
-        {roles?.map((role) => (
+        {rolesEN?.map((role) => (
           <option key={role + index} value={role}>
             {translateRole(role)}
           </option>

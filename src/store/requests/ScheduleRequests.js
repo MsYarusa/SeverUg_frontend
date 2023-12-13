@@ -36,6 +36,7 @@ export const getSchedule = createAsyncThunk(
     for (let trip of data) {
       trip.days.forEach((day, i, arr) => {
         day = day === 7 ? 0 : day;
+        trip.days[i] = day;
       });
     }
 
@@ -46,20 +47,16 @@ export const getSchedule = createAsyncThunk(
 // ДОБАВЛЕНИЕ РЕЙСА
 export const postTrip = createAsyncThunk(
   "schedule/postTrip",
-  async ({ days, time, road_id }, { rejectWithValue, dispatch }) => {
-    let trip = null;
+  async ({ trip }, { rejectWithValue, dispatch }) => {
+    let newTrip = null;
 
     //отправление запроса
     try {
       await axios
-        .post("https://spacekot.ru/apishechka/trip", {
-          departure_time: time,
-          days: days,
-          road_id: road_id,
-        })
+        .post("https://spacekot.ru/apishechka/trip", trip)
         .then((res) => {
           console.log("статус: успешно");
-          trip = res.data;
+          newTrip = res.data;
         })
         .catch((error) => {
           console.error("ошибка: ", error.message);
@@ -69,48 +66,27 @@ export const postTrip = createAsyncThunk(
       return rejectWithValue(error.message);
     }
 
-    // обработка массива дней недели
-    if (typeof trip.days === "string") {
-      trip.days = trip.days.split(" ");
-      trip.days.forEach((item, i, arr) => {
-        arr[i] = Number(item);
-      });
-    }
-    // восстановление последовательности станций
-    trip.road.sort = trip.road.sort.split(" ");
-    trip.road.sort.forEach((item, i, arr) => {
-      arr[i] = Number(item);
+    newTrip.days.forEach((day, i, arr) => {
+      day = day === 7 ? 0 : day;
     });
 
-    let sortedStations = [];
-    for (let i of trip.road.sort) {
-      let station = trip.road.stations.find((station) => station.id === i);
-      sortedStations.push(station);
-    }
-    trip.road.stations = sortedStations;
-
-    // добавление рейса в стор
-    dispatch(addTrip({ trip: trip }));
+    dispatch(addTrip({ trip: newTrip }));
   }
 );
 
 // ИЗМЕНЕНИЯ ДАННЫХ РЕЙСА
 export const putTrip = createAsyncThunk(
   "schedule/putTrip",
-  async ({ id, days, time, road_id }, { rejectWithValue, dispatch }) => {
-    let trip = null;
+  async ({ id, trip }, { rejectWithValue, dispatch }) => {
+    let newTrip = null;
 
     //отправление запроса
     try {
       await axios
-        .put(`https://spacekot.ru/apishechka/trip/${id}`, {
-          departure_time: time,
-          days: days,
-          road_id: road_id,
-        })
+        .put(`https://spacekot.ru/apishechka/trip/${id}`, trip)
         .then((res) => {
           console.log("статус: успешно");
-          trip = res.data;
+          newTrip = res.data;
         })
         .catch((error) => {
           console.error("ошибка: ", error.message);
@@ -120,28 +96,11 @@ export const putTrip = createAsyncThunk(
       return rejectWithValue(error.message);
     }
 
-    // обработка массива дней недели
-    if (typeof trip.days === "string") {
-      trip.days = trip.days.split(" ");
-      trip.days.forEach((item, i, arr) => {
-        arr[i] = Number(item);
-      });
-    }
-    // восстановление последовательности станций
-    trip.road.sort = trip.road.sort.split(" ");
-    trip.road.sort.forEach((item, i, arr) => {
-      arr[i] = Number(item);
+    newTrip.days.forEach((day, i, arr) => {
+      day = day === 7 ? 0 : day;
     });
-
-    let sortedStations = [];
-    for (let i of trip.road.sort) {
-      let station = trip.road.stations.find((station) => station.id === i);
-      sortedStations.push(station);
-    }
-    trip.road.stations = sortedStations;
-
     // обновление рейса в сторе
-    dispatch(updateTrip({ id: id, trip: trip }));
+    dispatch(updateTrip({ id: id, trip: newTrip }));
   }
 );
 

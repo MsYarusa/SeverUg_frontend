@@ -1,6 +1,13 @@
 import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { addBus, updateBus, removeBus } from "../slicies/busesSlice";
+import {
+  addBus,
+  updateBus,
+  removeBus,
+  addDriverToBus,
+} from "../slicies/busesSlice";
+import { addBusToDriver, removeBusInDriver } from "../slicies/employeesSlice";
+import { updateBusInTrip, removeTripByBus } from "../slicies/scheduleSlice";
 
 // тесты
 import { buses, models } from "../../tests/TestData/TestBuses";
@@ -118,6 +125,7 @@ export const putBus = createAsyncThunk(
 
     // обновление автобуса в сторе
     dispatch(updateBus({ id: id, bus: newBus }));
+    dispatch(updateBusInTrip({ id: id, bus: newBus }));
   }
 );
 
@@ -142,5 +150,34 @@ export const deleteBus = createAsyncThunk(
 
     // удаление автобоса из стора
     dispatch(removeBus({ id: id }));
+    dispatch(removeBusInDriver({ id: id }));
+    dispatch(removeTripByBus({ id: id }));
+  }
+);
+
+// ДОБАВЛЕНИЕ ВОДИТЕЛЯ
+export const patchBus = createAsyncThunk(
+  "buses/patchBus",
+  async ({ bus_id, driver_id }, { rejectWithValue, dispatch }) => {
+    //отправление запроса
+    try {
+      await axios
+        .patch(
+          `https://spacekot.ru/apishechka/driver?bus_id=${bus_id}&driver_id=${driver_id}`
+        )
+        .then((res) => {
+          console.log("статус: успешно");
+        })
+        .catch((error) => {
+          console.error("ошибка: ", error.message);
+          throw new Error(error.message);
+        });
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+
+    // связывание автобуса и водителя в сторе
+    dispatch(addBusToDriver({ bus_id: bus_id, driver_id: driver_id }));
+    dispatch(addDriverToBus({ bus_id: bus_id, driver_id: driver_id }));
   }
 );

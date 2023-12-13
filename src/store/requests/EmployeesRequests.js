@@ -8,7 +8,11 @@ import {
   updateDriver,
   removeDriver,
 } from "../slicies/employeesSlice";
-
+import { removeDriverInBus } from "../slicies/busesSlice";
+import {
+  updateDriverInTrip,
+  removeTripByDriver,
+} from "../slicies/scheduleSlice";
 // тесты
 import { employees, drivers } from "../../tests/TestData/TestEmployees";
 
@@ -40,6 +44,10 @@ export const getEmployees = createAsyncThunk(
       return rejectWithValue(error.message);
     }
 
+    data.forEach((employee, i, arr) => {
+      data[i].id = -employee.id;
+    });
+
     return data;
   }
 );
@@ -65,6 +73,7 @@ export const postEmployee = createAsyncThunk(
       return rejectWithValue(error.message);
     }
 
+    newEmployee.id = -newEmployee.id;
     // добавление сотрудника в стор
     dispatch(addEmployee({ employee: newEmployee }));
   }
@@ -91,8 +100,32 @@ export const putEmployee = createAsyncThunk(
       return rejectWithValue(error.message);
     }
 
+    newEmployee.id = -newEmployee.id;
     // обновление сотрудника в сторе
     dispatch(updateEmployee({ id: id, employee: newEmployee }));
+  }
+);
+
+// ИЗМЕНЕНИЕ ДАННЫХ АВТОРИЗАЦИИ СОТРУДНИКА
+export const updateAuthEmployee = createAsyncThunk(
+  "employees/updateAuthEmployee",
+  async ({ id, login, password }, { rejectWithValue }) => {
+    //отправление запроса
+    try {
+      await axios
+        .patch(
+          `https://spacekot.ru/apishechka/user/${id}?login=${login}&password=${password}`
+        )
+        .then((res) => {
+          console.log("статус: успешно");
+        })
+        .catch((error) => {
+          console.error("ошибка: ", error.message);
+          throw new Error(error.message);
+        });
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
   }
 );
 
@@ -152,7 +185,7 @@ export const getDrivers = createAsyncThunk(
   }
 );
 
-// ДОБАВЛЕНИЕ СОТРУДНИКА
+// ДОБАВЛЕНИЕ ВОДИТЕЛЯ
 export const postDriver = createAsyncThunk(
   "employees/postDriver",
   async ({ driver }, { rejectWithValue, dispatch }) => {
@@ -178,7 +211,7 @@ export const postDriver = createAsyncThunk(
   }
 );
 
-// ИЗМЕНЕНИЯ ДАННЫХ СОТРУДНИКА
+// ИЗМЕНЕНИЯ ДАННЫХ ВОДИТЕЛЯ
 export const putDriver = createAsyncThunk(
   "employees/putDriver",
   async ({ id, driver }, { rejectWithValue, dispatch }) => {
@@ -201,10 +234,34 @@ export const putDriver = createAsyncThunk(
 
     // обновление сотрудника в сторе
     dispatch(updateDriver({ id: id, driver: newDriver }));
+    dispatch(updateDriverInTrip({ id: id, driver: newDriver }));
   }
 );
 
-// УДАЛЕНИЕ СОТРУДНИКА
+// ИЗМЕНЕНИЕ ДАННЫХ АВТОРИЗАЦИИ ВОДИТЕЛЯ
+export const updateAuthDriver = createAsyncThunk(
+  "employees/updateAuthDriver",
+  async ({ id, login, password }, { rejectWithValue }) => {
+    //отправление запроса
+    try {
+      await axios
+        .patch(
+          `https://spacekot.ru/apishechka/driver/${id}?login=${login}&password=${password}`
+        )
+        .then((res) => {
+          console.log("статус: успешно");
+        })
+        .catch((error) => {
+          console.error("ошибка: ", error.message);
+          throw new Error(error.message);
+        });
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+// УДАЛЕНИЕ ВОДИТЕЛЯ
 export const deleteDriver = createAsyncThunk(
   "employees/deleteDriver",
   async ({ id }, { rejectWithValue, dispatch }) => {
@@ -225,5 +282,7 @@ export const deleteDriver = createAsyncThunk(
 
     // удаление сотрудника из стора
     dispatch(removeDriver({ id: id }));
+    dispatch(removeDriverInBus({ id: id }));
+    dispatch(removeTripByDriver({ id: id }));
   }
 );

@@ -2,7 +2,7 @@ export const schedule = [
   {
     id: 1,
     departure_time: "15:11",
-    days: [1, 2, 5],
+    days: [1, 2, 7],
     driver: {
       token: null,
       id: 1,

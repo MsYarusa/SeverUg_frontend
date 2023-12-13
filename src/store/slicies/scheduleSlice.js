@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { getSchedule } from "../requests/ScheduleRequests";
+import { schedule } from "../../tests/TestData/TestSchedule";
 
 const scheduleSlice = createSlice({
   name: "schedule",
@@ -41,6 +42,43 @@ const scheduleSlice = createSlice({
         }
       });
     },
+    removeTripByStation(state, action) {
+      state.schedule = state.schedule.filter(
+        (trip) =>
+          !trip.road.stations.find(
+            (station) => station.id === action.payload.id
+          )
+      );
+    },
+    removeTripByRoute(state, action) {
+      state.schedule = state.schedule.filter(
+        (trip) => trip.road.id !== action.payload.route.id
+      );
+    },
+    updateBusInTrip(state, action) {
+      state.schedule.forEach((trip, i, arr) => {
+        if (trip.bus === action.payload.id) {
+          trip.bus = action.payload.bus;
+        }
+      });
+    },
+    updateDriverInTrip(state, action) {
+      state.schedule.forEach((trip, i, arr) => {
+        if (trip.driver === action.payload.id) {
+          trip.driver = action.payload.driver;
+        }
+      });
+    },
+    removeTripByBus(state, action) {
+      state.schedule = state.schedule.filter(
+        (trip) => trip.bus.id !== action.payload.id
+      );
+    },
+    removeTripByDriver(state, action) {
+      state.schedule = state.schedule.filter(
+        (trip) => trip.driver.id !== action.payload.id
+      );
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -65,5 +103,11 @@ export const {
   removeTrip,
   updateRouteInTrip,
   updateStationInTrip,
+  removeTripByRoute,
+  removeTripByStation,
+  updateBusInTrip,
+  updateDriverInTrip,
+  removeTripByBus,
+  removeTripByDriver,
 } = scheduleSlice.actions;
 export default scheduleSlice.reducer;

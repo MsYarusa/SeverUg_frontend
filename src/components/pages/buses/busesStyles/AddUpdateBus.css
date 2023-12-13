@@ -1,19 +1,28 @@
 .bus-input {
-  max-width: 400px;
+  width: 475px;
 }
 
 .bus-input select {
-  max-width: 47%;
+  width: 55%;
 }
 
 .bus-input input {
   position: static;
 
-  max-width: 45%;
-  width: 47%;
+  width: 54%;
   height: 48px;
 }
 
 .bus-input label {
-  width: 50%;
+  width: 40%;
+}
+
+#driver-select {
+  min-width: 380px;
+  width: 100%;
+}
+
+#driver-busy-message {
+  margin: 0;
+  max-width: 380px;
 }

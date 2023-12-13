@@ -19,7 +19,7 @@ const AddUpdateTrip = ({ cancelHandler, data }) => {
 
   // ХРАНЕНИЕ И ОБРАБОТКА ДАННЫХ ИНПУТОВ
   // хранение выбранных дней недели
-  const [daysSelected, setDaysSelected] = useState("");
+  const [daysSelected, setDaysSelected] = useState([]);
   // хранение выбранного маршрута
   const [selectedRoute, setSelectedRoute] = useState({
     stationIndexes: [],
@@ -42,7 +42,6 @@ const AddUpdateTrip = ({ cancelHandler, data }) => {
 
   // выбор автобуса
   const selectBusHandler = (event) => {
-    console.log(event.target.value);
     let busPare = JSON.parse(event.target.value);
 
     setSelectedBus(busPare);
@@ -93,6 +92,7 @@ const AddUpdateTrip = ({ cancelHandler, data }) => {
   const [daysOk, setDaysOk] = useState(true);
   const [timeOk, setTimeOk] = useState(true);
   const [routeOk, setRouteOk] = useState(true);
+  const [busOk, setBusOk] = useState(true);
 
   //валидация и отправка формы
   const submitHandler = (event) => {
@@ -101,38 +101,45 @@ const AddUpdateTrip = ({ cancelHandler, data }) => {
     // получение данных инпутов
     let time = document.getElementById("time").value;
     let route = JSON.parse(document.getElementById("route-select").value);
+    let busPare = JSON.parse(document.getElementById("bus-select").value);
+    let days = daysSelected;
+
+    days.forEach((day, i, arr) => {
+      day = day === 0 ? 7 : day;
+    });
 
     // проверка корректности значений инпутов
-    let daysOK = daysSelected ? true : false;
+    let daysOK = days.length !== 0 ? true : false;
     let timeOK = time ? true : false;
     let routeOK = route !== "Выбрать" ? true : false;
+    let busOk = busPare !== "Выбрать";
 
     // поднятие флагов в случае корректных данных
     setDaysOk(daysOK);
     setTimeOk(timeOK);
     setRouteOk(routeOK);
+    setBusOk(busOk);
 
     // если данные корректны, то происходит отправка запроса
-    if (daysOK && timeOK && routeOK) {
+    if (daysOK && timeOK && routeOK && busOk) {
+      const trip = {
+        road_id: route.id,
+        days_id: days,
+        departure_time: time,
+        driver_id: busPare.driver.id,
+        bus_id: busPare.bus.id,
+      };
       if (data) {
         //если был указан рейс, то данные рейса обновляются
         dispatch(
           putTrip({
             id: data.id,
-            days: daysSelected,
-            time: time,
-            road_id: route.id,
+            trip: trip,
           })
         );
       } else {
         // если он не был указан, то создается новый рейс
-        dispatch(
-          postTrip({
-            days: daysSelected,
-            time: time,
-            road_id: route.id,
-          })
-        );
+        dispatch(postTrip({ trip: trip }));
       }
       // закрытие окна
       cancelHandler();
@@ -141,7 +148,14 @@ const AddUpdateTrip = ({ cancelHandler, data }) => {
 
   // функция выводящая тип ошибки в случае некорретных входных данных
   const errorMessage = () => {
-    return "Необходимо выбрать маршрут";
+    switch (true) {
+      case !timeOk:
+        return "Необходимо указать время отправления";
+      case !busOk:
+        return "Необходимо назначить автобус";
+      default:
+        return "Необходимо выбрать маршрут";
+    }
   };
 
   return (
@@ -149,7 +163,7 @@ const AddUpdateTrip = ({ cancelHandler, data }) => {
       cancelHandler={cancelHandler}
       submitHandler={submitHandler}
       errorMessage={errorMessage}
-      noErrors={routeOk}
+      noErrors={routeOk && busOk}
     >
       <label>{data ? "Изменение рейса" : "Добавление рейса"}</label>
       <label>Дни работы рейса:</label>
@@ -170,6 +184,7 @@ const AddUpdateTrip = ({ cancelHandler, data }) => {
         id="bus-select"
         defaultValue={JSON.stringify("Выбрать")}
         onChange={selectBusHandler}
+        className={busOk ? "base-border" : "error-border"}
       >
         <option disabled value={JSON.stringify("Выбрать")}>
           Выбрать
@@ -201,6 +216,7 @@ const AddUpdateTrip = ({ cancelHandler, data }) => {
         id="route-select"
         defaultValue={JSON.stringify("Выбрать")}
         onChange={selectRouteHandler}
+        className={routeOk ? "base-border" : "error-border"}
       >
         <option disabled value={JSON.stringify("Выбрать")}>
           Выбрать
@@ -291,7 +307,7 @@ const DayButton = ({
     }
 
     setButtonClicked(!buttonClicked);
-    selectHandler([...newDaysSelected].sort().join(" "));
+    selectHandler([...newDaysSelected]);
     setDaysSelected(newDaysSelected);
   };
 

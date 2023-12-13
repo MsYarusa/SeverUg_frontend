@@ -38,12 +38,7 @@ const DeleteRoute = ({ cancelHandler, id }) => {
   // отправка запроса при подтверждении удаления связанных рейсов
   const secondConfirmHaldler = (event) => {
     event.preventDefault();
-    // удаляем связанные рейсы локально
-    for (let trip of schedule) {
-      if (trip.road.id === id) {
-        dispatch(removeTrip({ id: trip.id }));
-      }
-    }
+
     // отправляем запрос на удаление маршрута
     dispatch(deleteRoute({ id: id }));
     // закрытие окна

@@ -41,6 +41,12 @@ const routesSlice = createSlice({
         }
       });
     },
+    removeRouteByStation(state, action) {
+      state.routes = state.routes.filter(
+        (route) =>
+          !route.stations.find((station) => station.id === action.payload.id)
+      );
+    },
     updateTimeInRoute(state, action) {
       let station1 = action.timeGroup.station_1;
       let station2 = action.timeGroup.station_2;
@@ -129,6 +135,7 @@ export const {
   updateRoute,
   removeRoute,
   updateStationInRoute,
+  removeRouteByStation,
   updateTimeInRoute,
   updateCostInRoute,
   addTimeGroup,

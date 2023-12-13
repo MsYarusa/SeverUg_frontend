@@ -5,6 +5,14 @@ import {
   updateStation,
   removeStation,
 } from "../slicies/stationsSlice";
+import {
+  updateStationInRoute,
+  removeRouteByStation,
+} from "../slicies/routesSlice";
+import {
+  updateStationInTrip,
+  removeTripByStation,
+} from "../slicies/scheduleSlice";
 
 // тесты
 import { stations } from "../../tests/TestData/TestStations";
@@ -93,6 +101,8 @@ export const putStation = createAsyncThunk(
 
     // обновление станции в сторе
     dispatch(updateStation({ id: id, station: station }));
+    dispatch(updateStationInRoute({ id: id, name: name }));
+    dispatch(updateStationInTrip({ id: id, name: name }));
   }
 );
 
@@ -117,5 +127,7 @@ export const deleteStation = createAsyncThunk(
 
     // удаление станции из стора
     dispatch(removeStation({ id: id }));
+    dispatch(removeRouteByStation({ id: id }));
+    dispatch(removeTripByStation({ id: id }));
   }
 );
