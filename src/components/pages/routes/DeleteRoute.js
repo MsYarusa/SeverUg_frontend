@@ -26,7 +26,8 @@ const DeleteRoute = ({ cancelHandler, id }) => {
 
     if (!routeIsUsed) {
       // если связанных рейсов нет, то отправляем запрос
-      dispatch(deleteRoute({ id: id }));
+      // dispatch(deleteRoute({ id: id }));
+      console.log(" deleteRoute ", id);
       cancelHandler();
     } else {
       // если связанные рейсы есть, то поднимаем флаг о их наличии

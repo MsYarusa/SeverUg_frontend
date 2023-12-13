@@ -10,7 +10,7 @@ const ScheduleItem = ({ data, deleteHandler, updateHandler }) => {
     setInfo(!info);
   };
 
-  let totalPrice = SUM(data.road.price);
+  let totalCost = SUM(data.road.cost);
 
   let arrivalTime = getTimeFromMins(
     SUM(data.road.time) + getMinsFromTime(data.departure_time)
@@ -30,7 +30,7 @@ const ScheduleItem = ({ data, deleteHandler, updateHandler }) => {
         SUM(data.road.time.slice(0, i + 1)) +
           getMinsFromTime(data.departure_time)
       ),
-      price: SUM(data.road.price.slice(0, i + 1)),
+      cost: SUM(data.road.cost.slice(0, i + 1)),
     };
     stationsPares.push(newPair);
   });
@@ -52,7 +52,7 @@ const ScheduleItem = ({ data, deleteHandler, updateHandler }) => {
         <p className="trip-departure">{data.road.stations.at(0).name}</p>
         <p className="trip-dash">—</p>
         <p className="trip-destination">{data.road.stations.at(-1).name}</p>
-        <p className="trip-cost">{totalPrice} руб.</p>
+        <p className="trip-cost">{totalCost} руб.</p>
       </ObjectItem>
       {info && (
         <ul className="info">
@@ -64,7 +64,7 @@ const ScheduleItem = ({ data, deleteHandler, updateHandler }) => {
               <p className="trip-station1">{pare.station1}</p>
               <p className="trip-dash">—</p>
               <p className="trip-station2">{pare.station2}</p>
-              <p className="trip-price">{pare.price} руб.</p>
+              <p className="trip-cost">{pare.cost} руб.</p>
             </div>
           ))}
         </ul>

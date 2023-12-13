@@ -1,9 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { putRoute } from "../../../store/requests/RoutesRequests";
-import { postRoute } from "../../../store/requests/RoutesRequests";
+import {
+  postRoute,
+  postCostGroup,
+  postTimeGroup,
+  putRoute,
+  putCostGroup,
+  putTimeGroup,
+} from "../../../store/requests/RoutesRequests";
 import { updateRouteInTrip } from "../../../store/slicies/scheduleSlice";
-import { getTimeFromMins } from "../../../extraFunctions/ExtraFunctions";
+import {
+  getTimeFromMins,
+  getMinsFromTime,
+} from "../../../extraFunctions/ExtraFunctions";
+import { getFromTable } from "../../../extraFunctions/ExtraFunctions";
 
 import { StationSelector, CostTimeInputs } from "../schedule/StationInputs";
 import AddUpdateObject from "../../cards/AddUpdateDeleteObjects";
@@ -15,6 +25,11 @@ const AddUpdateRoute = ({ cancelHandler, data }) => {
 
   // получение данных из стора
   const stations = useSelector((state) => state.stations.stations);
+  const timeTable = useSelector((state) => state.routes.timeTable);
+  const costTable = useSelector((state) => state.routes.costTable);
+
+  // дефолтное значение селектора
+  const defaultValue = "Выбрать";
 
   // ДОБАВЛЕНИЕ НОВЫХ СТАНЦИЙ
   // хранение индексов добавленных станций
@@ -27,18 +42,33 @@ const AddUpdateRoute = ({ cancelHandler, data }) => {
 
   // удаление станции
   const deleteStationHandler = (event) => {
-    let stationsForSave = [];
+    let stationsForAdd = [document.getElementById("s " + 0).value];
     for (let index of stationIndexes) {
       if (event.target.id !== index.toString()) {
-        stationsForSave.push(
-          document.getElementById("s" + index.toString()).value
-        );
+        stationsForAdd.push(document.getElementById("s " + index).value);
       }
     }
     setStationIndexes(stationIndexes.slice(0, -1));
-    for (let index of stationIndexes) {
-      document.getElementById("s" + index.toString()).value =
-        stationsForSave[index - 1];
+
+    document.getElementById("s " + 0).value = stationsForAdd[0];
+
+    for (let index of stationIndexes.slice(0, -1)) {
+      document.getElementById("s " + index).value = stationsForAdd[index];
+
+      // устанавливаем занчения времени и стоимости между станциями
+      let station1 = JSON.parse(stationsForAdd[index - 1]);
+      let station2 = JSON.parse(stationsForAdd[index]);
+
+      let time = null;
+      let cost = null;
+      if (station1 !== defaultValue && station2 !== defaultValue) {
+        time = getFromTable(timeTable, station1.id, station2.id);
+        cost = getFromTable(costTable, station1.id, station2.id);
+      }
+      document.getElementById("time " + index).value = time
+        ? getTimeFromMins(time)
+        : "";
+      document.getElementById("cost " + index).value = cost ? cost : "";
     }
   };
 
@@ -49,7 +79,7 @@ const AddUpdateRoute = ({ cancelHandler, data }) => {
   //создание всех необходимых инпутов
   useEffect(() => {
     if (data) {
-      document.getElementById("s" + 0).value = JSON.stringify(
+      document.getElementById("s " + 0).value = JSON.stringify(
         data.stations.at(0)
       );
       let defaultIndexes = [];
@@ -66,16 +96,69 @@ const AddUpdateRoute = ({ cancelHandler, data }) => {
   useEffect(() => {
     if (restoreSelects) {
       for (let index of stationIndexes) {
-        document.getElementById("s" + index).value = JSON.stringify(
+        document.getElementById("s " + index).value = JSON.stringify(
           data.stations.at(index)
         );
         document.getElementById("time " + index).value = getTimeFromMins(
           data.time[index - 1]
         );
-        document.getElementById("cost " + index).value = data.price[index - 1];
+        document.getElementById("cost " + index).value = data.cost[index - 1];
       }
     }
   }, [restoreSelects]);
+
+  // ПОДГРУЗКА ДАННЫХ ВРЕМЕНИ И СТОИМОСТИ
+  const stationOnChangeHandler = (event) => {
+    // получение айдишников селекта в котором произошло изменение и айдишников соседних селектов
+    let [type, currentID] = event.target.id.split(" ");
+    currentID = Number(currentID);
+    let prevID = currentID >= 1 ? currentID - 1 : null;
+    let nextID = currentID < stationIndexes.at(-1) ? currentID + 1 : null;
+    // получение значений текущего селекта
+    let prevStation =
+      prevID !== null
+        ? JSON.parse(document.getElementById("s " + prevID).value)
+        : defaultValue;
+    let currentStation = JSON.parse(
+      document.getElementById("s " + currentID).value
+    );
+    let nextStation =
+      nextID !== null
+        ? JSON.parse(document.getElementById("s " + nextID).value)
+        : defaultValue;
+
+    // получения значений между текущей станцией и предудыщей
+    let prevTime = null;
+    let prevCost = null;
+    if (prevStation !== defaultValue) {
+      prevTime = getFromTable(timeTable, prevStation.id, currentStation.id);
+      prevCost = getFromTable(costTable, prevStation.id, currentStation.id);
+    }
+    // получения значений между текущей станцией и последующей
+    let nextTime = null;
+    let nextCost = null;
+    if (nextStation !== defaultValue) {
+      nextTime = getFromTable(timeTable, currentStation.id, nextStation.id);
+      nextCost = getFromTable(costTable, currentStation.id, nextStation.id);
+    }
+    // заполение селекторов
+    if (prevID !== null) {
+      document.getElementById("time " + currentID).value = prevTime
+        ? getTimeFromMins(prevTime)
+        : "";
+      document.getElementById("cost " + currentID).value = prevCost
+        ? prevCost
+        : "";
+    }
+    if (nextID !== null) {
+      document.getElementById("time " + nextID).value = nextTime
+        ? getTimeFromMins(nextTime)
+        : "";
+      document.getElementById("cost " + nextID).value = nextCost
+        ? nextCost
+        : "";
+    }
+  };
 
   // ВАЛИДАЦИЯ
   //флаги успешной валидации
@@ -89,20 +172,24 @@ const AddUpdateRoute = ({ cancelHandler, data }) => {
     event.preventDefault();
 
     // массивы для хранения полученных значений
-    let stationsForSave = [];
-    let indexesForSave = [];
+    let stationsForAdd = [];
+    let indexesForAdd = [];
+    let timeForAdd = [];
+    let timeForUpdate = [];
     let timeForSave = [];
+    let costForAdd = [];
+    let costForUpdate = [];
     let costForSave = [];
-    //флаги указывающие некорректность полученных значений
+    // флаги указывающие некорректность полученных значений
     let containsNullStation = false;
     let containsNullTime = false;
     let containsNullCost = false;
 
     // считывание значения первого селектора и проверка его на корректность
-    let firstStation = JSON.parse(document.getElementById("s" + 0).value);
-    if (firstStation !== "Выбрать") {
-      indexesForSave.push(Number(firstStation.id));
-      stationsForSave.push(firstStation);
+    let firstStation = JSON.parse(document.getElementById("s " + 0).value);
+    if (firstStation !== defaultValue) {
+      indexesForAdd.push(Number(firstStation.id));
+      stationsForAdd.push(firstStation);
     } else {
       containsNullStation = true;
     }
@@ -110,75 +197,138 @@ const AddUpdateRoute = ({ cancelHandler, data }) => {
     // считывание всех значений всех последующих инпутов и проверка их на корректность
     for (let index of stationIndexes) {
       // получение значений станций
-      let station = JSON.parse(document.getElementById("s" + index).value);
-      if (station !== "Выбрать") {
-        indexesForSave.push(Number(station.id));
-        stationsForSave.push(station);
+      let prevStation = JSON.parse(
+        document.getElementById("s " + (index - 1)).value
+      );
+      let currentStation = JSON.parse(
+        document.getElementById("s " + index).value
+      );
+
+      if (currentStation !== defaultValue) {
+        indexesForAdd.push(currentStation.id);
+        stationsForAdd.push(currentStation);
       } else {
         containsNullStation = true;
       }
       // получение значений времени
-      let time = document.getElementById("time " + index).value;
-      if (time !== "") {
-        let [hours, minutes] = time.split(":");
-        time = Number(hours) * 60 + Number(minutes);
-        timeForSave.push(time);
+      let newTime = document.getElementById("time " + index).value;
+      newTime = newTime === "" ? null : getMinsFromTime(newTime);
+      // сохранение значения времени
+      timeForSave.push(Number(newTime));
+      // получение предыдущего значения времени на участке
+      let oldTime = getFromTable(timeTable, prevStation.id, currentStation.id);
+
+      // если значение времени не пустое и оно отличается от предыдущего значения
+      if (newTime && newTime !== oldTime) {
+        let timeGroup = {
+          station_1_id: prevStation.id,
+          station_2_id: currentStation.id,
+          time: getMinsFromTime(newTime),
+        };
+        if (!oldTime) {
+          timeForAdd.push(timeGroup);
+        } else {
+          timeForUpdate.push(timeGroup);
+        }
       } else {
         containsNullTime = true;
       }
       // получение значений стоимости
-      let cost = document.getElementById("cost " + index).value;
-      if (cost !== "") {
-        costForSave.push(cost);
+      let newCost = document.getElementById("cost " + index).value;
+      newCost = newCost === "" ? null : newCost;
+      // сохранение значения стоимости
+      costForSave.push(Number(newCost));
+      // предыдущее значение стоимости на участке
+      let oldCost = getFromTable(costTable, prevStation.id, currentStation.id);
+
+      if (newCost && newCost !== oldCost) {
+        let costGroup = {
+          station_1_id: prevStation.id,
+          station_2_id: currentStation.id,
+          cost: newCost,
+        };
+        if (!oldCost) {
+          costForAdd.push(costGroup);
+        } else {
+          costForUpdate.push(costGroup);
+        }
       } else {
         containsNullCost = true;
       }
     }
 
     // поднятие флагов в случае некорректных входных данных
-    setStationsOk(stationsForSave.length > 1);
+    setStationsOk(stationsForAdd.length > 1);
     setContainesNullStation(containsNullStation);
     setContainesNullTime(containsNullTime);
     setContainesNullCost(containsNullCost);
 
     // если данные корректны, то происходит отправка запроса
     if (
-      stationsForSave.length > 1 &&
+      stationsForAdd.length > 1 &&
       !containsNullStation &&
       !containsNullTime &&
       !containsNullCost
     ) {
+      // dispatch(postCostGroup(costForAdd));
+      // dispatch(postTimeGroup(timeForAdd));
+      // costForUpdate.forEach((costGroup, i, arr) => {
+      //   dispatch(putCostGroup(costGroup));
+      // });
+      // timeForUpdate.forEach((timeGroup, i, arr) => {
+      //   dispatch(putTimeGroup(timeGroup));
+      // });
+
+      console.log(
+        " postCostGroup ",
+        costForAdd,
+        " putCostGroup ",
+        costForUpdate
+      );
+      console.log(
+        " postTimeGroup ",
+        timeForAdd,
+        " putTimeGroup ",
+        timeForUpdate
+      );
+
       if (data) {
         //если был указан маршрут, то данные маршрута обновляются
         const newRoute = {
           id: data.id,
-          price: costForSave.join(" "),
+          cost: costForSave.join(" "),
           time: timeForSave.join(" "),
-          stations: stationsForSave,
-          sort: indexesForSave.join(" "),
+          stations: stationsForAdd,
         };
         // локальное изменение связанных с маршрутом рейсов
-        dispatch(updateRouteInTrip({ id: data.id, id: newRoute }));
+
+        // dispatch(updateRouteInTrip({ id: data.id, id: newRoute }));
+
         // отправка запроса
-        dispatch(
-          putRoute({
-            id: data.id,
-            price: costForSave.join(" "),
-            time: timeForSave.join(" "),
-            sort: indexesForSave.join(" "),
-            stations_id: indexesForSave,
-          })
-        );
+
+        // dispatch(
+        //   putRoute({
+        //     id: data.id,
+        //     route: { stations_id: indexesForAdd },
+        //   })
+        // );
+
+        console.log(" putRoute ", {
+          id: data.id,
+          route: { stations_id: indexesForAdd },
+        });
       } else {
         // если начальные значения не были указаны, то создается новый маршрут
-        dispatch(
-          postRoute({
-            price: costForSave.join(" "),
-            time: timeForSave.join(" "),
-            sort: stationsForSave.join(" "),
-            stations_id: stationsForSave,
-          })
-        );
+
+        // dispatch(
+        //   postRoute({
+        //     route: { stations_id: indexesForAdd },
+        //   })
+        // );
+
+        console.log(" postRoute ", {
+          route: { stations_id: indexesForAdd },
+        });
       }
       //закрытие окна
       cancelHandler();
@@ -222,7 +372,8 @@ const AddUpdateRoute = ({ cancelHandler, data }) => {
           stations={stations}
           index={0}
           deleteHandler={deleteStationHandler}
-          defaultValue="Выбрать"
+          onChange={stationOnChangeHandler}
+          defaultValue={defaultValue}
         />
         {stationIndexes &&
           stationIndexes?.map((index) => (
@@ -232,7 +383,8 @@ const AddUpdateRoute = ({ cancelHandler, data }) => {
                 stations={stations}
                 index={index}
                 deleteHandler={deleteStationHandler}
-                defaultValue="Выбрать"
+                onChange={stationOnChangeHandler}
+                defaultValue={defaultValue}
               />
             </div>
           ))}

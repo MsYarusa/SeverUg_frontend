@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
+import { translateRole } from "../../extraFunctions/ExtraFunctions";
+import { removeUser } from "../../store/slicies/userSlice";
 
 import Logo from "./Logo";
 
@@ -11,8 +13,8 @@ import dropup from "./layoutImgs/dropup.svg";
 import "./layoutStyles/Header.css";
 
 const Header = () => {
+  const dispatch = useDispatch();
   const user = useSelector((state) => state.user.user);
-  const [userInfoOpen, setUserInfoOpen] = useState(false);
 
   let NavLinks = null;
 
@@ -31,8 +33,8 @@ const Header = () => {
       break;
   }
 
-  const clickHandler = () => {
-    setUserInfoOpen(!userInfoOpen);
+  const logOutHandler = () => {
+    dispatch(removeUser());
   };
 
   return (
@@ -42,9 +44,19 @@ const Header = () => {
         <NavLinks />
         <div id="user">
           <img src={userImg} alt="user" />
-          <p>
-            {user.last_name} {user.first_name}
-          </p>
+          <DropdownObject
+            label={[user.last_name, user.first_name].join(" ")}
+            style="dropdown-user"
+          >
+            <div>
+              <p>Должность:</p>
+              <p>{translateRole(user.role)}</p>
+            </div>
+            <button onClick={logOutHandler}>
+              <img src={logOut} alt="user" />
+              <p>Выйти из аккаунта</p>
+            </button>
+          </DropdownObject>
         </div>
       </header>
     </>
@@ -59,7 +71,7 @@ const AdminNavLinks = () => {
       <NavLink to="/">
         <p className="link-label">Главная</p>
       </NavLink>
-      <DropDownLinks label="Менеджер">
+      <DropdownObject label="Менеджер" style="dropdown">
         <NavLink to="/buses">
           <p>Автобусы</p>
         </NavLink>
@@ -72,8 +84,8 @@ const AdminNavLinks = () => {
         <NavLink to="/schedule">
           <p>Расписание</p>
         </NavLink>
-      </DropDownLinks>
-      <DropDownLinks label="Дирекция">
+      </DropdownObject>
+      <DropdownObject label="Дирекция" style="dropdown">
         <NavLink to="/canceled">
           <p>Отмененные</p>
         </NavLink>
@@ -83,12 +95,12 @@ const AdminNavLinks = () => {
         <NavLink to="/successful">
           <p>Успешные</p>
         </NavLink>
-      </DropDownLinks>
-      <DropDownLinks label="Кассир">
+      </DropdownObject>
+      <DropdownObject label="Кассир" style="dropdown">
         <NavLink to="/tickets">
           <p>Билеты</p>
         </NavLink>
-      </DropDownLinks>
+      </DropdownObject>
     </>
   );
 };
@@ -138,7 +150,7 @@ const CashierNavLinks = () => {
   return <></>;
 };
 
-const DropDownLinks = ({ children, label }) => {
+const DropdownObject = ({ children, label, style }) => {
   const [showDropdown, setShowDropdown] = useState(false);
 
   const showDropdownHandler = () => {
@@ -146,7 +158,6 @@ const DropDownLinks = ({ children, label }) => {
   };
 
   useEffect(() => {
-    console.log("effect");
     const dropdownDiv = document.getElementById("dropdown__container-" + label);
     document.addEventListener("click", (e) => {
       const withinBoundaries = e.composedPath().includes(dropdownDiv);
@@ -167,7 +178,7 @@ const DropDownLinks = ({ children, label }) => {
         <img src={showDropdown ? dropup : dropdown} className="dropdown-img" />
       </label>
       {showDropdown && (
-        <div className="dropdown" onClick={showDropdownHandler}>
+        <div className={style} onClick={showDropdownHandler}>
           {children}
         </div>
       )}

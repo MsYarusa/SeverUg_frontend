@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getRoutes } from "../../../store/requests/RoutesRequests";
+import {
+  getRoutes,
+  getTimeGroup,
+  getCostGroup,
+} from "../../../store/requests/RoutesRequests";
 import { getStations } from "../../../store/requests/StationsRequests";
 import { getSchedule } from "../../../store/requests/ScheduleRequests";
 import { searchFromTo } from "../../../extraFunctions/SearchHandlers";
@@ -17,6 +21,21 @@ const RoutesPage = () => {
   const routes = useSelector((state) => state.routes.routes);
   const stations = useSelector((state) => state.stations.stations);
   const schedule = useSelector((state) => state.schedule.schedule);
+  const timeTable = useSelector((state) => state.routes.timeTable);
+  const costTable = useSelector((state) => state.routes.costTable);
+
+  // console.log(
+  //   " stations ",
+  //   stations,
+  //   " schedule ",
+  //   schedule,
+  //   " routes ",
+  //   routes,
+  //   " timeTable ",
+  //   timeTable,
+  //   " costTable ",
+  //   costTable
+  // );
 
   // если стор пуст то делаем запрос на сервер
   const dispatch = useDispatch();
@@ -29,6 +48,12 @@ const RoutesPage = () => {
     }
     if (schedule.length === 0) {
       dispatch(getSchedule());
+    }
+    if (timeTable.length === 0) {
+      dispatch(getTimeGroup());
+    }
+    if (costTable.length === 0) {
+      dispatch(getCostGroup());
     }
   }, []);
 
@@ -71,9 +96,9 @@ const RoutesPage = () => {
     let filter_results = [];
     setSavedFilteredConfig(filterConfig);
     for (let route of searchedList) {
-      let totalPrice = 0;
-      route.price.forEach((item, i, arr) => {
-        totalPrice += Number(item);
+      let totalCost = 0;
+      route.cost.forEach((item, i, arr) => {
+        totalCost += Number(item);
       });
 
       let totalTime = 0;
@@ -82,8 +107,8 @@ const RoutesPage = () => {
       });
 
       let costOk =
-        filterConfig.cost.from <= totalPrice &&
-        totalPrice <= filterConfig.cost.to;
+        filterConfig.cost.from <= totalCost &&
+        totalCost <= filterConfig.cost.to;
 
       let timeOk =
         filterConfig.time.from <= totalTime &&

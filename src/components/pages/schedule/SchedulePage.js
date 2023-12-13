@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getSchedule } from "../../../store/requests/ScheduleRequests";
 import { getRoutes } from "../../../store/requests/RoutesRequests";
+import { getBuses } from "../../../store/requests/BusesRequests";
+import { getDrivers } from "../../../store/requests/EmployeesRequests";
 import {
   getTimeFromMins,
   getMinsFromTime,
@@ -20,6 +22,8 @@ const SchedulePage = () => {
   // запрашиваем данные из стора
   const schedule = useSelector((state) => state.schedule.schedule);
   const routes = useSelector((state) => state.routes.routes);
+  const buses = useSelector((state) => state.buses.buses);
+  const drivers = useSelector((state) => state.employees.drivers);
 
   // если стор пуст то делаем запрос на сервер
   const dispatch = useDispatch();
@@ -29,6 +33,12 @@ const SchedulePage = () => {
     }
     if (schedule.length === 0) {
       dispatch(getSchedule());
+    }
+    if (buses.length === 0) {
+      dispatch(getBuses());
+    }
+    if (drivers.length === 0) {
+      dispatch(getDrivers());
     }
   }, []);
 

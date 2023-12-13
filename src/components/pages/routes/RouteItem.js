@@ -21,7 +21,7 @@ const RouteItem = ({ data, deleteHandler, updateHandler }) => {
     index = data.id;
   }
 
-  let totalPrice = sum(data.price);
+  let totalCost = sum(data.cost);
 
   let totalTime = sum(data.time);
 
@@ -33,7 +33,7 @@ const RouteItem = ({ data, deleteHandler, updateHandler }) => {
       station1: data.stations[i].name,
       station2: item.name,
       time: getTimeFromMins(Number(data.time[i])),
-      price: Number(data.price[i]),
+      cost: Number(data.cost[i]),
     };
     stationsPares.push(newPair);
   });
@@ -52,7 +52,7 @@ const RouteItem = ({ data, deleteHandler, updateHandler }) => {
         <p className="route-destination">{data.stations.at(-1).name}</p>
         <p className="route-totalTime">{getTimeFromMins(totalTime)}</p>
         <p className="route-slash">/</p>
-        <p className="route-totalPrice">{totalPrice} руб.</p>
+        <p className="route-totalCost">{totalCost} руб.</p>
       </ObjectItem>
       {info && (
         <ul className="info">
@@ -63,7 +63,7 @@ const RouteItem = ({ data, deleteHandler, updateHandler }) => {
               <p className="route-station2">{pare.station2}</p>
               <p className="route-time">{pare.time}</p>
               <p className="route-slash">/</p>
-              <p className="route-price">{pare.price} руб.</p>
+              <p className="route-cost">{pare.cost} руб.</p>
             </div>
           ))}
         </ul>

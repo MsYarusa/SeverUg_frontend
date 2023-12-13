@@ -14,6 +14,8 @@ const AddUpdateTrip = ({ cancelHandler, data }) => {
 
   // получение данных из стора
   const routes = useSelector((state) => state.routes.routes);
+  const buses = useSelector((state) => state.buses.buses);
+  const drivers = useSelector((state) => state.employees.drivers);
 
   // ХРАНЕНИЕ И ОБРАБОТКА ДАННЫХ ИНПУТОВ
   // хранение выбранных дней недели
@@ -22,6 +24,10 @@ const AddUpdateTrip = ({ cancelHandler, data }) => {
   const [selectedRoute, setSelectedRoute] = useState({
     stationIndexes: [],
     route: null,
+  });
+  const [selectedBus, setSelectedBus] = useState({
+    bus: null,
+    driver: null,
   });
 
   // выбор маршрута
@@ -34,12 +40,40 @@ const AddUpdateTrip = ({ cancelHandler, data }) => {
     setSelectedRoute({ stationIndexes: stationIndexes, route: route });
   };
 
+  // выбор автобуса
+  const selectBusHandler = (event) => {
+    console.log(event.target.value);
+    let busPare = JSON.parse(event.target.value);
+
+    setSelectedBus(busPare);
+  };
+
+  const [busPares, setBusPares] = useState([]);
+  // соединение автобусов и водителей
+  useEffect(() => {
+    let busPares = [];
+    for (let bus of buses) {
+      let busPare = {
+        bus: bus,
+        driver: drivers.find((driver) => driver.id === bus.drive_id),
+      };
+      if (busPare.driver) {
+        busPares.push(busPare);
+      }
+    }
+    setBusPares(busPares);
+  }, []);
+
   // УСТАНОВЛЕНИЕ НАЧАЛЬНЫХ ЗНАЧЕНИЕЙ (в случае их получения)
   // установление значений инпутов
   useEffect(() => {
     if (data) {
       document.getElementById("time").value = data.departure_time;
       document.getElementById("route-select").value = JSON.stringify(data.road);
+      document.getElementById("bus-select").value = JSON.stringify({
+        bus: data.bus,
+        driver: data.driver,
+      });
       for (let index of data.days) {
         document.getElementById("W" + index).click();
       }
@@ -50,6 +84,7 @@ const AddUpdateTrip = ({ cancelHandler, data }) => {
         stationIndexes = [...stationIndexes, i + 1];
       }
       setSelectedRoute({ stationIndexes: stationIndexes, route: route });
+      setSelectedBus({ bus: data.bus, driver: data.driver });
     }
   }, [routes]);
 
@@ -130,6 +165,37 @@ const AddUpdateTrip = ({ cancelHandler, data }) => {
           className={timeOk ? "base-border" : "error-border"}
         />
       </div>
+      <label>Автобус и водитель:</label>
+      <select
+        id="bus-select"
+        defaultValue={JSON.stringify("Выбрать")}
+        onChange={selectBusHandler}
+      >
+        <option disabled value={JSON.stringify("Выбрать")}>
+          Выбрать
+        </option>
+        {busPares?.map((busPare) => (
+          <option key={busPare.bus.id} value={JSON.stringify(busPare)}>
+            № {busPare.bus.code} — {busPare.bus.model} —{" "}
+            {busPare.bus.number_of_sits} мест.
+          </option>
+        ))}
+      </select>
+      {selectedBus.driver && (
+        <select
+          disabled
+          id="driver-select"
+          defaultValue={JSON.stringify(selectedBus.driver)}
+        >
+          <option disabled value={JSON.stringify(selectedBus.driver)}>
+            Водитель — {selectedBus.driver.last_name}{" "}
+            {selectedBus.driver.first_name.slice(0, 1)}.{" "}
+            {selectedBus.driver.father_name
+              ? selectedBus.driver.father_name.slice(0, 1) + "."
+              : ""}
+          </option>
+        </select>
+      )}
       <label>Маршрут:</label>
       <select
         id="route-select"
@@ -161,7 +227,7 @@ const AddUpdateTrip = ({ cancelHandler, data }) => {
                   defaultTime={getTimeFromMins(
                     selectedRoute.route.time[index - 1]
                   )}
-                  defaultCost={selectedRoute.route.price[index - 1]}
+                  defaultCost={selectedRoute.route.cost[index - 1]}
                 />
                 <StationSelector
                   index={index}

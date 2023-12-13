@@ -3,38 +3,67 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { addBus, updateBus, removeBus } from "../slicies/busesSlice";
 
 // тесты
-import { buses } from "../../tests/TestData/TestBuses";
+import { buses, models } from "../../tests/TestData/TestBuses";
 
 // ПОЛУЧЕНИЕ ВСЕХ АВТОБУСОВ
 export const getBuses = createAsyncThunk(
   "buses/getBuses",
   async (_, { rejectWithValue }) => {
     // получение данных
-    let data = { buses: [], models: [] };
-    try {
-      await axios
-        .get("https://spacekot.ru/apishechka/buses")
-        .then((res) => {
-          console.log("статус: успешно");
-          console.log("данные: ", res.data);
-          data.buses = res.data;
-        })
-        .catch((error) => {
-          console.error("ошибка: ", error.message);
-          throw new Error("Server Error!");
-        });
-    } catch (error) {
-      return rejectWithValue(error.message);
-    }
-
+    let data = [];
     // try {
-    //   data.buses = buses;
+    //   await axios
+    //     .get("https://spacekot.ru/apishechka/buses")
+    //     .then((res) => {
+    //       console.log("статус: успешно");
+    //       console.log("данные: ", res.data);
+    //       data = res.data;
+    //     })
+    //     .catch((error) => {
+    //       console.error("ошибка: ", error.message);
+    //       throw new Error("Server Error!");
+    //     });
     // } catch (error) {
     //   return rejectWithValue(error.message);
     // }
 
-    // получаем множество всех ролей
-    data.models = ["HONDA", "boobabus"];
+    try {
+      data = buses;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+
+    return data;
+  }
+);
+
+// ПОЛУЧЕНИЕ МОДЕЛЕЙ АВТОБУСОВ
+export const getModels = createAsyncThunk(
+  "buses/getModels",
+  async (_, { rejectWithValue }) => {
+    // получение данных
+    let data = [];
+    // try {
+    //   await axios
+    //     .get("https://spacekot.ru/apishechka/bus_spec")
+    //     .then((res) => {
+    //       console.log("статус: успешно");
+    //       console.log("данные: ", res.data);
+    //       data = res.data;
+    //     })
+    //     .catch((error) => {
+    //       console.error("ошибка: ", error.message);
+    //       throw new Error("Server Error!");
+    //     });
+    // } catch (error) {
+    //   return rejectWithValue(error.message);
+    // }
+
+    try {
+      data = models;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
 
     return data;
   }

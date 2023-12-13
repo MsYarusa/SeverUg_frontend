@@ -190,7 +190,12 @@ const AddUpdateEmployee = ({ cancelHandler, data }) => {
           placeholder="Электронная почта"
           autoComplete="off"
         />
-        <input id="employee-phone" type="text" placeholder="Мобильный номер" />
+        <input
+          id="employee-phone"
+          type="text"
+          placeholder="8 999 999 99 99"
+          autoComplete="off"
+        />
       </div>
       <label className="secondary-label">Данные авторизации</label>
       <div id="auth-data" className="employee-inputs">

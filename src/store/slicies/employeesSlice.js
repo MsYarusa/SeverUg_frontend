@@ -1,11 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getEmployees } from "../requests/EmployeesRequests";
+import { getEmployees, getDrivers } from "../requests/EmployeesRequests";
 
 const employeesSlice = createSlice({
   name: "employees",
   initialState: {
     employees: [],
-    roles: [],
+    drivers: [],
     status: null,
     error: null,
   },
@@ -25,6 +25,21 @@ const employeesSlice = createSlice({
         (employee) => employee.id !== action.payload.id
       );
     },
+    addDriver(state, action) {
+      state.drivers.push(action.payload.driver);
+    },
+    updateDriver(state, action) {
+      state.drivers.forEach((item, i, arr) => {
+        if (item.id === action.payload.id) {
+          arr[i] = action.payload.driver;
+        }
+      });
+    },
+    removeDriver(state, action) {
+      state.drivers = state.drivers.filter(
+        (driver) => driver.id !== action.payload.id
+      );
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -34,16 +49,33 @@ const employeesSlice = createSlice({
       })
       .addCase(getEmployees.fulfilled, (state, action) => {
         state.status = "resolved";
-        state.employees = action.payload.employees;
-        state.roles = action.payload.roles;
+        state.employees = action.payload;
       })
       .addCase(getEmployees.rejected, (state, action) => {
+        state.status = "rejected";
+        state.error = action.payload;
+      })
+      .addCase(getDrivers.pending, (state, action) => {
+        state.status = "loading";
+        state.error = null;
+      })
+      .addCase(getDrivers.fulfilled, (state, action) => {
+        state.status = "resolved";
+        state.drivers = action.payload;
+      })
+      .addCase(getDrivers.rejected, (state, action) => {
         state.status = "rejected";
         state.error = action.payload;
       });
   },
 });
 
-export const { addEmployee, updateEmployee, removeEmployee } =
-  employeesSlice.actions;
+export const {
+  addEmployee,
+  updateEmployee,
+  removeEmployee,
+  addDriver,
+  updateDriver,
+  removeDriver,
+} = employeesSlice.actions;
 export default employeesSlice.reducer;

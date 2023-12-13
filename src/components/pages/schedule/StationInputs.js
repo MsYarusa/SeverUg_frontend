@@ -5,14 +5,16 @@ export const StationSelector = ({
   index,
   deleteHandler,
   defaultValue,
+  onChange,
 }) => {
   return (
-    <div id={"S" + index} className="station">
+    <div id={"S " + index} className="station">
       <p>{index + 1 + "."}</p>
       <select
-        id={"s" + index}
+        id={"s " + index}
         disabled={stations ? false : true}
         defaultValue={JSON.stringify(defaultValue)}
+        onChange={onChange}
       >
         <option disabled value={JSON.stringify(defaultValue)}>
           {defaultValue}

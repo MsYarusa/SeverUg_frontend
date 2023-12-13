@@ -5,11 +5,14 @@ const userSlice = createSlice({
   name: "user",
   initialState: {
     user: JSON.parse(sessionStorage.getItem("user")),
-    // user: null,
     status: null,
     error: null,
   },
-  reducers: {},
+  reducers: {
+    removeUser(state, action) {
+      state.user = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getUser.pending, (state, action) => {
@@ -28,4 +31,5 @@ const userSlice = createSlice({
   },
 });
 
+export const { removeUser } = userSlice.actions;
 export default userSlice.reducer;

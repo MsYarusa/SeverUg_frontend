@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getBuses } from "../requests/BusesRequests";
+import { getBuses, getModels } from "../requests/BusesRequests";
 
 const busesSlice = createSlice({
   name: "buses",
@@ -32,10 +32,21 @@ const busesSlice = createSlice({
       })
       .addCase(getBuses.fulfilled, (state, action) => {
         state.status = "resolved";
-        state.buses = action.payload.buses;
-        state.models = action.payload.models;
+        state.buses = action.payload;
       })
       .addCase(getBuses.rejected, (state, action) => {
+        state.status = "rejected";
+        state.error = action.payload;
+      })
+      .addCase(getModels.pending, (state, action) => {
+        state.status = "loading";
+        state.error = null;
+      })
+      .addCase(getModels.fulfilled, (state, action) => {
+        state.status = "resolved";
+        state.models = action.payload;
+      })
+      .addCase(getModels.rejected, (state, action) => {
         state.status = "rejected";
         state.error = action.payload;
       });

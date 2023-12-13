@@ -4,45 +4,41 @@ import {
   addEmployee,
   updateEmployee,
   removeEmployee,
+  addDriver,
+  updateDriver,
+  removeDriver,
 } from "../slicies/employeesSlice";
 
 // тесты
-import { employees } from "../../tests/TestData/TestEmployees";
+import { employees, drivers } from "../../tests/TestData/TestEmployees";
 
 // ПОЛУЧЕНИЕ ВСЕХ СОТРУДНИКОВ
 export const getEmployees = createAsyncThunk(
   "employees/getEmployees",
   async (_, { rejectWithValue }) => {
     // получение данных
-    let data = { roles: [], employees: [] };
-    try {
-      await axios
-        .get("https://spacekot.ru/apishechka/user")
-        .then((res) => {
-          console.log("статус: успешно");
-          console.log("данные: ", res.data);
-          data.employees = res.data;
-        })
-        .catch((error) => {
-          console.error("ошибка: ", error.message);
-          throw new Error("Server Error!");
-        });
-    } catch (error) {
-      return rejectWithValue(error.message);
-    }
-
+    let data = [];
     // try {
-    //   data.employees = employees;
+    //   await axios
+    //     .get("https://spacekot.ru/apishechka/user")
+    //     .then((res) => {
+    //       console.log("статус: успешно");
+    //       console.log("данные: ", res.data);
+    //       data = res.data;
+    //     })
+    //     .catch((error) => {
+    //       console.error("ошибка: ", error.message);
+    //       throw new Error("Server Error!");
+    //     });
     // } catch (error) {
     //   return rejectWithValue(error.message);
     // }
 
-    // получаем множество всех ролей
-    let roles = new Set();
-    for (let emp of data.employees) {
-      roles.add(emp.role);
+    try {
+      data = employees;
+    } catch (error) {
+      return rejectWithValue(error.message);
     }
-    data.roles = [...roles];
 
     return data;
   }
@@ -121,5 +117,113 @@ export const deleteEmployee = createAsyncThunk(
 
     // удаление сотрудника из стора
     dispatch(removeEmployee({ id: id }));
+  }
+);
+
+// ПОЛУЧЕНИЕ ВСЕХ ВОДИТЕЛЕЙ
+export const getDrivers = createAsyncThunk(
+  "employees/getDrivers",
+  async (_, { rejectWithValue }) => {
+    // получение данных
+    let data = [];
+    // try {
+    //   await axios
+    //     .get("https://spacekot.ru/apishechka/driver")
+    //     .then((res) => {
+    //       console.log("статус: успешно");
+    //       console.log("данные: ", res.data);
+    //       data = res.data;
+    //     })
+    //     .catch((error) => {
+    //       console.error("ошибка: ", error.message);
+    //       throw new Error("Server Error!");
+    //     });
+    // } catch (error) {
+    //   return rejectWithValue(error.message);
+    // }
+
+    try {
+      data = drivers;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+
+    return data;
+  }
+);
+
+// ДОБАВЛЕНИЕ СОТРУДНИКА
+export const postDriver = createAsyncThunk(
+  "employees/postDriver",
+  async ({ driver }, { rejectWithValue, dispatch }) => {
+    let newDriver = null;
+    //отправление запроса
+    try {
+      await axios
+        .post("https://spacekot.ru/apishechka/driver", driver)
+        .then((res) => {
+          console.log("статус: успешно");
+          newDriver = res.data;
+        })
+        .catch((error) => {
+          console.error("ошибка: ", error.message);
+          throw new Error(error.message);
+        });
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+
+    // добавление сотрудника в стор
+    dispatch(addDriver({ driver: newDriver }));
+  }
+);
+
+// ИЗМЕНЕНИЯ ДАННЫХ СОТРУДНИКА
+export const putDriver = createAsyncThunk(
+  "employees/putDriver",
+  async ({ id, driver }, { rejectWithValue, dispatch }) => {
+    let newDriver = null;
+    //отправление запроса
+    try {
+      await axios
+        .put(`https://spacekot.ru/apishechka/driver/${id}`, driver)
+        .then((res) => {
+          console.log("статус: успешно");
+          newDriver = res.data;
+        })
+        .catch((error) => {
+          console.error("ошибка: ", error.message);
+          throw new Error(error.message);
+        });
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+
+    // обновление сотрудника в сторе
+    dispatch(updateDriver({ id: id, driver: newDriver }));
+  }
+);
+
+// УДАЛЕНИЕ СОТРУДНИКА
+export const deleteDriver = createAsyncThunk(
+  "employees/deleteDriver",
+  async ({ id }, { rejectWithValue, dispatch }) => {
+    //отправление запроса
+    try {
+      await axios
+        .delete(`https://spacekot.ru/apishechka/driver/${id}`)
+        .then((res) => {
+          console.log("статус: успешно");
+        })
+        .catch((error) => {
+          console.error("ошибка: ", error.message);
+          throw new Error(error.message);
+        });
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+
+    // удаление сотрудника из стора
+    dispatch(removeDriver({ id: id }));
   }
 );

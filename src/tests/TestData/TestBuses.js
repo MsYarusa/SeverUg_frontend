@@ -1,42 +1,15 @@
 export const buses = [
   {
     id: 1,
-    model: "boobabus",
-    code: "H102OH",
+    drive_id: 1,
+    model: "b_1",
+    code: "H123OK",
     status: "active",
-    numberOfSits: 43,
-    driver: {
-      id: 2,
-      first_name: "Vladimir",
-      last_name: "Putin",
-      father_name: "Vladimirovich",
-      email: "russia1991@rf.ru",
-      login: "russianBear",
-      role: "driver",
-    },
+    number_of_sits: 12,
   },
-  {
-    id: 2,
-    model: "boobabus",
-    code: "K698IO",
-    status: "active",
-    numberOfSits: 43,
-    driver: null,
-  },
-  {
-    id: 3,
-    model: "HONDA",
-    code: "L192OI",
-    status: "active",
-    numberOfSits: 52,
-    driver: {
-      id: 4,
-      first_name: "Chimin",
-      last_name: "Pak Cha Yen",
-      father_name: null,
-      email: "BTS_Chimin@tinder.com",
-      login: "Olly",
-      role: "driver",
-    },
-  },
+];
+export const models = [
+  { model: "b_1", number_of_sits: 12 },
+  { model: "MAN", number_of_sits: 59 },
+  { model: "HAS", number_of_sits: 43 },
 ];

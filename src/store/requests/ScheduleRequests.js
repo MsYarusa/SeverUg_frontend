@@ -11,52 +11,32 @@ export const getSchedule = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     //получение данных
     let data = [];
-    try {
-      await axios
-        .get("https://spacekot.ru/apishechka/trip")
-        .then((res) => {
-          console.log("статус: успешно");
-          console.log("данные: ", res.data);
-          data = res.data;
-        })
-        .catch((error) => {
-          console.error("ошибка: ", error.message);
-          throw new Error(error.message);
-        });
-    } catch (error) {
-      return rejectWithValue(error.message);
-    }
-
     // try {
-    //   data = schedule;
+    //   await axios
+    //     .get("https://spacekot.ru/apishechka/trip")
+    //     .then((res) => {
+    //       console.log("статус: успешно");
+    //       console.log("данные: ", res.data);
+    //       data = res.data;
+    //     })
+    //     .catch((error) => {
+    //       console.error("ошибка: ", error.message);
+    //       throw new Error(error.message);
+    //     });
     // } catch (error) {
     //   return rejectWithValue(error.message);
     // }
 
-    // обработка массива дней недели
-    for (let trip of data) {
-      if (typeof trip.days === "string") {
-        trip.days = trip.days.split(" ");
-        trip.days.forEach((item, i, arr) => {
-          arr[i] = Number(item);
-        });
-      }
-    }
-    // восстановление последовательности станций
-    for (let trip of data) {
-      trip.road.sort = trip.road.sort.split(" ");
-      trip.road.sort.forEach((item, i, arr) => {
-        arr[i] = Number(item);
-      });
+    try {
+      data = schedule;
+    } catch (error) {
+      return rejectWithValue(error.message);
     }
 
     for (let trip of data) {
-      let sortedStations = [];
-      for (let i of trip.road.sort) {
-        let station = trip.road.stations.find((station) => station.id === i);
-        sortedStations.push(station);
-      }
-      trip.road.stations = sortedStations;
+      trip.days.forEach((day, i, arr) => {
+        day = day === 7 ? 0 : day;
+      });
     }
 
     return data;
