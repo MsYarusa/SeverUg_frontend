@@ -36,8 +36,8 @@
 }
 
 .window__inner {
-  max-height: 700px;
-  min-width: 500px;
+  max-height: 70vh;
+  min-width: 25vw;
   width: 100%;
   width: fit-content;
   display: flex;

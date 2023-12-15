@@ -13,13 +13,13 @@ export function searchFromTo({ route, searchConfig }) {
 
   // пробегаемся по начальным станциям
   let fromRoutes = [];
-  route.stations.slice(0, -1).forEach((item, i, arr) => {
+  route.stations?.slice(0, -1).forEach((item, i, arr) => {
     let routeFrom = item.name.toLowerCase();
     let searchedFrom = routeFrom.indexOf(from);
     if (searchedFrom === 0) {
       let newRoute = {
         id: route.id + " from" + item.name,
-        price: route.price.slice(i),
+        cost: route.cost.slice(i),
         time: route.time.slice(i),
         stations: route.stations.slice(i),
         departure_time: sum(route.time.slice(0, i)),
@@ -38,7 +38,7 @@ export function searchFromTo({ route, searchConfig }) {
       if (searchedTo === 0) {
         let newRoute = {
           id: fromRoute.id + "to" + item.name,
-          price: fromRoute.price.slice(0, i + 1),
+          cost: fromRoute.cost.slice(0, i + 1),
           time: fromRoute.time.slice(0, i + 1),
           stations: fromRoute.stations.slice(0, i + 2),
         };

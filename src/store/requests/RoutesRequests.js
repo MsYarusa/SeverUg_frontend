@@ -134,27 +134,27 @@ export const getTimeGroup = createAsyncThunk(
   "routes/getTimeGroup",
   async (_, { rejectWithValue }) => {
     let data = [];
-    try {
-      await axios
-        .get(`https://spacekot.ru/apishechka/station_time`)
-        .then((res) => {
-          console.log("статус: успешно");
-          console.log("данные: ", res.data);
-          data = res.data;
-        })
-        .catch((error) => {
-          console.error("ошибка: ", error.message);
-          throw new Error(error.message);
-        });
-    } catch (error) {
-      return rejectWithValue(error.message);
-    }
-
     // try {
-    //   data = timeGroups;
+    //   await axios
+    //     .get(`https://spacekot.ru/apishechka/station_time`)
+    //     .then((res) => {
+    //       console.log("статус: успешно");
+    //       console.log("данные: ", res.data);
+    //       data = res.data;
+    //     })
+    //     .catch((error) => {
+    //       console.error("ошибка: ", error.message);
+    //       throw new Error(error.message);
+    //     });
     // } catch (error) {
     //   return rejectWithValue(error.message);
     // }
+
+    try {
+      data = timeGroups;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
 
     let timeTable = [];
     // преобразования списка групп

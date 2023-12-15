@@ -84,12 +84,14 @@
 }
 
 .object-filter__small button:hover,
-.object-filter__small > div > div:hover {
+.object-filter__small .extra-input:hover,
+.object-filter__small button:hover,
+.object-filter__small .filter-input:hover {
   box-shadow: 0px 0px 0px 2px #fff;
   cursor: pointer;
 }
 
-.object-filter__small > div > div {
+.object-filter__small .extra-input {
   width: 28.6%;
   min-height: 40px;
   height: fit-content;
@@ -103,17 +105,64 @@
   padding: 5px;
 }
 
-.object-filter__small div label {
+.object-filter__small .filter-input {
+  width: 100%;
+  min-height: 40px;
+  height: fit-content;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-radius: 16px;
+  background: #fff;
+
+  gap: 0px;
+  margin: 5px;
+  padding: 0 15px;
+}
+
+.object-filter__small input {
+  margin: 0;
+}
+
+.object-filter__small .filter-label-input {
+  width: 40%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+}
+
+.object-filter__small .input__container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.object-filter__small .filter-label-input > label {
+  align-self: center;
+}
+
+.object-filter__small .filter-input label {
+  font-size: 16px;
+}
+
+.object-filter__small .input__container > label,
+.object-filter__small .extra-input label {
   display: none;
 }
 
-.object-filter__small > label {
+.object-filter__small label {
   max-width: 45%;
   font-size: 19px;
   font-weight: 600;
   line-height: 130%;
   text-align: center;
   margin: 5px;
+}
+
+.object-filter__small .main-label {
+  width: 100%;
 }
 
 .object-filter__small .main-label {
@@ -147,9 +196,13 @@
   display: none;
 }
 
+.object-filter__small .half-first-input {
+  width: 45%;
+}
+
 .object-filter__small input {
-  width: 50%;
-  height: 50px;
+  width: 100%;
+  height: 40px;
 
   border: none;
   outline: none;
@@ -158,11 +211,11 @@
   color: #5c5c5c;
   font-family: Montserrat;
   text-align: center;
-  font-size: 19px;
+  font-size: 16px;
   font-weight: 500;
   line-height: 110%;
   cursor: pointer;
-  padding-right: 5px;
+  padding-right: 10spx;
 }
 
 .extra-input button {

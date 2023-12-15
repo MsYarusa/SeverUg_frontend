@@ -20,7 +20,7 @@ const LoginPage = () => {
 
   return (
     <div className="login-page">
-      <img src={background} />
+      <div className="background" />
       <Logo />
       <LoginForm />
     </div>

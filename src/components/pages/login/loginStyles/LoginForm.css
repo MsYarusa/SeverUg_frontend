@@ -4,11 +4,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-top: -90px;
 }
 
 .login-window__card {
   margin: 80px;
-  margin-top: 40px;
+  margin-top: 10vh;
   width: 600px;
   height: 615px;
   flex-shrink: 0;
@@ -107,4 +108,53 @@
   position: absolute;
   color: red;
   top: 6rem;
+}
+
+@media (max-height: 850px) {
+  .login-window__card {
+    width: 500px;
+    height: 510px;
+  }
+  .login-form input {
+    font-size: 19px;
+    width: 19rem;
+    padding: 1.3rem;
+  }
+  .login-form #password {
+    width: 17.7rem;
+  }
+  .login-form label {
+    font-size: 35px;
+  }
+  .login-form #submit {
+    font-size: 19px;
+    width: 17rem;
+    height: 60px;
+  }
+}
+
+@media (max-height: 680px) {
+  .login-window__card {
+    width: 400px;
+    height: 410px;
+    margin-top: 70px;
+  }
+  .login-form input {
+    font-size: 19px;
+    width: 17rem;
+    padding: 1.2rem;
+    margin-bottom: 2rem;
+  }
+  .login-form #password {
+    width: 15.3rem;
+  }
+  .login-form label {
+    font-size: 30px;
+    margin-bottom: 2rem;
+  }
+  .login-form #submit {
+    font-size: 19px;
+    margin-bottom: 2rem;
+    width: 13rem;
+  }
 }

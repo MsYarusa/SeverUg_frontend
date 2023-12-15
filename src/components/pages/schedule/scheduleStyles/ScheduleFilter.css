@@ -9,10 +9,10 @@
   justify-content: space-around;
   align-items: center;
   padding: 0px 10px;
+  gap: 10px;
 }
 
 .cost input {
-  margin-bottom: 10px;
   min-width: 60%;
   padding: 0;
 }

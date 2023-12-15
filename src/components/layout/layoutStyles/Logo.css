@@ -22,7 +22,7 @@
   margin-top: 0.5rem;
   color: #fff;
   font-family: Montserrat;
-  font-size: 22px;
+  font-size: 21px;
   font-style: normal;
   font-weight: 500;
   line-height: 150%;
@@ -30,6 +30,12 @@
 
 @media (max-width: 1550px) {
   .logo-block {
-    width: 350px;
+    width: 300px;
   }
 }
+
+/* @media (max-width: 1150px) {
+  .logo-block {
+    width: 500px;
+  }
+} */

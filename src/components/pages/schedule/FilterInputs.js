@@ -1,30 +1,30 @@
-export const CostInput = ({ onChange }) => {
+export const CostInput = ({ onChange, primeCostFrom, primeCostTo }) => {
   return (
-    <div className="cost">
+    <div className="cost input__container">
       <label className="main-label">Общая стоимость:</label>
-      <div>
+      <div className="filter-input half-first-input">
         <label>От</label>
-        <input id="min-cost" type="number" onChange={onChange} />
+        <input id={primeCostFrom} type="number" onChange={onChange} />
         <p>руб.</p>
       </div>
-      <div>
+      <div className="filter-input half-first-input">
         <label>До</label>
-        <input id="max-cost" type="number" onChange={onChange} />
+        <input id={primeCostTo} type="number" onChange={onChange} />
         <p>руб.</p>
       </div>
     </div>
   );
 };
 
-export const TimeInput = ({ onChange }) => {
+export const TimeInput = ({ onChange, primeTimeFrom, primeTimeTo }) => {
   return (
-    <div className="time">
+    <div className="time input__container">
       <label className="main-label">Время в пути:</label>
-      <div>
+      <div className="filter-input">
         <label>От</label>
-        <input id="min-time" type="time" onChange={onChange} />
+        <input id={primeTimeFrom} type="time" onChange={onChange} />
         <label>До</label>
-        <input id="max-time" type="time" onChange={onChange} />
+        <input id={primeTimeTo} type="time" onChange={onChange} />
       </div>
     </div>
   );

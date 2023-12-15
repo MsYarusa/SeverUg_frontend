@@ -11,7 +11,7 @@ import {
 } from "../../../extraFunctions/ExtraFunctions";
 import { searchFromTo } from "../../../extraFunctions/SearchHandlers";
 
-import ScheduleFilter from "./ScheduleFilter";
+import ScheduleFilter from "./ScheduleFilterBeta";
 import ScheduleList from "./ScheduleList";
 import AddUpdateTrip from "./AddUpdateTrip";
 import DeleteTrip from "./DeleteTrip";
