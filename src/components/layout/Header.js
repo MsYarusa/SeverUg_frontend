@@ -10,6 +10,7 @@ import userImg from "./layoutImgs/userImg.svg";
 import logOut from "./layoutImgs/LogOut.svg";
 import dropdown from "./layoutImgs/dropdown.svg";
 import dropup from "./layoutImgs/dropup.svg";
+import burgerMenu from "./layoutImgs/burgerMenu.svg";
 import "./layoutStyles/Header.css";
 
 const Header = () => {
@@ -17,16 +18,20 @@ const Header = () => {
   const user = useSelector((state) => state.user.user);
 
   let NavLinks = null;
+  let BurgerLinks = null;
 
   switch (user.role) {
     case "admin":
       NavLinks = AdminNavLinks;
+      BurgerLinks = AdminNavLinksPlain;
       break;
     case "manager":
       NavLinks = ManagerNavLinks;
+      BurgerLinks = NavLinks;
       break;
     case "director":
       NavLinks = DirectorNavLinks;
+      BurgerLinks = NavLinks;
       break;
     case "cashier":
       NavLinks = CashierNavLinks;
@@ -41,23 +46,32 @@ const Header = () => {
     <>
       <header className="header">
         <Logo />
-        <NavLinks />
-        <div id="user">
-          <img src={userImg} alt="user" />
-          <DropdownObject
-            label={[user.last_name, user.first_name].join(" ")}
-            style="dropdown-user"
-            isLinks={false}
-          >
-            <div>
-              <p>Должность:</p>
-              <p>{translateRole(user.role)}</p>
-            </div>
-            <button onClick={logOutHandler}>
-              <img src={logOut} alt="user" />
-              <p>Выйти из аккаунта</p>
-            </button>
-          </DropdownObject>
+        <div className="nav-bar">
+          <NavLinks />
+        </div>
+        <div className="user__container">
+          <div id="user">
+            <img src={userImg} alt="user" id="user-icon" />
+            <DropdownObject
+              label={[user.last_name, user.first_name].join(" ")}
+              style="dropdown-user"
+              isLinks={false}
+            >
+              <div>
+                <p>Должность:</p>
+                <p>{translateRole(user.role)}</p>
+              </div>
+              <button onClick={logOutHandler}>
+                <img src={logOut} alt="user" />
+                <p>Выйти из аккаунта</p>
+              </button>
+            </DropdownObject>
+          </div>
+          {BurgerLinks && (
+            <BurgerMenu>
+              <BurgerLinks />
+            </BurgerMenu>
+          )}
         </div>
       </header>
     </>
@@ -102,6 +116,40 @@ const AdminNavLinks = () => {
           <p>Билеты</p>
         </NavLink>
       </DropdownObject>
+    </>
+  );
+};
+
+const AdminNavLinksPlain = () => {
+  return (
+    <>
+      <NavLink to="/">
+        <p className="link-label">Главная</p>
+      </NavLink>
+      <NavLink to="/buses">
+        <p>Автобусы</p>
+      </NavLink>
+      <NavLink to="/employees">
+        <p>Сотрудники</p>
+      </NavLink>
+      <NavLink to="/routes">
+        <p>Маршруты</p>
+      </NavLink>
+      <NavLink to="/schedule">
+        <p>Расписание</p>
+      </NavLink>
+      <NavLink to="/canceled">
+        <p>Отмененные</p>
+      </NavLink>
+      <NavLink to="/profit">
+        <p>Прибыль</p>
+      </NavLink>
+      <NavLink to="/successful">
+        <p>Успешные</p>
+      </NavLink>
+      <NavLink to="/tickets">
+        <p>Билеты</p>
+      </NavLink>
     </>
   );
 };
@@ -151,7 +199,23 @@ const CashierNavLinks = () => {
   return <></>;
 };
 
-const DropdownObject = ({ children, label, style, isLinks }) => {
+const BurgerMenu = ({ children }) => {
+  return (
+    <div id="burger-menu__container">
+      <DropdownObject
+        label={"burger"}
+        style={"dropdown"}
+        isLinks={true}
+        extraIcon={burgerMenu}
+      >
+        {children}
+      </DropdownObject>
+    </div>
+  );
+};
+
+const DropdownObject = ({ children, label, style, isLinks, extraIcon }) => {
+  console.log(extraIcon);
   const [showDropdown, setShowDropdown] = useState(false);
 
   const showDropdownHandler = (event) => {
@@ -177,6 +241,7 @@ const DropdownObject = ({ children, label, style, isLinks }) => {
     <div className="dropdown__container" id={"dropdown__container-" + label}>
       <label className="link-label dropdown-label">
         <p>{label}</p>
+        {extraIcon && <img src={extraIcon} id="burger-menu" />}
         <img src={showDropdown ? dropup : dropdown} className="dropdown-img" />
       </label>
       {showDropdown && (

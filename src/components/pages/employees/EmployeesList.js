@@ -1,9 +1,11 @@
 import { useState } from "react";
+
 import ObjectList from "../../cards/ObjectsList";
 import SearchByName from "../../cards/ObjectSearchByName";
 import Employee from "./Employee";
-import EmployeeFilterSmall from "./EmployeeFilters/EmployeeFilterSmall";
 import EmployeeFilter from "./EmployeeFilters/EmployeeFilter";
+import filter from "../../cards/buttonImgs/filter.svg";
+import addUser from "../../cards/buttonImgs/addUser.svg";
 
 import "../../cards/objectStyles/ObjectSearch.css";
 
@@ -18,10 +20,10 @@ const EmployeesList = ({ searchHandler, list, buttonsHandlers, onFilter }) => {
       <div className="object-search">
         <SearchByName search={searchHandler} placeholder="ФИО сотрудника" />
         <button onClick={showFilterHandler} className="show-filter-button">
-          Фильтр
+          <img src={filter} />
         </button>
-        <button onClick={buttonsHandlers.add}>
-          Зарегистрировать сотрудника
+        <button onClick={buttonsHandlers.add} className="button-with-icon">
+          <img src={addUser} />
         </button>
       </div>
       <EmployeeFilter

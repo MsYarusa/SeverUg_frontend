@@ -19,11 +19,24 @@
   align-items: center;
 
   height: 100%;
-  margin: 0px 20px;
+  /* margin: 0px 20px; */
+  gap: 0px;
 
   color: white;
   font-size: 22px;
   font-weight: 500;
+}
+
+.user__container {
+  width: fit-content;
+  display: flex;
+}
+
+.header #user #user-icon {
+  width: 50px;
+  height: 50px;
+  justify-self: end;
+  padding-right: -20px;
 }
 
 .header #user .link-label:hover,
@@ -31,6 +44,16 @@
 .dropdown p:hover,
 .active p {
   text-decoration: underline;
+}
+
+.nav-bar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  height: 100%;
+  width: fit-content;
+  position: relative;
 }
 
 .dropdown__container {
@@ -53,6 +76,8 @@
 .dropdown {
   position: absolute;
   top: 70%;
+  left: 50%;
+  transform: translate(-50%, 0%);
   z-index: 2;
   height: fit-content;
   width: fit-content;
@@ -81,8 +106,8 @@
 
 .dropdown-user {
   position: absolute;
-  top: 70%;
-  left: -40%;
+  top: 100%;
+  right: -200%;
   z-index: 2;
   height: fit-content;
   min-width: 250px;
@@ -155,10 +180,43 @@
   margin: 0;
 }
 
+#burger-menu__container {
+  margin: 0 10px;
+  margin-left: 30px;
+}
+#burger-menu__container img {
+  width: 50px;
+  height: 50px;
+}
+
+#burger-menu__container .dropdown {
+  left: 0px;
+  top: 100%;
+}
+
+#burger-menu__container .dropdown-img,
+#burger-menu__container .dropdown-label p {
+  display: none;
+}
+
+@media (min-width: 1300px) {
+  #burger-menu__container {
+    display: none;
+  }
+  .nav-bar {
+    display: flex;
+  }
+  #user {
+    margin: 0 20px;
+  }
+}
+
 @media (max-width: 1300px) {
+  #burger-menu__container {
+    display: none;
+  }
   #user {
     width: 350px;
-    gap: 0px;
   }
   #user label p {
     display: none;
@@ -166,10 +224,23 @@
   #user label {
     margin: 0;
   }
+  .nav-bar {
+    display: flex;
+  }
+  #user {
+  }
 }
 
-@media (min-width: 1300px) {
+@media (max-width: 1150px) {
+  #burger-menu__container {
+    display: block;
+  }
+  .nav-bar {
+    display: none;
+  }
   #user {
-    gap: 20px;
+    justify-self: end;
+    width: 50px;
+    margin-right: 0%;
   }
 }
