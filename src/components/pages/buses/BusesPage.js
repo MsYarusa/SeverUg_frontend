@@ -6,7 +6,7 @@ import { getDrivers } from "../../../store/requests/EmployeesRequests";
 import ObjectsPage from "../../cards/ObjectsPage";
 import AddUpdateBus from "./AddUpdateBus";
 import DeleteBus from "./DeleteBus";
-import BusFilter from "./BusFilter";
+import BusFilter from "./BusFilterBeta";
 import BusesList from "./BusesList";
 import "../../cards/objectStyles/ObjectsPage.css";
 

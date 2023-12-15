@@ -5,10 +5,11 @@ import ObjectList from "../../cards/ObjectsList";
 import SearchByName from "../../cards/ObjectSearchByName";
 import BusItem from "./BusItem";
 import AddDriver from "./AddDriver";
-
+import BusesFilter from "./BusFilterBeta";
+import filter from "../../cards/buttonImgs/filter.svg";
 import "../../cards/objectStyles/ObjectSearch.css";
 
-const BusesList = ({ searchHandler, list, buttonsHandlers }) => {
+const BusesList = ({ searchHandler, list, buttonsHandlers, onFilter }) => {
   const [addDriver, setAddDriver] = useState(false);
   const [addDriverToID, setAddDriverToID] = useState(null);
 
@@ -24,6 +25,11 @@ const BusesList = ({ searchHandler, list, buttonsHandlers }) => {
     setAddDriver(false);
   };
 
+  const [showFilter, setShowFilter] = useState(false);
+  const showFilterHandler = () => {
+    setShowFilter(!showFilter);
+  };
+
   return (
     <>
       <ObjectList list={list}>
@@ -32,8 +38,16 @@ const BusesList = ({ searchHandler, list, buttonsHandlers }) => {
             search={searchHandler}
             placeholder="Номер автобуса или ФИО водителя"
           />
+          <button onClick={showFilterHandler} className="show-filter-button">
+            <img src={filter} />
+          </button>
           <button onClick={buttonsHandlers.add}>Добавить автобус</button>
         </div>
+        <BusesFilter
+          onFilter={onFilter}
+          isSmall={true}
+          isVisible={showFilter}
+        />
         {list?.map((item) => (
           <BusItem
             key={item.id}

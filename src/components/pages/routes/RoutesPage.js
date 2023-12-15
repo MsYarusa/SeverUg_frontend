@@ -10,7 +10,7 @@ import { getSchedule } from "../../../store/requests/ScheduleRequests";
 import { searchFromTo } from "../../../extraFunctions/SearchHandlers";
 
 import RoutesList from "./RoutesList";
-import RouteFilter from "./RouteFilter";
+import RouteFilter from "./RouteFilterBeta";
 import AddUpdateRoute from "./AddUpdateRoute";
 import DeleteRoute from "./DeleteRoute";
 import ObjectsPage from "../../cards/ObjectsPage";
