@@ -57,7 +57,9 @@ const ObjectsPage = ({
 
   return (
     <div className="page">
-      {ObjectFilter && <ObjectFilter onFilter={filterHandler} />}
+      {ObjectFilter && (
+        <ObjectFilter onFilter={filterHandler} isSmall={false} />
+      )}
       <ObjectsList
         searchHandler={searchHandler}
         buttonsHandlers={{
@@ -66,6 +68,7 @@ const ObjectsPage = ({
           delete: deleteObjectHandler,
         }}
         list={list}
+        onFilter={filterHandler}
       />
       {addObject && <AddUpdateObject cancelHandler={cancelAddHandler} />}
       {updateObject && (

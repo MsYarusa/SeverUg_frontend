@@ -37,9 +37,16 @@
 
 .window__inner {
   max-height: 700px;
-  max-width: 500px;
+  min-width: 500px;
+  width: 100%;
   width: fit-content;
   display: flex;
+
+  overflow: auto;
+  overflow-x: hidden;
+
+  -ms-overflow-style: none; /* IE и Edge */
+  scrollbar-width: none; /* Firefox */
 
   flex-direction: column;
   justify-content: space-between;
@@ -47,10 +54,13 @@
   gap: 20px;
 }
 
+.window__inner::-webkit-scrollbar {
+  width: 0;
+}
 .window p {
   text-align: center;
   margin-bottom: 10px;
-  max-width: 400px;
+  max-width: 90%;
 }
 
 .window .error {

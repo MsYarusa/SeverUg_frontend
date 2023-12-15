@@ -7,7 +7,8 @@ import { getBuses } from "../../../store/requests/BusesRequests";
 import ObjectsPage from "../../cards/ObjectsPage";
 import AddUpdateEmployee from "./AddUpdateEmployee";
 import DeleteEmployee from "./DeleteEmployee";
-import EmployeeFilter from "./EmployeeFilter";
+// import EmployeeFilter from "./EmployeeFilter";
+import EmployeeFilter from "./EmployeeFilters/EmployeeFilter";
 import EmployeesList from "./EmployeesList";
 import "../../cards/objectStyles/ObjectsPage.css";
 

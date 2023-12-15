@@ -11,6 +11,7 @@ const userSlice = createSlice({
   reducers: {
     removeUser(state, action) {
       state.user = null;
+      sessionStorage.setItem("user", null);
     },
   },
   extraReducers: (builder) => {

@@ -1,5 +1,5 @@
 .object-search {
-  z-index: 1;
+  z-index: 2;
   position: sticky;
   top: 122px;
   display: flex;

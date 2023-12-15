@@ -52,10 +52,10 @@ const routesSlice = createSlice({
       let station2 = action.timeGroup.station_2;
       let value = action.timeGroup.time;
 
-      state.routes.forEach((route, i, arr) => {
+      state.routes.forEach((route, j, routes) => {
         route.stations.slice(0, -1).forEach((station, i, arr) => {
           if (station.id === station1 && arr[i + 1].id === station2) {
-            route.time[i] = value.toString();
+            routes[j].time[i] = value;
           }
         });
       });
@@ -65,10 +65,10 @@ const routesSlice = createSlice({
       let station2 = action.costGroup.station_2;
       let value = action.costGroup.cost;
 
-      state.routes.forEach((route, i, arr) => {
+      state.routes.forEach((route, j, routes) => {
         route.stations.slice(0, -1).forEach((station, i, arr) => {
           if (station.id === station1 && arr[i + 1].id === station2) {
-            route.cost[i] = value.toString();
+            routes[j].cost[i] = value;
           }
         });
       });

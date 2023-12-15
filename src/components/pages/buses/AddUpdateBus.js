@@ -41,6 +41,7 @@ const AddUpdateBus = ({ cancelHandler, data }) => {
 
     let model = document.getElementById("bus-model").value;
     let code = document.getElementById("bus-code").value;
+    let status = data ? document.getElementById("bus-status").value : "active";
 
     // поднятие флагов в случае некорректных входных данных
     let modelOk = model !== "Выбрать";
@@ -55,8 +56,7 @@ const AddUpdateBus = ({ cancelHandler, data }) => {
       const newBus = {
         model: model,
         code: code,
-        status: "active",
-        numberOfSits: model === "HONDA" ? 52 : 43,
+        status: status,
       };
       if (data) {
         //если был указан сотрудник, то его данные обновляются

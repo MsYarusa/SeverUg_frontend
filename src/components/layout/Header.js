@@ -168,12 +168,15 @@ const DropdownObject = ({ children, label, style, isLinks }) => {
 
   useEffect(() => {
     document.addEventListener("click", showDropdownHandler);
+    return () => {
+      document.removeEventListener("click", showDropdownHandler);
+    };
   }, []);
 
   return (
     <div className="dropdown__container" id={"dropdown__container-" + label}>
       <label className="link-label dropdown-label">
-        {label}
+        <p>{label}</p>
         <img src={showDropdown ? dropup : dropdown} className="dropdown-img" />
       </label>
       {showDropdown && (

@@ -10,7 +10,7 @@ import {
   updateAuthDriver,
 } from "../../../store/requests/EmployeesRequests";
 import { translateRole, rolesEN } from "../../../extraFunctions/ExtraFunctions";
-import { SHA256 } from "crypto-js";
+import CryptoJS from "crypto-js";
 
 import AddUpdateObject from "../../cards/AddUpdateDeleteObjects";
 
@@ -114,7 +114,8 @@ const AddUpdateEmployee = ({ cancelHandler, data }) => {
     let confirmFailed = password !== passwordConfiirmation;
     let driverIdOk = driverId !== "";
 
-    password = SHA256(password);
+    password = CryptoJS.SHA256(password).toString(CryptoJS.enc.Hex);
+    login = CryptoJS.SHA256(login).toString(CryptoJS.enc.Hex);
 
     // сохранение флагов
     setFirstNameOk(firstNameOk);

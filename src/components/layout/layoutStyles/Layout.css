@@ -2,4 +2,7 @@
   position: relative;
   min-height: 100%;
   height: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }

@@ -9,7 +9,6 @@ const DeleteStation = ({ cancelHandler, id }) => {
   const dispatch = useDispatch();
   // получение данных из стора
   const routes = useSelector((state) => state.routes.routes);
-  const schedule = useSelector((state) => state.schedule.schedule);
 
   // флаг, показывающий наличие связанных рейсов и маршрутов
   const [stationIsUsed, setStationIsUsed] = useState(false);
@@ -53,7 +52,7 @@ const DeleteStation = ({ cancelHandler, id }) => {
     >
       <p>
         {stationIsUsed
-          ? "Вместе со станцией буду удалены все связанные маршруты и рейсы"
+          ? "Через станцию проложены маршруты. Они и назначенные на них рейсы будут удалены вместе со станцией"
           : "Подтвердите удаление станции"}
       </p>
     </DeleteObject>

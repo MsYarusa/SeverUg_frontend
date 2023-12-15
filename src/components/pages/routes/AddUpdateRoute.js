@@ -172,14 +172,11 @@ const AddUpdateRoute = ({ cancelHandler, data }) => {
     event.preventDefault();
 
     // массивы для хранения полученных значений
-    let stationsForAdd = [];
     let indexesForAdd = [];
     let timeForAdd = [];
     let timeForUpdate = [];
-    let timeForSave = [];
     let costForAdd = [];
     let costForUpdate = [];
-    let costForSave = [];
     // флаги указывающие некорректность полученных значений
     let containsNullStation = false;
     let containsNullTime = false;
@@ -189,7 +186,6 @@ const AddUpdateRoute = ({ cancelHandler, data }) => {
     let firstStation = JSON.parse(document.getElementById("s " + 0).value);
     if (firstStation !== defaultValue) {
       indexesForAdd.push(Number(firstStation.id));
-      stationsForAdd.push(firstStation);
     } else {
       containsNullStation = true;
     }
@@ -206,77 +202,78 @@ const AddUpdateRoute = ({ cancelHandler, data }) => {
 
       if (currentStation !== defaultValue) {
         indexesForAdd.push(currentStation.id);
-        stationsForAdd.push(currentStation);
       } else {
         containsNullStation = true;
       }
       // получение значений времени
       let newTime = document.getElementById("time " + index).value;
       newTime = newTime === "" ? null : getMinsFromTime(newTime);
-      // сохранение значения времени
-      timeForSave.push(Number(newTime));
       // получение предыдущего значения времени на участке
       let oldTime = getFromTable(timeTable, prevStation.id, currentStation.id);
 
       // если значение времени не пустое и оно отличается от предыдущего значения
       if (newTime && newTime !== oldTime) {
         let timeGroup = {
-          station_1_id: prevStation.id,
-          station_2_id: currentStation.id,
-          time: getMinsFromTime(newTime),
+          stations_1_id: prevStation.id,
+          stations_2_id: currentStation.id,
+          time: Number(newTime),
         };
         if (!oldTime) {
           timeForAdd.push(timeGroup);
         } else {
           timeForUpdate.push(timeGroup);
         }
-      } else {
+      } else if (!newTime) {
         containsNullTime = true;
       }
       // получение значений стоимости
       let newCost = document.getElementById("cost " + index).value;
-      newCost = newCost === "" ? null : newCost;
-      // сохранение значения стоимости
-      costForSave.push(Number(newCost));
+      newCost = newCost === "" ? null : Number(newCost);
       // предыдущее значение стоимости на участке
       let oldCost = getFromTable(costTable, prevStation.id, currentStation.id);
 
       if (newCost && newCost !== oldCost) {
         let costGroup = {
-          station_1_id: prevStation.id,
-          station_2_id: currentStation.id,
+          stations_1_id: prevStation.id,
+          stations_2_id: currentStation.id,
           cost: newCost,
         };
+        console.log(costGroup);
         if (!oldCost) {
           costForAdd.push(costGroup);
         } else {
           costForUpdate.push(costGroup);
         }
-      } else {
+      } else if (!newCost) {
         containsNullCost = true;
       }
     }
 
     // поднятие флагов в случае некорректных входных данных
-    setStationsOk(stationsForAdd.length > 1);
+    setStationsOk(indexesForAdd.length > 1);
     setContainesNullStation(containsNullStation);
     setContainesNullTime(containsNullTime);
     setContainesNullCost(containsNullCost);
 
     // если данные корректны, то происходит отправка запроса
     if (
-      stationsForAdd.length > 1 &&
+      indexesForAdd.length > 1 &&
       !containsNullStation &&
       !containsNullTime &&
       !containsNullCost
     ) {
-      dispatch(postCostGroup(costForAdd));
-      dispatch(postTimeGroup(timeForAdd));
+      console.log(costForAdd, costForUpdate);
+      if (costForAdd.length !== 0) {
+        dispatch(postCostGroup({ cost: costForAdd }));
+      }
+      if (timeForAdd.length !== 0) {
+        dispatch(postTimeGroup({ time: timeForAdd }));
+      }
       costForUpdate.forEach((costGroup, i, arr) => {
-        dispatch(putCostGroup(costGroup));
+        dispatch(putCostGroup({ cost: costGroup }));
       });
       timeForUpdate.forEach((timeGroup, i, arr) => {
-        dispatch(putTimeGroup(timeGroup));
+        dispatch(putTimeGroup({ time: timeGroup }));
       });
 
       // console.log(

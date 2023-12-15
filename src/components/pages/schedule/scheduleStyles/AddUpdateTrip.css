@@ -103,17 +103,13 @@
 }
 
 .routes {
-  min-width: 500px;
+  max-width: 500px;
   width: 100%;
   display: flex;
   flex-direction: column;
   padding: 2px 2px;
   align-items: space-between;
-  overflow: auto;
-  overflow-x: hidden;
   gap: 10px;
-  -ms-overflow-style: none; /* IE и Edge */
-  scrollbar-width: none; /* Firefox */
 }
 
 .routes .stations__container {
@@ -123,10 +119,6 @@
   padding: 2px 2px;
   align-items: space-between;
   gap: 10px;
-}
-
-.routes::-webkit-scrollbar {
-  width: 0;
 }
 
 #route-select,

@@ -25,27 +25,27 @@ export const getRoutes = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     // получение данных
     let data = [];
-    // try {
-    //   await axios
-    //     .get("https://spacekot.ru/apishechka/road")
-    //     .then((res) => {
-    //       console.log("статус: успешно");
-    //       console.log("данные: ", res.data);
-    //       data = res.data;
-    //     })
-    //     .catch((error) => {
-    //       console.error("ошибка: ", error.message);
-    //       throw new Error(error.message);
-    //     });
-    // } catch (error) {
-    //   return rejectWithValue(error.message);
-    // }
-
     try {
-      data = routes;
+      await axios
+        .get("https://spacekot.ru/apishechka/road")
+        .then((res) => {
+          console.log("статус: успешно");
+          console.log("данные: ", res.data);
+          data = res.data;
+        })
+        .catch((error) => {
+          console.error("ошибка: ", error.message);
+          throw new Error(error.message);
+        });
     } catch (error) {
       return rejectWithValue(error.message);
     }
+
+    // try {
+    //   data = routes;
+    // } catch (error) {
+    //   return rejectWithValue(error.message);
+    // }
 
     return data;
   }
@@ -134,27 +134,27 @@ export const getTimeGroup = createAsyncThunk(
   "routes/getTimeGroup",
   async (_, { rejectWithValue }) => {
     let data = [];
-    // try {
-    //   await axios
-    //     .get(`https://spacekot.ru/apishechka/station_time`)
-    //     .then((res) => {
-    //       console.log("статус: успешно");
-    //       console.log("данные: ", res.data);
-    //       data = res.data;
-    //     })
-    //     .catch((error) => {
-    //       console.error("ошибка: ", error.message);
-    //       throw new Error(error.message);
-    //     });
-    // } catch (error) {
-    //   return rejectWithValue(error.message);
-    // }
-
     try {
-      data = timeGroups;
+      await axios
+        .get(`https://spacekot.ru/apishechka/station_time`)
+        .then((res) => {
+          console.log("статус: успешно");
+          console.log("данные: ", res.data);
+          data = res.data;
+        })
+        .catch((error) => {
+          console.error("ошибка: ", error.message);
+          throw new Error(error.message);
+        });
     } catch (error) {
       return rejectWithValue(error.message);
     }
+
+    // try {
+    //   data = timeGroups;
+    // } catch (error) {
+    //   return rejectWithValue(error.message);
+    // }
 
     let timeTable = [];
     // преобразования списка групп
@@ -174,6 +174,9 @@ export const postTimeGroup = createAsyncThunk(
   "routes/postTimeGroup",
   async ({ time }, { rejectWithValue, dispatch }) => {
     let data = [];
+    if (time.length === 1) {
+      time = time[0];
+    }
     try {
       await axios
         .post(
@@ -232,27 +235,27 @@ export const getCostGroup = createAsyncThunk(
   "routes/getCostGroup",
   async (_, { rejectWithValue }) => {
     let data = [];
-    // try {
-    //   await axios
-    //     .get(`https://spacekot.ru/apishechka/station_cost`)
-    //     .then((res) => {
-    //       console.log("статус: успешно");
-    //       console.log("данные: ", res.data);
-    //       data = res.data;
-    //     })
-    //     .catch((error) => {
-    //       console.error("ошибка: ", error.message);
-    //       throw new Error(error.message);
-    //     });
-    // } catch (error) {
-    //   return rejectWithValue(error.message);
-    // }
-
     try {
-      data = costGroups;
+      await axios
+        .get(`https://spacekot.ru/apishechka/station_cost`)
+        .then((res) => {
+          console.log("статус: успешно");
+          console.log("данные: ", res.data);
+          data = res.data;
+        })
+        .catch((error) => {
+          console.error("ошибка: ", error.message);
+          throw new Error(error.message);
+        });
     } catch (error) {
       return rejectWithValue(error.message);
     }
+
+    // try {
+    //   data = costGroups;
+    // } catch (error) {
+    //   return rejectWithValue(error.message);
+    // }
 
     let costTable = [];
     // преобразования списка групп
@@ -272,6 +275,9 @@ export const postCostGroup = createAsyncThunk(
   "routes/postCostGroup",
   async ({ cost }, { rejectWithValue, dispatch }) => {
     let data = [];
+    if (cost.length === 1) {
+      cost = cost[0];
+    }
     try {
       await axios
         .post(

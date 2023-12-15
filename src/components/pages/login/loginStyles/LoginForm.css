@@ -1,13 +1,14 @@
 @import url("https://fonts.cdnfonts.com/css/montserrat");
 
 .login-window {
-  margin: 5rem;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .login-window__card {
+  margin: 80px;
+  margin-top: 40px;
   width: 600px;
   height: 615px;
   flex-shrink: 0;

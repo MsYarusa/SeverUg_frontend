@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { getBuses, getModels } from "../requests/BusesRequests";
-import { act } from "react-dom/test-utils";
 
 const busesSlice = createSlice({
   name: "buses",

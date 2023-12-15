@@ -39,7 +39,7 @@ const BusItem = ({ data, deleteHandler, updateHandler, driverHandler }) => {
         onClick={infoHandler}
         id={data.id}
       >
-        <p className="bus-code"> Автобус №{data.code}</p>
+        <p className="bus-code"> Автобус № {data.code}</p>
         <p className="bus-status">статус — {translateBusStatus(data.status)}</p>
         <button id={"dri " + data.id} onClick={driverClickedHandler}>
           <img src={wheel} id={"dri " + data.id} />

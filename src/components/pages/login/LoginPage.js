@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import LoginForm from "./LoginForm";
 import Logo from "../../layout/Logo";
+import background from "./loginImgs/backgroundImg.jpg";
 import "./loginStyles/LoginPage.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -19,6 +20,7 @@ const LoginPage = () => {
 
   return (
     <div className="login-page">
+      <img src={background} />
       <Logo />
       <LoginForm />
     </div>

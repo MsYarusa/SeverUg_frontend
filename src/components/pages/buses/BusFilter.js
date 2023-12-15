@@ -129,7 +129,7 @@ const BusFilter = ({ onFilter }) => {
 
   return (
     <ObjectFilter clearHandler={clearHandler}>
-      <label className="">Водитель:</label>
+      <label>Водитель:</label>
       <div className="extra-input">
         <label>Статус:</label>
         <select defaultValue="Любой" onChange={filterHandler} id="driverStatus">
@@ -138,7 +138,7 @@ const BusFilter = ({ onFilter }) => {
           <option value="Назначен">Назначен</option>
         </select>
       </div>
-      <label className="">Автобус:</label>
+      <label>Автобус:</label>
       <div className="extra-input">
         <label>Статус:</label>
         <select defaultValue="Любой" onChange={filterHandler} id="busStatus">

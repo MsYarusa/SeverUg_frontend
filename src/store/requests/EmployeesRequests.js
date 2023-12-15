@@ -63,6 +63,7 @@ export const postEmployee = createAsyncThunk(
         .post("https://spacekot.ru/apishechka/user", employee)
         .then((res) => {
           console.log("статус: успешно");
+          console.log("данные: ", res.data);
           newEmployee = res.data;
         })
         .catch((error) => {
@@ -90,6 +91,7 @@ export const putEmployee = createAsyncThunk(
         .put(`https://spacekot.ru/apishechka/user/${id}`, employee)
         .then((res) => {
           console.log("статус: успешно");
+          console.log("данные: ", res.data);
           newEmployee = res.data;
         })
         .catch((error) => {
@@ -102,7 +104,7 @@ export const putEmployee = createAsyncThunk(
 
     newEmployee.id = -newEmployee.id;
     // обновление сотрудника в сторе
-    dispatch(updateEmployee({ id: id, employee: newEmployee }));
+    dispatch(updateEmployee({ id: -id, employee: newEmployee }));
   }
 );
 
@@ -159,27 +161,27 @@ export const getDrivers = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     // получение данных
     let data = [];
-    // try {
-    //   await axios
-    //     .get("https://spacekot.ru/apishechka/driver")
-    //     .then((res) => {
-    //       console.log("статус: успешно");
-    //       console.log("данные: ", res.data);
-    //       data = res.data;
-    //     })
-    //     .catch((error) => {
-    //       console.error("ошибка: ", error.message);
-    //       throw new Error("Server Error!");
-    //     });
-    // } catch (error) {
-    //   return rejectWithValue(error.message);
-    // }
-
     try {
-      data = drivers;
+      await axios
+        .get("https://spacekot.ru/apishechka/driver")
+        .then((res) => {
+          console.log("статус: успешно");
+          console.log("данные: ", res.data);
+          data = res.data;
+        })
+        .catch((error) => {
+          console.error("ошибка: ", error.message);
+          throw new Error("Server Error!");
+        });
     } catch (error) {
       return rejectWithValue(error.message);
     }
+
+    // try {
+    //   data = drivers;
+    // } catch (error) {
+    //   return rejectWithValue(error.message);
+    // }
 
     return data;
   }

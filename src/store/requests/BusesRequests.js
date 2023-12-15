@@ -18,27 +18,27 @@ export const getBuses = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     // получение данных
     let data = [];
-    // try {
-    //   await axios
-    //     .get("https://spacekot.ru/apishechka/buses")
-    //     .then((res) => {
-    //       console.log("статус: успешно");
-    //       console.log("данные: ", res.data);
-    //       data = res.data;
-    //     })
-    //     .catch((error) => {
-    //       console.error("ошибка: ", error.message);
-    //       throw new Error("Server Error!");
-    //     });
-    // } catch (error) {
-    //   return rejectWithValue(error.message);
-    // }
-
     try {
-      data = buses;
+      await axios
+        .get("https://spacekot.ru/apishechka/buses")
+        .then((res) => {
+          console.log("статус: успешно");
+          console.log("данные: ", res.data);
+          data = res.data;
+        })
+        .catch((error) => {
+          console.error("ошибка: ", error.message);
+          throw new Error("Server Error!");
+        });
     } catch (error) {
       return rejectWithValue(error.message);
     }
+
+    // try {
+    //   data = buses;
+    // } catch (error) {
+    //   return rejectWithValue(error.message);
+    // }
 
     return data;
   }
@@ -50,27 +50,27 @@ export const getModels = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     // получение данных
     let data = [];
-    // try {
-    //   await axios
-    //     .get("https://spacekot.ru/apishechka/bus_spec")
-    //     .then((res) => {
-    //       console.log("статус: успешно");
-    //       console.log("данные: ", res.data);
-    //       data = res.data;
-    //     })
-    //     .catch((error) => {
-    //       console.error("ошибка: ", error.message);
-    //       throw new Error("Server Error!");
-    //     });
-    // } catch (error) {
-    //   return rejectWithValue(error.message);
-    // }
-
     try {
-      data = models;
+      await axios
+        .get("https://spacekot.ru/apishechka/bus_spec")
+        .then((res) => {
+          console.log("статус: успешно");
+          console.log("данные: ", res.data);
+          data = res.data;
+        })
+        .catch((error) => {
+          console.error("ошибка: ", error.message);
+          throw new Error("Server Error!");
+        });
     } catch (error) {
       return rejectWithValue(error.message);
     }
+
+    // try {
+    //   data = models;
+    // } catch (error) {
+    //   return rejectWithValue(error.message);
+    // }
 
     return data;
   }
@@ -87,6 +87,7 @@ export const postBus = createAsyncThunk(
         .post("https://spacekot.ru/apishechka/buses", bus)
         .then((res) => {
           console.log("статус: успешно");
+          console.log("данные: ", res.data);
           newBus = res.data;
         })
         .catch((error) => {
@@ -113,6 +114,7 @@ export const putBus = createAsyncThunk(
         .put(`https://spacekot.ru/apishechka/buses/${id}`, bus)
         .then((res) => {
           console.log("статус: успешно");
+          console.log("данные: ", res.data);
           newBus = res.data;
         })
         .catch((error) => {

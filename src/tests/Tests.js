@@ -1,4 +1,5 @@
 const { json } = require("react-router-dom");
+const CryptoJS = require("crypto-js");
 
 const axios = require("axios").default;
 
@@ -27,11 +28,6 @@ const axios = require("axios").default;
 // console.log(a);
 // console.log(typeof "dsd");
 
-const ob = [{ a: 1, b: 2 }];
-let ad = ob;
-for (let o of ad) {
-  o.a = 3;
-}
-let a = 1;
-
-console.log(-a);
+let a = "password";
+let hash = CryptoJS.SHA256(a).toString(CryptoJS.enc.Hex);
+console.log(hash);

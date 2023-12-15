@@ -165,11 +165,11 @@ const AddUpdateTrip = ({ cancelHandler, data }) => {
       errorMessage={errorMessage}
       noErrors={routeOk && busOk}
     >
-      <label>{data ? "Изменение рейса" : "Добавление рейса"}</label>
-      <label>Дни работы рейса:</label>
+      <label id="main">{data ? "Изменение рейса" : "Добавление рейса"}</label>
+      <label className="secondary-label">Дни работы рейса:</label>
       <Days selectHandler={setDaysSelected} />
       <p className={daysOk ? "error-disabled" : "error"}>
-        Необходимо указать дни работы рейса
+        {daysOk ? "" : "Необходимо указать дни работы рейса"}
       </p>
       <div className="label-input">
         <label>Время отправления:</label>
@@ -179,7 +179,7 @@ const AddUpdateTrip = ({ cancelHandler, data }) => {
           className={timeOk ? "base-border" : "error-border"}
         />
       </div>
-      <label>Автобус и водитель:</label>
+      <label className="secondary-label">Автобус и водитель:</label>
       <select
         id="bus-select"
         defaultValue={JSON.stringify("Выбрать")}
@@ -211,7 +211,7 @@ const AddUpdateTrip = ({ cancelHandler, data }) => {
           </option>
         </select>
       )}
-      <label>Маршрут:</label>
+      <label className="secondary-label">Маршрут:</label>
       <select
         id="route-select"
         defaultValue={JSON.stringify("Выбрать")}
