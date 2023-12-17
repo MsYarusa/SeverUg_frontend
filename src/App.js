@@ -10,6 +10,7 @@ import NotFound from "./components/cards/NotFound";
 import RoutesPage from "./components/pages/routes/RoutesPage";
 import StationsPage from "./components/pages/stations/StationsPage";
 import BusesPage from "./components/pages/buses/BusesPage";
+import TicketPage from "./components/pages/tickets/TicketPage";
 
 function App() {
   return (
@@ -92,7 +93,7 @@ function App() {
           path="tickets"
           element={
             <RoleCheck roles={["admin", "cashier"]}>
-              <NotFound />
+              <TicketPage />
             </RoleCheck>
           }
         />

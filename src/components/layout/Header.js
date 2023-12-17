@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
-import { translateRole } from "../../extraFunctions/ExtraFunctions";
+import { translateRole } from "../../extraFunctions/Translators";
 import { removeUser } from "../../store/slicies/userSlice";
 
 import Logo from "./Logo";

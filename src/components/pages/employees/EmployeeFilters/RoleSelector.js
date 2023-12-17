@@ -1,7 +1,4 @@
-import {
-  translateRole,
-  rolesEN,
-} from "../../../../extraFunctions/ExtraFunctions";
+import { translateRole, rolesEN } from "../../../../extraFunctions/Translators";
 
 import cancelImg from "../../../cards/buttonImgs/close.svg";
 

@@ -1,0 +1,136 @@
+.departure-departure-time {
+  position: absolute;
+  left: 15%;
+  top: 26.5px;
+  max-width: 15%;
+}
+
+.departure-departure {
+  position: absolute;
+  right: 55%;
+  top: 26.5px;
+  max-width: 18%;
+  text-align: end;
+}
+
+.departure-dash {
+  text-align: justify;
+  position: absolute;
+  font-size: 30px;
+  left: 46%;
+  top: 26.5px;
+}
+
+.departure-destination {
+  position: absolute;
+  left: 50%;
+  top: 26.5px;
+  max-width: 18%;
+}
+
+.departure-cost {
+  position: absolute;
+  left: 68%;
+  top: 26.5px;
+  max-width: 8%;
+}
+
+.departure-list__container {
+  width: 100%;
+  height: fit-content;
+  margin-bottom: 20px;
+}
+
+.departure-info-time {
+  position: absolute;
+  left: 18.8%;
+  max-width: 10%;
+}
+
+.departure-info-station1 {
+  position: absolute;
+  right: 54.5%;
+  max-width: 18%;
+  text-align: end;
+}
+
+.departure-info-dash {
+  text-align: justify;
+  position: absolute;
+  font-size: 30px;
+  left: 47%;
+}
+
+.departure-info-station2 {
+  position: absolute;
+  left: 50%;
+  max-width: 18%;
+}
+
+.departure-info-cost {
+  position: absolute;
+  left: 68%;
+  max-width: 8%;
+}
+.departure-list__container .departure-station-pare {
+  width: 90%;
+  min-height: 20px;
+  height: fit-content;
+  margin-top: 0px;
+  margin-bottom: 15px;
+}
+
+@media (max-width: 1240px) {
+  .departure-dash {
+    font-size: 25px;
+  }
+}
+
+.departure-info__container {
+  position: relative;
+  width: 100%;
+  height: 19px;
+  margin-bottom: 20px;
+}
+
+.departure-status-label {
+  position: absolute;
+  left: 21%;
+  max-width: 50%;
+}
+
+.departure-status {
+  position: absolute;
+  left: 34%;
+  max-width: 40%;
+}
+
+.departure-places-label {
+  position: absolute;
+  right: 25%;
+  max-width: 50%;
+}
+
+.departure-places {
+  position: absolute;
+  right: 19%;
+  max-width: 40%;
+}
+
+.object-item .buy-button {
+  border: none;
+  background: #fff;
+  border-radius: 20px;
+  width: fit-content;
+  height: 50px;
+  margin-left: 15px;
+  padding-left: 15px;
+  padding-right: 15px;
+
+  color: #5c5c5c;
+  font-family: Montserrat;
+  font-size: 17px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 110%;
+}

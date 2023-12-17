@@ -121,7 +121,7 @@ const ScheduleFilter = ({ onFilter, isSmall, isVisible }) => {
       newFilterConfig.time = { from: filterConfig.time.from, to: value };
     }
     if (id.indexOf("date") !== -1) {
-      newFilterConfig.days = dateHandler(extraDateFilters);
+      newFilterConfig.days = dateHandler(extraDateFilters, primeDate);
     }
     // изменяем старые параметры в соответствии с новыми
     setFilterConfig(newFilterConfig);
@@ -260,7 +260,7 @@ const DateSelect = ({ id, onChange, deleteHandler, isOnly, primeDate }) => {
   return (
     <div className="extra-input">
       <label>Дата:</label>
-      <input type="date" id={primeDate + id.toString()} onChange={onChange} />
+      <input type="date" id={primeDate + id} onChange={onChange} />
       {!isOnly && (
         <button id={id.toString()} onClick={deleteHandler}>
           <img src={cancelImg} id={id.toString()} />

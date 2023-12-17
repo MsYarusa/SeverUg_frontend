@@ -89,6 +89,7 @@ const SchedulePage = () => {
           ),
           days: trip.days,
           driver: trip.driver,
+          bus: trip.bus,
           road: item,
         });
       });
@@ -103,10 +104,10 @@ const SchedulePage = () => {
     let filter_results = [];
     setSavedFilteredConfig(filterConfig);
     for (let trip of searchedList) {
-      let tripTotalPrice = sum(trip.road.price);
+      let tripTotalCost = sum(trip.road.cost);
       let costOk =
-        filterConfig.cost.from <= tripTotalPrice &&
-        tripTotalPrice <= filterConfig.cost.to;
+        filterConfig.cost.from <= tripTotalCost &&
+        tripTotalCost <= filterConfig.cost.to;
 
       let tripTotalTime = getMinsFromTime(trip.departure_time);
       let timeOk =

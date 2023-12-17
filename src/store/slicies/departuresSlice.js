@@ -50,9 +50,9 @@ const departureSlice = createSlice({
 });
 
 export const {
-  addDepartures,
-  updateDepartures,
+  addDeparture,
+  updateDeparture,
   updateTripInDeparture,
-  removeDepartures,
+  removeDeparture,
 } = departureSlice.actions;
 export default departureSlice.reducer;

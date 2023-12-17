@@ -6,14 +6,14 @@
 
 .trip-departure-time {
   position: absolute;
-  left: 15%;
+  left: 18%;
   max-width: 15%;
 }
 
 .trip-departure {
   position: absolute;
-  right: 55%;
-  max-width: 18%;
+  right: 52%;
+  max-width: 15%;
   text-align: end;
 }
 
@@ -21,18 +21,18 @@
   text-align: justify;
   position: absolute;
   font-size: 30px;
-  left: 46%;
+  left: 49%;
 }
 
 .trip-destination {
   position: absolute;
-  left: 50%;
-  max-width: 18%;
+  left: 53%;
+  max-width: 15%;
 }
 
 .trip-cost {
   position: absolute;
-  left: 90%;
+  left: 68%;
   max-width: 8%;
 }
 
@@ -62,7 +62,7 @@
   max-width: 18%;
 }
 
-.trip-cost {
+.info .trip-cost {
   position: absolute;
   left: 68%;
   max-width: 8%;
@@ -76,4 +76,10 @@
   height: fit-content;
   margin-top: 0px;
   margin-bottom: 15px;
+}
+
+@media (max-width: 1240px) {
+  .trip-dash {
+    font-size: 25px;
+  }
 }

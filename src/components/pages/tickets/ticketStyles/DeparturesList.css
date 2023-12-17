@@ -1,0 +1,23 @@
+.items__container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.departures-date__container {
+  display: flex;
+  color: #5c5c5c;
+  font-family: Montserrat;
+  font-size: 19px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 110%;
+}
+
+.departures-date__container input {
+  padding: 0;
+  padding-right: 10px;
+  width: 150px;
+  text-align: center;
+}

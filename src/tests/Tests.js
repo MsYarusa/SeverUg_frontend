@@ -28,6 +28,13 @@ const axios = require("axios").default;
 // console.log(a);
 // console.log(typeof "dsd");
 
-let a = "password";
-let hash = CryptoJS.SHA256(a).toString(CryptoJS.enc.Hex);
-console.log(hash);
+// let a = "password";
+// let hash = CryptoJS.SHA256(a).toString(CryptoJS.enc.Hex);
+// console.log(hash);
+
+// let a = [1, 2, 3];
+// a.forEach((item, i, arr) => {
+//   item = 0;
+// });
+
+console.log(new Date(""));

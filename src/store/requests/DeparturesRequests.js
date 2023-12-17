@@ -15,27 +15,27 @@ export const getDepartures = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     // отправление запроса
     let data = [];
-    try {
-      await axios
-        .get("https://spacekot.ru/apishechka/departures")
-        .then((res) => {
-          console.log("статус: успешно");
-          console.log("данные: ", res.data);
-          data = res.data;
-        })
-        .catch((error) => {
-          console.error(error);
-          throw new Error(error.message);
-        });
-    } catch (error) {
-      return rejectWithValue(error.message);
-    }
-
     // try {
-    //   data = departures;
+    //   await axios
+    //     .get("https://spacekot.ru/apishechka/departures")
+    //     .then((res) => {
+    //       console.log("статус: успешно");
+    //       console.log("данные: ", res.data);
+    //       data = res.data;
+    //     })
+    //     .catch((error) => {
+    //       console.error(error);
+    //       throw new Error(error.message);
+    //     });
     // } catch (error) {
     //   return rejectWithValue(error.message);
     // }
+
+    try {
+      data = departures;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
 
     return data;
   }

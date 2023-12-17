@@ -9,7 +9,7 @@ import {
   updateAuthEmployee,
   updateAuthDriver,
 } from "../../../store/requests/EmployeesRequests";
-import { translateRole, rolesEN } from "../../../extraFunctions/ExtraFunctions";
+import { translateRole, rolesEN } from "../../../extraFunctions/Translators";
 import CryptoJS from "crypto-js";
 
 import AddUpdateObject from "../../cards/AddUpdateDeleteObjects";

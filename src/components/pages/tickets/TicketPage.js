@@ -9,10 +9,11 @@ import {
 } from "../../../extraFunctions/ExtraFunctions";
 import { searchFromTo } from "../../../extraFunctions/SearchHandlers";
 
-import DepartureFilter from "./RouteFilterBeta";
+import DepartureFilter from "../routes/RouteFilterBeta";
 import DeparturesList from "./DeparturesList";
+import BuyWindow from "./BuyWindow";
 
-const ticketsPage = () => {
+const TicketPage = () => {
   //ДАННЫЕ
   // запрашиваем данные из стора
   const departures = useSelector((state) => state.departures.departures);
@@ -30,8 +31,51 @@ const ticketsPage = () => {
   }, []);
 
   // РЕЖИМ (режим определяется что мы отрисовываем - отбытия или рейсы)
+  // отбытия соответствующие данной дате
+  // рейсы соответствующие данной дате
   // сменить режим можно установкой или сбросом даты
-  const [dateSelected, setDateSelected] = useState(false);
+  const [dateSelected, setDateSelected] = useState(null);
+  // список отбытий на определенную дату
+  const [departuresForDate, setDeparturesForDate] = useState([]);
+
+  const changeStateHandler = (date) => {
+    if (date !== null) {
+      let selectedDeps = [];
+      for (let dep of departures) {
+        // сравниваем даты в unix формате
+        if (dep.date === +date) {
+          selectedDeps.push(dep);
+        }
+      }
+
+      let selectedTrips = [];
+      let dateDay = date.getDay();
+      for (let trip of schedule) {
+        if (
+          trip.days.indexOf(dateDay) !== -1 &&
+          !selectedDeps.find((dep) => dep.trip.id === trip.id)
+        ) {
+          selectedTrips.push(trip);
+        }
+      }
+      for (let trip of selectedTrips) {
+        selectedDeps.push({
+          id: 0,
+          date: +date,
+          status:
+            +date >= +new Date()
+              ? trip.bus.status === "active"
+                ? "active"
+                : "canceled"
+              : "canceled",
+          tickets: [],
+          trip: trip,
+        });
+      }
+      setDeparturesForDate(selectedDeps);
+    }
+    setDateSelected(date);
+  };
 
   // ПОИСК И ФИЛЬТР
   // хранение отфильтрованного списка
@@ -50,14 +94,14 @@ const ticketsPage = () => {
   // задаем начальные значения отфильтрованных списков ( в зависимости от режимв)
   useEffect(() => {
     if (dateSelected) {
-      setFilteredList(departures);
-      setSearchedList(departures);
+      setFilteredList(departuresForDate);
+      setSearchedList(departuresForDate);
     } else {
       setFilteredList(schedule);
       setSearchedList(schedule);
     }
     searchHandler(savedSearchedConfig);
-  }, [dateSelected]);
+  }, [dateSelected, departures, schedule]);
 
   // после поиска необходимо отфильтровать список с учетом сохраненных параметров
   useEffect(() => {
@@ -66,9 +110,10 @@ const ticketsPage = () => {
 
   // поиск (фильтрация по названию)
   const searchHandler = (searchConfig) => {
-    let search_results = [];
+    let searchResults = [];
     setSavedSearchedConfig(searchConfig);
-    for (let trip of dateSelected ? departures : schedule) {
+    for (let item of dateSelected ? departuresForDate : schedule) {
+      let trip = dateSelected ? item.trip : item;
       let searchData = searchFromTo({
         route: trip.road,
         searchConfig: searchConfig,
@@ -76,7 +121,6 @@ const ticketsPage = () => {
       let newRoutes = searchData.routes;
       let departureTime = searchData.departureTime;
       let newTrips = [];
-
       newRoutes.forEach((item, i, arr) => {
         newTrips.push({
           id: trip.id,
@@ -85,50 +129,91 @@ const ticketsPage = () => {
           ),
           days: trip.days,
           driver: trip.driver,
+          bus: trip.bus,
           road: item,
         });
       });
-      search_results = [...search_results, ...newTrips];
-    }
 
-    setSearchedList(search_results);
+      if (dateSelected) {
+        newTrips.forEach((dep, i, arr) => {
+          arr[i] = {
+            id: item.id,
+            date: item.date,
+            status: item.status,
+            tickets: item.tickets,
+            trip: dep,
+          };
+        });
+      }
+
+      searchResults = [...searchResults, ...newTrips];
+    }
+    setSearchedList(searchResults);
   };
 
   // фильтр (фильтрация по характеристикам)
   const filterHandler = (filterConfig) => {
-    let filter_results = [];
+    let filterResults = [];
     setSavedFilteredConfig(filterConfig);
-    for (let trip of searchedList) {
-      let tripTotalPrice = sum(trip.road.price);
+    for (let item of searchedList) {
+      let trip = dateSelected ? item.trip : item;
+      let tripTotalPrice = sum(trip.road.cost);
       let costOk =
         filterConfig.cost.from <= tripTotalPrice &&
         tripTotalPrice <= filterConfig.cost.to;
-
       let tripTotalTime = getMinsFromTime(trip.departure_time);
       let timeOk =
         filterConfig.time.from <= tripTotalTime &&
         tripTotalTime <= filterConfig.time.to;
-
       if (timeOk && costOk) {
-        filter_results.push(trip);
+        filterResults.push(item);
       }
     }
+    if (dateSelected) {
+      filterResults.sort((a, b) =>
+        getMinsFromTime(a.trip.departure_time) <
+        getMinsFromTime(b.trip.departure_time)
+          ? 1
+          : -1
+      );
+    } else {
+      filterResults.sort((a, b) =>
+        getMinsFromTime(a.departure_time) < getMinsFromTime(b.departure_time)
+          ? 1
+          : -1
+      );
+    }
+    setFilteredList(filterResults);
+  };
 
-    setFilteredList(filter_results);
+  // УПРАВЛЕНИЕ ОКНОВ ОФОРМЛЕНИЯ БИЛЕТОВ
+  const [buyWindowOpened, setBuyWindowOpened] = useState(false);
+  const [depToBuy, setDepToBuy] = useState(null);
+
+  const buyHandler = (data) => {
+    setDepToBuy(data);
+    setBuyWindowOpened(true);
+  };
+
+  const cancelBuy = () => {
+    setBuyWindowOpened(false);
   };
 
   return (
-    <ObjectsPage
-      AddUpdateObject={AddUpdateTrip}
-      DeleteObject={DeleteTrip}
-      ObjectFilter={ScheduleFilter}
-      ObjectsList={ScheduleList}
-      filterHandler={filterHandler}
-      searchHandler={searchHandler}
-      list={filteredList}
-      objects={schedule}
-    />
+    <div className="page">
+      <DepartureFilter onFilter={filterHandler} isSmall={false} />
+      <DeparturesList
+        searchHandler={searchHandler}
+        filterHandler={filterHandler}
+        buyHandler={buyHandler}
+        changeState={changeStateHandler}
+        list={filteredList}
+      />
+      {buyWindowOpened && (
+        <BuyWindow cancelHandler={cancelBuy} data={depToBuy} />
+      )}
+    </div>
   );
 };
 
-export default ticketsPage;
+export default TicketPage;
