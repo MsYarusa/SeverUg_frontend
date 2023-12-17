@@ -68,3 +68,13 @@
     font-size: 30px;
   }
 }
+
+@media (max-height: 780px) {
+  .link-button {
+    width: 220px;
+    height: 220px;
+  }
+  .link-button p {
+    font-size: 28px;
+  }
+}

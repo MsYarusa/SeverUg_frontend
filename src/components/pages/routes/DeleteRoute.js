@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteRoute } from "../../../store/requests/RoutesRequests";
-import { removeTrip } from "../../../store/slicies/scheduleSlice";
 
 import DeleteObject from "../../cards/AddUpdateDeleteObjects";
 
@@ -26,8 +25,7 @@ const DeleteRoute = ({ cancelHandler, id }) => {
 
     if (!routeIsUsed) {
       // если связанных рейсов нет, то отправляем запрос
-      // dispatch(deleteRoute({ id: id }));
-      console.log(" deleteRoute ", id);
+      dispatch(deleteRoute({ id: id }));
       cancelHandler();
     } else {
       // если связанные рейсы есть, то поднимаем флаг о их наличии

@@ -5,6 +5,7 @@ import employeesReducer from "./slicies/employeesSlice";
 import stationsReducer from "./slicies/stationsSlice";
 import routesReducer from "./slicies/routesSlice";
 import busesReducer from "./slicies/busesSlice";
+import departuresReducer from "./slicies/departuresSlice";
 
 export default configureStore({
   reducer: {
@@ -14,5 +15,6 @@ export default configureStore({
     stations: stationsReducer,
     routes: routesReducer,
     buses: busesReducer,
+    departures: departuresReducer,
   },
 });

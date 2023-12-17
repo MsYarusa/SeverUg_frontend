@@ -30,6 +30,7 @@
 .user__container {
   width: fit-content;
   display: flex;
+  margin: 10px;
 }
 
 .header #user #user-icon {
@@ -38,7 +39,6 @@
   justify-self: end;
   padding-right: -20px;
 }
-
 .header #user .link-label:hover,
 .link-label:hover,
 .dropdown p:hover,
@@ -73,11 +73,18 @@
   margin: 0px 20px;
 }
 
+.link-label .extra-icon {
+  width: 50px;
+  height: 50px;
+  justify-self: end;
+  padding-right: -20px;
+}
+
 .dropdown {
   position: absolute;
   top: 70%;
-  left: 50%;
-  transform: translate(-50%, 0%);
+  right: 50%;
+  transform: translate(50%, 0%);
   z-index: 2;
   height: fit-content;
   width: fit-content;
@@ -107,10 +114,10 @@
 .dropdown-user {
   position: absolute;
   top: 100%;
-  right: -200%;
+  right: 10px;
   z-index: 2;
   height: fit-content;
-  min-width: 250px;
+  min-width: 300px;
   width: fit-content;
   background: #fff;
   box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.4);
@@ -128,10 +135,11 @@
 .dropdown-user div {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: space-between;
 
   width: fit-content;
-  margin: 0px 13px;
+  margin: 0px 5px;
+  margin-left: 13px;
 }
 
 .dropdown-user button {
@@ -181,8 +189,7 @@
 }
 
 #burger-menu__container {
-  margin: 0 10px;
-  margin-left: 30px;
+  margin: 0;
 }
 #burger-menu__container img {
   width: 50px;
@@ -190,8 +197,16 @@
 }
 
 #burger-menu__container .dropdown {
-  left: 0px;
+  right: -10px;
+  transform: translate(0%, 0%);
   top: 100%;
+}
+
+#burger-menu__container .dropdown__container {
+  width: 50px;
+  display: flex;
+  justify-content: center;
+  margin-right: 10px;
 }
 
 #burger-menu__container .dropdown-img,
@@ -206,19 +221,10 @@
   .nav-bar {
     display: flex;
   }
-  #user {
-    margin: 0 20px;
-  }
 }
 
 @media (max-width: 1300px) {
   #burger-menu__container {
-    display: none;
-  }
-  #user {
-    width: 350px;
-  }
-  #user label p {
     display: none;
   }
   #user label {
@@ -226,8 +232,6 @@
   }
   .nav-bar {
     display: flex;
-  }
-  #user {
   }
 }
 
@@ -238,9 +242,16 @@
   .nav-bar {
     display: none;
   }
+  #user label p {
+    display: none;
+  }
   #user {
     justify-self: end;
     width: 50px;
     margin-right: 0%;
+  }
+  .dropdown-user {
+    top: 110%;
+    right: -60px;
   }
 }

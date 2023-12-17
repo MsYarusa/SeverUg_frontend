@@ -24,19 +24,6 @@ const RoutesPage = () => {
   const timeTable = useSelector((state) => state.routes.timeTable);
   const costTable = useSelector((state) => state.routes.costTable);
 
-  // console.log(
-  //   " stations ",
-  //   stations,
-  //   " schedule ",
-  //   schedule,
-  //   " routes ",
-  //   routes,
-  //   " timeTable ",
-  //   timeTable,
-  //   " costTable ",
-  //   costTable
-  // );
-
   // если стор пуст то делаем запрос на сервер
   const dispatch = useDispatch();
   useEffect(() => {
@@ -67,11 +54,16 @@ const RoutesPage = () => {
     time: { from: 0, to: Number.MAX_SAFE_INTEGER },
     days: [],
   });
+  const [savedSearchedConfig, setSavedSearchedConfig] = useState({
+    from: "",
+    to: "",
+  });
 
   // задаем начальные значения отфильтрованных списков
   useEffect(() => {
     setFilteredList(routes);
     setSearchedList(routes);
+    searchHandler(savedSearchedConfig);
   }, [routes]);
 
   // после поиска необходимо отфильтровать список с учетом сохраненных параметров
@@ -82,6 +74,7 @@ const RoutesPage = () => {
   // поиск (фильтрация по названию)
   const searchHandler = (searchConfig) => {
     let search_results = [];
+    setSavedSearchedConfig(searchConfig);
     for (let route of routes) {
       search_results = [
         ...search_results,

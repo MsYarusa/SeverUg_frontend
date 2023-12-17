@@ -5,6 +5,7 @@ import ObjectFilterSmall from "../../cards/ObjectFilterSmall";
 import { useSelector } from "react-redux";
 
 import cancelImg from "../../cards/buttonImgs/close.svg";
+import { mode } from "crypto-js";
 
 const BusesFilter = ({ onFilter, isSmall, isVisible }) => {
   // ПОЛУЧЕНИЕ ДАННЫХ ИЗ СТОРА
@@ -17,7 +18,7 @@ const BusesFilter = ({ onFilter, isSmall, isVisible }) => {
       modelLables.push(model.model);
     });
     setModelLabels(modelLables);
-  }, []);
+  }, [models]);
 
   // хранения количества полей для выбора модели
   const [extraModelFilter, setExtraModelFilter] = useState([]);

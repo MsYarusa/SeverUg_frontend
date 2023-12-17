@@ -46,11 +46,13 @@ const EmployeesPage = () => {
   const [savedFilteredConfig, setSavedFilteredConfig] = useState({
     roles: [],
   });
+  const [savedSearchedConfig, setSavedSearchedConfig] = useState("");
 
   // задаем начальные значения отфильтрованных списков
   useEffect(() => {
     setSearchedList(allEmployees);
     setFilteredList(allEmployees);
+    searchHandler(savedSearchedConfig);
   }, [allEmployees]);
 
   // после поиска необходимо отфильтровать список с учетом сохраненных параметров
@@ -61,6 +63,7 @@ const EmployeesPage = () => {
   // поиск (фильтрация по названию)
   const searchHandler = (searchConfig) => {
     // предобработка параметров поиска
+    setSavedSearchedConfig(searchConfig);
     let configData = searchConfig.split(" ");
     configData = configData.filter((item) => item !== "");
 

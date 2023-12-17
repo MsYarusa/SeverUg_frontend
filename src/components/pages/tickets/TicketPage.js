@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getSchedule } from "../../../store/requests/ScheduleRequests";
-import { getRoutes } from "../../../store/requests/RoutesRequests";
-import { getBuses } from "../../../store/requests/BusesRequests";
-import { getDrivers } from "../../../store/requests/EmployeesRequests";
+import { getDepartures } from "../../../store/requests/DeparturesRequests";
 import {
   getTimeFromMins,
   getMinsFromTime,
@@ -11,36 +9,29 @@ import {
 } from "../../../extraFunctions/ExtraFunctions";
 import { searchFromTo } from "../../../extraFunctions/SearchHandlers";
 
-import ScheduleFilter from "./ScheduleFilterBeta";
-import ScheduleList from "./ScheduleList";
-import AddUpdateTrip from "./AddUpdateTrip";
-import DeleteTrip from "./DeleteTrip";
-import ObjectsPage from "../../cards/ObjectsPage";
+import DepartureFilter from "./RouteFilterBeta";
+import DeparturesList from "./DeparturesList";
 
-const SchedulePage = () => {
+const ticketsPage = () => {
   //ДАННЫЕ
   // запрашиваем данные из стора
+  const departures = useSelector((state) => state.departures.departures);
   const schedule = useSelector((state) => state.schedule.schedule);
-  const routes = useSelector((state) => state.routes.routes);
-  const buses = useSelector((state) => state.buses.buses);
-  const drivers = useSelector((state) => state.employees.drivers);
 
   // если стор пуст то делаем запрос на сервер
   const dispatch = useDispatch();
   useEffect(() => {
-    if (routes.length === 0) {
-      dispatch(getRoutes());
+    if (departures.length === 0) {
+      dispatch(getDepartures());
     }
     if (schedule.length === 0) {
       dispatch(getSchedule());
     }
-    if (buses.length === 0) {
-      dispatch(getBuses());
-    }
-    if (drivers.length === 0) {
-      dispatch(getDrivers());
-    }
   }, []);
+
+  // РЕЖИМ (режим определяется что мы отрисовываем - отбытия или рейсы)
+  // сменить режим можно установкой или сбросом даты
+  const [dateSelected, setDateSelected] = useState(false);
 
   // ПОИСК И ФИЛЬТР
   // хранение отфильтрованного списка
@@ -50,19 +41,24 @@ const SchedulePage = () => {
   const [savedFilteredConfig, setSavedFilteredConfig] = useState({
     cost: { from: 0, to: Number.MAX_SAFE_INTEGER },
     time: { from: 0, to: Number.MAX_SAFE_INTEGER },
-    days: [],
   });
   const [savedSearchedConfig, setSavedSearchedConfig] = useState({
     from: "",
     to: "",
   });
 
-  // задаем начальные значения отфильтрованных списков
+  // задаем начальные значения отфильтрованных списков ( в зависимости от режимв)
   useEffect(() => {
-    setFilteredList(schedule);
-    setSearchedList(schedule);
+    if (dateSelected) {
+      setFilteredList(departures);
+      setSearchedList(departures);
+    } else {
+      setFilteredList(schedule);
+      setSearchedList(schedule);
+    }
     searchHandler(savedSearchedConfig);
-  }, [schedule]);
+  }, [dateSelected]);
+
   // после поиска необходимо отфильтровать список с учетом сохраненных параметров
   useEffect(() => {
     filterHandler(savedFilteredConfig);
@@ -72,7 +68,7 @@ const SchedulePage = () => {
   const searchHandler = (searchConfig) => {
     let search_results = [];
     setSavedSearchedConfig(searchConfig);
-    for (let trip of schedule) {
+    for (let trip of dateSelected ? departures : schedule) {
       let searchData = searchFromTo({
         route: trip.road,
         searchConfig: searchConfig,
@@ -113,13 +109,7 @@ const SchedulePage = () => {
         filterConfig.time.from <= tripTotalTime &&
         tripTotalTime <= filterConfig.time.to;
 
-      let dateOk = filterConfig.days.length === 0;
-
-      for (let day of filterConfig.days) {
-        dateOk = trip.days.indexOf(day) !== -1 || dateOk;
-      }
-
-      if (dateOk && timeOk && costOk) {
+      if (timeOk && costOk) {
         filter_results.push(trip);
       }
     }
@@ -141,4 +131,4 @@ const SchedulePage = () => {
   );
 };
 
-export default SchedulePage;
+export default ticketsPage;

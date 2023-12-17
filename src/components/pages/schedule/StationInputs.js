@@ -42,7 +42,13 @@ export const StationSelector = ({
   );
 };
 
-export const CostTimeInputs = ({ index, defaultTime, defaultCost }) => {
+export const CostTimeInputs = ({
+  index,
+  defaultTime,
+  defaultCost,
+  timeOnChange,
+  costOnChange,
+}) => {
   return (
     <>
       <div className="label-input" key={"time " + index}>
@@ -51,6 +57,7 @@ export const CostTimeInputs = ({ index, defaultTime, defaultCost }) => {
           id={"time " + index}
           disabled={defaultTime !== ""}
           type={defaultTime === "" ? "time" : "text"}
+          onChange={timeOnChange ? timeOnChange : () => {}}
           defaultValue={defaultTime}
         />
       </div>
@@ -60,6 +67,7 @@ export const CostTimeInputs = ({ index, defaultTime, defaultCost }) => {
           id={"cost " + index}
           disabled={defaultCost !== ""}
           type="number"
+          onChange={costOnChange ? costOnChange : () => {}}
           defaultValue={defaultCost}
         />
         <p>руб.</p>

@@ -41,12 +41,16 @@ const BusesPage = () => {
     driverStatus: "Любой",
     busStatus: "Любой",
   });
+  const [savedSearchedConfig, setSavedSearchedConfig] = useState("");
 
   // задаем начальные значения отфильтрованных списков
   useEffect(() => {
-    setSearchedList(buses);
-    setFilteredList(buses);
-  }, [buses]);
+    if (drivers && buses) {
+      setSearchedList(buses);
+      setFilteredList(buses);
+      searchHandler(savedSearchedConfig);
+    }
+  }, [drivers, buses]);
 
   // после поиска необходимо отфильтровать список с учетом сохраненных параметров
   useEffect(() => {
@@ -56,6 +60,7 @@ const BusesPage = () => {
   // поиск (фильтрация по названию)
   const searchHandler = (searchConfig) => {
     // предобработка параметров поиска
+    setSavedSearchedConfig(searchConfig);
     let configData = searchConfig.split(" ");
     configData = configData.filter((item) => item !== "");
 

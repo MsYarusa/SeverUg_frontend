@@ -12,6 +12,7 @@ input::-ms-reveal {
 
 body {
   background-color: #f0f0f0;
+  min-width: 820px;
   height: 100%;
   margin: 0;
   padding: 0;

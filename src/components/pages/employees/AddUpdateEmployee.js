@@ -28,6 +28,8 @@ const AddUpdateEmployee = ({ cancelHandler, data }) => {
 
   // УСТАНОВЛЕНИЕ НАЧАЛЬНЫХ ЗНАЧЕНИЙ (в случае их получения)
   // наполнение инпутов данными
+  const [defaultPhone, setDefaultPhone] = useState("");
+  const [defaultDriverID, setDefaultDriverID] = useState("");
   const [driverIdRendered, setDriverIdRendered] = useState(false);
 
   useEffect(() => {
@@ -52,12 +54,23 @@ const AddUpdateEmployee = ({ cancelHandler, data }) => {
       document.getElementById("employee-phone").value = data.phone_number
         ? data.phone_number
         : "";
-      console.log("1", document.getElementById("employee-phone").value);
+      console.log(data.phone_number);
+      setDefaultPhone(data.phone_number ? data.phone_number : "");
       if (data.role === "driver") {
         document.getElementById("employee-driver_id").value = data.driver_id;
+        setDefaultDriverID(data.driver_id);
       }
     }
   }, [driverIdRendered]);
+
+  // заполнение полей с масками
+  const driverIdHandler = (event) => {
+    setDefaultDriverID(event.target.value);
+  };
+
+  const phoneHandler = (event) => {
+    setDefaultPhone(event.target.value);
+  };
 
   //ИЗМЕНЕНИЕ ПАРОЛЯ
   // хранение флага на изменение пароля
@@ -268,6 +281,8 @@ const AddUpdateEmployee = ({ cancelHandler, data }) => {
             mask="99 99 999999"
             id="employee-driver_id"
             type="text"
+            value={defaultDriverID}
+            onChange={driverIdHandler}
             className={driverIdOk ? "base-border" : "error-border"}
             placeholder="Водительское удостоверение (серия и номер)"
             autoComplete="off"
@@ -287,6 +302,8 @@ const AddUpdateEmployee = ({ cancelHandler, data }) => {
           mask="+7 (999) 999-99-99"
           id="employee-phone"
           type="text"
+          value={defaultPhone}
+          onChange={phoneHandler}
           placeholder="Мобильный номер"
           autoComplete="off"
         />

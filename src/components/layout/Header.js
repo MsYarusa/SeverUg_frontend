@@ -51,22 +51,42 @@ const Header = () => {
         </div>
         <div className="user__container">
           <div id="user">
-            <img src={userImg} alt="user" id="user-icon" />
             <DropdownObject
               label={[user.last_name, user.first_name].join(" ")}
               style="dropdown-user"
               isLinks={false}
+              extraIcon={userImg}
             >
               <div>
-                <p>Должность:</p>
+                <p style={{ textDecoration: "underline" }}>Фамилия:</p>
+                <p>{user.last_name}</p>
+              </div>
+              <div>
+                <p style={{ textDecoration: "underline" }}>Имя:</p>
+                <p>{user.first_name}</p>
+              </div>
+              <div>
+                <p style={{ textDecoration: "underline" }}>Отчество:</p>
+                <p>{user.father_name ? user.father_name : "не указано"}</p>
+              </div>
+              <div>
+                <p style={{ textDecoration: "underline" }}>Должность:</p>
                 <p>{translateRole(user.role)}</p>
+              </div>
+              <div>
+                <p style={{ textDecoration: "underline" }}>Телефон:</p>
+                <p>{user.phone_number ? user.phone_number : "не указан"}</p>
+              </div>
+              <div>
+                <p style={{ textDecoration: "underline" }}>Почта:</p>
+                <p>{user.email ? user.email : "не указана"}</p>
               </div>
               <button onClick={logOutHandler}>
                 <img src={logOut} alt="user" />
                 <p>Выйти из аккаунта</p>
               </button>
             </DropdownObject>
-          </div>
+          </div>{" "}
           {BurgerLinks && (
             <BurgerMenu>
               <BurgerLinks />
@@ -215,7 +235,6 @@ const BurgerMenu = ({ children }) => {
 };
 
 const DropdownObject = ({ children, label, style, isLinks, extraIcon }) => {
-  console.log(extraIcon);
   const [showDropdown, setShowDropdown] = useState(false);
 
   const showDropdownHandler = (event) => {
@@ -240,9 +259,14 @@ const DropdownObject = ({ children, label, style, isLinks, extraIcon }) => {
   return (
     <div className="dropdown__container" id={"dropdown__container-" + label}>
       <label className="link-label dropdown-label">
+        {extraIcon && <img src={extraIcon} className="extra-icon" />}
         <p>{label}</p>
-        {extraIcon && <img src={extraIcon} id="burger-menu" />}
-        <img src={showDropdown ? dropup : dropdown} className="dropdown-img" />
+        {!extraIcon && (
+          <img
+            src={showDropdown ? dropup : dropdown}
+            className="dropdown-img"
+          />
+        )}
       </label>
       {showDropdown && (
         <div id={"dropdown-" + label} className={style}>

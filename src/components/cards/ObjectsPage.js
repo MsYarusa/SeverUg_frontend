@@ -24,6 +24,7 @@ const ObjectsPage = ({
   // открытие окна добавления
   const addObjectHandler = () => {
     setAddObject(true);
+    document.getElementsByTagName("body")[0].style.overflow = "hidden";
   };
 
   // открытие окна обновления
@@ -31,28 +32,33 @@ const ObjectsPage = ({
     let object = objects.find((object) => object.id === id);
     setUpdateObjectById(object);
     setUpdateObject(true);
+    document.getElementsByTagName("body")[0].style.overflow = "hidden";
   };
 
   // открытие окна удаления
   const deleteObjectHandler = (id) => {
     setDeleteObjectById(id);
     setDeleteObject(true);
+    document.getElementsByTagName("body")[0].style.overflow = "hidden";
   };
 
   //ЗАКРЫТИЕ ОКОН
   // закрытие окна добавления
   const cancelAddHandler = () => {
     setAddObject(false);
+    document.getElementsByTagName("body")[0].style.overflow = "scroll";
   };
 
   // закрытие окна обновления
   const cancelUpdateHandler = () => {
     setUpdateObject(false);
+    document.getElementsByTagName("body")[0].style.overflow = "scroll";
   };
 
   // закрытие окна удаления
   const cancelDeleteHandler = () => {
     setDeleteObject(false);
+    document.getElementsByTagName("body")[0].style.overflow = "scroll";
   };
 
   return (

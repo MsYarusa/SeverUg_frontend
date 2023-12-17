@@ -1,12 +1,13 @@
 .employee-name {
   position: absolute;
   left: 5%;
+  max-width: 40%;
 }
 
 .employee-role {
   z-index: 0;
   position: absolute;
-  left: 40%;
+  left: 50%;
 }
 
 .employee-info__container {
@@ -19,9 +20,11 @@
 .employee-info-label {
   position: absolute;
   left: 5%;
+  max-width: 40%;
 }
 
 .employee-info {
   position: absolute;
-  left: 43%;
+  left: 55%;
+  max-width: 40%;
 }

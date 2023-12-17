@@ -26,8 +26,9 @@ const AddUpdateBus = ({ cancelHandler, data }) => {
     if (data) {
       document.getElementById("bus-model").value = data.model;
       document.getElementById("bus-code").value = data.code;
+      console.log(data.model);
     }
-  }, []);
+  }, [modelLables]);
 
   const dispatch = useDispatch();
   // ВАЛИДАЦИЯ

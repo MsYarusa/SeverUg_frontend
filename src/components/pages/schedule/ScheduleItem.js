@@ -1,5 +1,10 @@
 import React, { useState } from "react";
 import ObjectItem from "../../cards/ObjectItem";
+import {
+  sum,
+  getMinsFromTime,
+  getTimeFromMins,
+} from "../../../extraFunctions/ExtraFunctions";
 
 import "./scheduleStyles/ScheduleItem.css";
 
@@ -10,10 +15,10 @@ const ScheduleItem = ({ data, deleteHandler, updateHandler }) => {
     setInfo(!info);
   };
 
-  let totalCost = SUM(data.road.cost);
+  let totalCost = sum(data.road.cost);
 
   let arrivalTime = getTimeFromMins(
-    SUM(data.road.time) + getMinsFromTime(data.departure_time)
+    sum(data.road.time) + getMinsFromTime(data.departure_time)
   );
 
   let stationsPares = [];
@@ -24,13 +29,13 @@ const ScheduleItem = ({ data, deleteHandler, updateHandler }) => {
       station1: data.road.stations[i].name,
       station2: item.name,
       dep_time: getTimeFromMins(
-        SUM(data.road.time.slice(0, i)) + getMinsFromTime(data.departure_time)
+        sum(data.road.time.slice(0, i)) + getMinsFromTime(data.departure_time)
       ),
       arr_time: getTimeFromMins(
-        SUM(data.road.time.slice(0, i + 1)) +
+        sum(data.road.time.slice(0, i + 1)) +
           getMinsFromTime(data.departure_time)
       ),
-      cost: SUM(data.road.cost.slice(0, i + 1)),
+      cost: sum(data.road.cost.slice(0, i + 1)),
     };
     stationsPares.push(newPair);
   });
@@ -111,24 +116,3 @@ const daysToString = (data) => {
   });
   return result;
 };
-
-function getTimeFromMins(mins) {
-  let hours = Math.trunc(mins / 60);
-  let minutes = mins % 60;
-  hours = hours < 10 ? "0" + hours : hours;
-  minutes = minutes < 10 ? "0" + minutes : minutes;
-  return hours + ":" + minutes;
-}
-
-function getMinsFromTime(time) {
-  const [hours, minutes] = time.split(":");
-  return Number(hours) * 60 + Number(minutes);
-}
-
-function SUM(array) {
-  let totalPrice = 0;
-  array.forEach((item, i, arr) => {
-    totalPrice += Number(item);
-  });
-  return totalPrice;
-}

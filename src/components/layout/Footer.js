@@ -6,8 +6,6 @@ const Footer = () => {
   return (
     <footer className="footer">
       <div id="contacts">
-        <img src={phone} alt="phone" />
-        <p id="phone">8 924 265 34 10</p>
         <img src={email} alt="email" />
         <p id="email">severug@mail.ru</p>
       </div>

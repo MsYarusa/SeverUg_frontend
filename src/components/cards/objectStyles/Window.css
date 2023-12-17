@@ -37,8 +37,8 @@
 
 .window__inner {
   max-height: 70vh;
-  min-width: 25vw;
-  width: 100%;
+  min-width: 500px;
+  max-width: 70vh;
   width: fit-content;
   display: flex;
 
@@ -154,10 +154,6 @@
   align-items: center;
 }
 
-.label-input label {
-  margin: 0;
-}
-
 .label-input input {
   position: absolute;
   left: 58%;
@@ -167,6 +163,7 @@
 .label-input label {
   margin: 0;
   text-align: end;
+  width: 50%;
   max-width: 50%;
 }
 
