@@ -15,7 +15,6 @@ function createTicketPDF(ticket_id, flight_number, time_start, seat_number) {
     };
 
     const jsonData = JSON.stringify(ticketData);
-
     code_number = code_number.substring(0,6)
 
     const printTicketData = {
