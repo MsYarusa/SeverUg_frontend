@@ -441,10 +441,8 @@ const AddUpdateRoute = ({ cancelHandler, data }) => {
         !containsNullCost &&
         !containsNullTime
       }
+      label={data ? "Изменение маршрута" : "Добавление маршрута"}
     >
-      <label id="main">
-        {data ? "Изменение маршрута" : "Добавление маршрута"}
-      </label>
       <label id="routes-label" className="secondary-label">
         Список остановок:
       </label>

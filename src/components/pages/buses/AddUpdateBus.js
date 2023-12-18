@@ -95,10 +95,8 @@ const AddUpdateBus = ({ cancelHandler, data }) => {
         return "no error";
       }}
       noErrors={true}
+      label={data ? "Изменение данных автобуса" : "Регистрация автобуса"}
     >
-      <label id="main">
-        {data ? "Изменение данных автобуса" : "Регистрация автобуса"}
-      </label>
       <div className="label-input bus-input">
         <label>Модель автобуса: </label>
         <select

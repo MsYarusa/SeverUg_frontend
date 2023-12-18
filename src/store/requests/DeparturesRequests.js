@@ -7,7 +7,7 @@ import {
 } from "../slicies/departuresSlice";
 
 // тесты
-import { departures } from "../../tests/TestData/TestDepartures";
+import { departures, ticketsTest } from "../../tests/TestData/TestDepartures";
 
 // ПОЛУЧЕНИЕ ВСЕХ ОТБЫТИЙ
 export const getDepartures = createAsyncThunk(
@@ -65,6 +65,45 @@ export const postDepartures = createAsyncThunk(
 
     // добавление отбытия в стор
     dispatch(addDeparture({ departure: newDeparture }));
+  }
+);
+
+// ДОБАВЛЕНИЕ БИЛЕТОВ
+export const postTicket = createAsyncThunk(
+  "departures/postTicket",
+  async ({ tickets }, { rejectWithValue, dispatch }) => {
+    let data = [];
+    // try {
+    //   await axios
+    //     .post(
+    //       `https://spacekot.ru/apishechka/tickets${
+    //         tickets.length === 1 ? "" : "/few"
+    //       }`,
+    //       tickets.length === 1 ? tickets[0] : tickets
+    //     )
+    //     .then((res) => {
+    //       console.log("статус: успешно");
+    //       console.log("данные: ", res.data);
+    //       data = res.data;
+    //     })
+    //     .catch((error) => {
+    //       console.error("ошибка: ", error.message);
+    //       throw new Error(error.message);
+    //     });
+    // } catch (error) {
+    //   return rejectWithValue(error.message);
+    // }
+
+    // // отправляем запрос на получение новых отбытий
+    // setTimeout(dispatch, 1000, getDepartures());
+
+    try {
+      data = ticketsTest;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+
+    return data;
   }
 );
 

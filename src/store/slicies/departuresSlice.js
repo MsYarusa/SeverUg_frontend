@@ -1,9 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getDepartures } from "../requests/DeparturesRequests";
+import { getDepartures, postTicket } from "../requests/DeparturesRequests";
 
 const departureSlice = createSlice({
   name: "departures",
   initialState: {
+    tickets: [],
     departures: [],
     status: null,
     error: null,
@@ -31,6 +32,9 @@ const departureSlice = createSlice({
         }
       });
     },
+    clearTickets(state, action) {
+      state.tickets = [];
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -45,6 +49,18 @@ const departureSlice = createSlice({
       .addCase(getDepartures.rejected, (state, action) => {
         state.status = "rejected";
         state.error = action.payload;
+      })
+      .addCase(postTicket.pending, (state, action) => {
+        state.status = "loading";
+        state.error = null;
+      })
+      .addCase(postTicket.fulfilled, (state, action) => {
+        state.status = "resolved";
+        state.tickets = action.payload;
+      })
+      .addCase(postTicket.rejected, (state, action) => {
+        state.status = "rejected";
+        state.error = action.payload;
       });
   },
 });
@@ -54,5 +70,6 @@ export const {
   updateDeparture,
   updateTripInDeparture,
   removeDeparture,
+  clearTickets,
 } = departureSlice.actions;
 export default departureSlice.reducer;

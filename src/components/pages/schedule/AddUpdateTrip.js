@@ -164,8 +164,8 @@ const AddUpdateTrip = ({ cancelHandler, data }) => {
       submitHandler={submitHandler}
       errorMessage={errorMessage}
       noErrors={routeOk && busOk}
+      label={data ? "Изменение рейса" : "Добавление рейса"}
     >
-      <label id="main">{data ? "Изменение рейса" : "Добавление рейса"}</label>
       <label className="secondary-label">Дни работы рейса:</label>
       <Days selectHandler={setDaysSelected} />
       <p className={daysOk ? "error-disabled" : "error"}>

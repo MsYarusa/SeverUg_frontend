@@ -169,14 +169,15 @@ const AddUpdateEmployee = ({ cancelHandler, data }) => {
               driver: newDriver,
             })
           );
-          dispatch(
-            updateAuthDriver({
-              id: data.id,
-              login: login,
-              password: password,
-            })
-          );
+
           if (changePassword) {
+            dispatch(
+              updateAuthDriver({
+                id: data.id,
+                login: login,
+                password: password,
+              })
+            );
           }
         } else {
           dispatch(
@@ -204,13 +205,15 @@ const AddUpdateEmployee = ({ cancelHandler, data }) => {
               employee: newEmployee,
             })
           );
-          dispatch(
-            updateAuthEmployee({
-              id: -data.id,
-              login: login,
-              password: password,
-            })
-          );
+          if (changePassword) {
+            dispatch(
+              updateAuthEmployee({
+                id: -data.id,
+                login: login,
+                password: password,
+              })
+            );
+          }
         } else {
           // если начальные значения не были указаны, то создается новый сотрудник
           dispatch(
@@ -235,10 +238,8 @@ const AddUpdateEmployee = ({ cancelHandler, data }) => {
       submitHandler={submitHandler}
       errorMessage={errorMessage}
       noErrors={!confirmFailed}
+      label={data ? "Изменение данных сотрудника" : "Регистрация сотрудника"}
     >
-      <label id="main">
-        {data ? "Изменение данных сотрудника" : "Регистрация сотрудника"}
-      </label>
       <label className="secondary-label">Персональные данные</label>
       <div id="personal-data" className="employee-inputs">
         <input

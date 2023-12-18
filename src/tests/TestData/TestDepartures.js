@@ -46,3 +46,36 @@ export const departures = [
     },
   },
 ];
+
+export const ticketsTest = [
+  {
+    id: 1,
+    departure_id: 1,
+    bus_route_id: 1,
+    place_number: 1,
+    trip_id: 1,
+    date: 1640995200000,
+    time: "15:12:00",
+    departure_point: "FEFU",
+    place_of_arrival: "School",
+    is_visited: false,
+    first_name: "Кузьмин",
+    last_name: "Виктор",
+    surname: "Олегович",
+  },
+  {
+    id: 2,
+    departure_id: 1,
+    bus_route_id: 1,
+    place_number: 3,
+    trip_id: 1,
+    date: 1640995200000,
+    time: "15:12:00",
+    departure_point: "FEFU",
+    place_of_arrival: "School",
+    is_visited: false,
+    first_name: "Кузьмин",
+    last_name: "Виктор",
+    surname: "Олегович",
+  },
+];

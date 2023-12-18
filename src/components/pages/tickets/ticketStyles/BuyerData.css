@@ -1,0 +1,38 @@
+.buyer__container {
+  width: 90%;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+  padding: 10px;
+  border-radius: 19px;
+  background-color: #e3e7ea;
+}
+
+.buyer__container input {
+  width: 47%;
+  height: 48px;
+  margin-bottom: 1%;
+  margin-right: 1%;
+  border-radius: 16px;
+  font-size: 18px;
+  background-color: #fff;
+}
+
+.buyer__container .buyer-label {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.buyer__container .dep-stations {
+  width: 96%;
+  margin-right: 1%;
+  margin-bottom: 20px;
+}
+
+.buyer__container .buyer-last-name {
+  width: 96%;
+  margin-right: 1%;
+}

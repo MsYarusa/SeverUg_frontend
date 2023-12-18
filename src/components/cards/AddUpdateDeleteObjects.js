@@ -7,10 +7,12 @@ const AddUpdateObject = ({
   submitHandler,
   errorMessage,
   noErrors,
+  label,
 }) => {
   return (
     <div className="window__container">
       <form className="window" onSubmit={submitHandler}>
+        {label && <label id="main">{label}</label>}
         <div className="window__inner">{children}</div>
         <p className={noErrors ? "error error-disabled" : "error"}>
           {errorMessage()}
