@@ -20,7 +20,9 @@ const DeparturesItem = ({ data, onBuy }) => {
   // Обработка нажатия на кнопку оформления
   const buyHandler = (event) => {
     event.stopPropagation();
-    onBuy(data);
+    if (data.status === "active") {
+      onBuy(data);
+    }
   };
 
   // Преобразованния данных отбытия для отображения
@@ -68,7 +70,9 @@ const DeparturesItem = ({ data, onBuy }) => {
         <button
           id={"buy " + data.id + " " + data.trip.id}
           onClick={buyHandler}
-          className="buy-button"
+          className={
+            data.status === "active" ? "buy-button" : "buy-button-unactive"
+          }
         >
           Оформить
         </button>

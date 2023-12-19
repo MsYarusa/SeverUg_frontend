@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createTicketPDF } from "../../../extraFunctions/TicketPDFCreator";
 import { clearTickets } from "../../../store/slicies/departuresSlice";
-import { MAN } from "./BusSchemes/BusSchemesData";
+import { MAN, b_1, HAS } from "./BusSchemes/BusSchemesData";
 
 import BusScheme from "./BusSchemes/BusScheme";
 import BuyerData from "./BuyerData";
@@ -31,6 +31,24 @@ const BuyWindow = ({ cancelHandler, data }) => {
       setTicketsConfirmed(0);
     }
   };
+  //ПОДРУЗКА АВТБУСА
+  const [busModel, setBusModel] = useState([]);
+
+  useEffect(() => {
+    if (data) {
+      switch (data.trip.bus.model) {
+        case "MAN":
+          setBusModel(MAN);
+          break;
+        case "b_1":
+          setBusModel(b_1);
+          break;
+        case "HAS":
+          setBusModel(HAS);
+          break;
+      }
+    }
+  }, [data]);
 
   // ПЕЧАТЬ БИЛЕТОВ
   //получение билетов сохраненных в сторе
@@ -71,8 +89,8 @@ const BuyWindow = ({ cancelHandler, data }) => {
         <div className="window__inner">
           {currentState === 1 && (
             <BusScheme
-              bus={MAN}
-              busLabel={"MAN"}
+              bus={busModel}
+              busLabel={data.trip.bus.model}
               data={data}
               onSelect={setSitsSelected}
               savedSitsSelected={savedSitsSelected}

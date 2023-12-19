@@ -59,11 +59,14 @@ const TicketPage = () => {
         }
       }
       for (let trip of selectedTrips) {
+        let accurateDate = new Date(+date);
+        const [hours, mins] = trip.departure_time.split(":");
+        accurateDate.setHours(Number(hours), Number(mins));
         selectedDeps.push({
           id: 0,
           date: +date,
           status:
-            +date >= +new Date()
+            +accurateDate >= +new Date()
               ? trip.bus.status === "active"
                 ? "active"
                 : "canceled"

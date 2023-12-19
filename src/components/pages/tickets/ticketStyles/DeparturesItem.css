@@ -134,3 +134,21 @@
   font-weight: 500;
   line-height: 110%;
 }
+
+.object-item .buy-button-unactive {
+  width: fit-content;
+  padding-left: 15px;
+  padding-right: 15px;
+  opacity: 0.5;
+
+  color: #5c5c5c;
+  font-family: Montserrat;
+  font-size: 17px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 110%;
+}
+.object-item .buy-button-unactive:hover {
+  box-shadow: none;
+  cursor: default;
+}
