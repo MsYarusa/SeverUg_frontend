@@ -17,13 +17,18 @@ const ScheduleItem = ({ data, deleteHandler, updateHandler }) => {
 
   let totalCost = sum(data.road.cost);
 
-  let arrivalTime = getTimeFromMins(
-    sum(data.road.time) + getMinsFromTime(data.departure_time)
+  let arrivalTime = sum(data.road.time) + getMinsFromTime(data.departure_time);
+  arrivalTime = getTimeFromMins(
+    arrivalTime - Math.floor(arrivalTime / 1440) * 1440
   );
 
   let stationsPares = [];
 
   data.road.stations.slice(1).forEach((item, i, arr) => {
+    let arrTime =
+      sum(data.road.time.slice(0, i + 1)) +
+      getMinsFromTime(data.departure_time);
+    arrTime = getTimeFromMins(arrTime - Math.floor(arrTime / 1440) * 1440);
     const newPair = {
       id: i,
       station1: data.road.stations[i].name,
@@ -31,10 +36,7 @@ const ScheduleItem = ({ data, deleteHandler, updateHandler }) => {
       dep_time: getTimeFromMins(
         sum(data.road.time.slice(0, i)) + getMinsFromTime(data.departure_time)
       ),
-      arr_time: getTimeFromMins(
-        sum(data.road.time.slice(0, i + 1)) +
-          getMinsFromTime(data.departure_time)
-      ),
+      arr_time: arrTime,
       cost: sum(data.road.cost.slice(0, i + 1)),
     };
     stationsPares.push(newPair);

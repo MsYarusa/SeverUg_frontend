@@ -15,27 +15,27 @@ export const getDepartures = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     // отправление запроса
     let data = [];
-    // try {
-    //   await axios
-    //     .get("https://spacekot.ru/apishechka/departures")
-    //     .then((res) => {
-    //       console.log("статус: успешно");
-    //       console.log("данные: ", res.data);
-    //       data = res.data;
-    //     })
-    //     .catch((error) => {
-    //       console.error(error);
-    //       throw new Error(error.message);
-    //     });
-    // } catch (error) {
-    //   return rejectWithValue(error.message);
-    // }
-
     try {
-      data = departures;
+      await axios
+        .get("https://spacekot.ru/apishechka/departures")
+        .then((res) => {
+          console.log("статус: успешно");
+          console.log("данные: ", res.data);
+          data = res.data;
+        })
+        .catch((error) => {
+          console.error(error);
+          throw new Error(error.message);
+        });
     } catch (error) {
       return rejectWithValue(error.message);
     }
+
+    // try {
+    //   data = departures;
+    // } catch (error) {
+    //   return rejectWithValue(error.message);
+    // }
 
     return data;
   }
@@ -73,37 +73,37 @@ export const postTicket = createAsyncThunk(
   "departures/postTicket",
   async ({ tickets }, { rejectWithValue, dispatch }) => {
     let data = [];
-    // try {
-    //   await axios
-    //     .post(
-    //       `https://spacekot.ru/apishechka/tickets${
-    //         tickets.length === 1 ? "" : "/few"
-    //       }`,
-    //       tickets.length === 1 ? tickets[0] : tickets
-    //     )
-    //     .then((res) => {
-    //       console.log("статус: успешно");
-    //       console.log("данные: ", res.data);
-    //       data = res.data;
-    //     })
-    //     .catch((error) => {
-    //       console.error("ошибка: ", error.message);
-    //       throw new Error(error.message);
-    //     });
-    // } catch (error) {
-    //   return rejectWithValue(error.message);
-    // }
-
-    // // отправляем запрос на получение новых отбытий
-    // setTimeout(dispatch, 1000, getDepartures());
-
     try {
-      data = ticketsTest;
+      await axios
+        .post(
+          `https://spacekot.ru/apishechka/tickets${
+            tickets.length === 1 ? "" : "/few"
+          }`,
+          tickets.length === 1 ? tickets[0] : tickets
+        )
+        .then((res) => {
+          console.log("статус: успешно");
+          console.log("билеты: ", res.data);
+          data = res.data;
+        })
+        .catch((error) => {
+          console.error("ошибка: ", error.message);
+          throw new Error(error.message);
+        });
     } catch (error) {
       return rejectWithValue(error.message);
     }
 
-    return data;
+    // // отправляем запрос на получение новых отбытий
+    setTimeout(dispatch, 1000, getDepartures());
+
+    // try {
+    //   data = ticketsTest;
+    // } catch (error) {
+    //   return rejectWithValue(error.message);
+    // }
+
+    return Array.isArray(data) ? data : [data];
   }
 );
 

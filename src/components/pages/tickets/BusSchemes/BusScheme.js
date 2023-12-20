@@ -4,8 +4,11 @@ import "../ticketStyles/BusSchemes.css";
 
 const BusScheme = ({ bus, busLabel, data, onSelect, savedSitsSelected }) => {
   // получение уже занятых мест
-  let takenPlaces = [];
+  // хранение выбранных мест
+  const [sitsSelected, setSitsSelected] = useState([]);
+  const [takenPlaces, setTakenPlaces] = useState([]);
   useEffect(() => {
+    let takenPlaces = [];
     for (let ticket of data.tickets) {
       // получение станций посадки и высадки с билета
       let depStation = ticket.departure_point;
@@ -22,9 +25,9 @@ const BusScheme = ({ bus, busLabel, data, onSelect, savedSitsSelected }) => {
         takenPlaces.push(ticket.place_number);
       }
     }
+    setTakenPlaces([...takenPlaces]);
   }, [data]);
-  // хранение выбранных мест
-  const [sitsSelected, setSitsSelected] = useState([...takenPlaces]);
+
   // проверяем не сохранены ли у нас уже места
   useEffect(() => {
     for (let sit of savedSitsSelected) {
@@ -50,6 +53,7 @@ const BusScheme = ({ bus, busLabel, data, onSelect, savedSitsSelected }) => {
                 number={item}
                 sitsSelected={sitsSelected}
                 setSitsSelected={setSitsSelected}
+                takenPlaces={takenPlaces}
               />
             ))}
           </ul>
@@ -61,17 +65,17 @@ const BusScheme = ({ bus, busLabel, data, onSelect, savedSitsSelected }) => {
 
 export default BusScheme;
 
-const BusSit = ({ number, sitsSelected, setSitsSelected }) => {
+const BusSit = ({ number, sitsSelected, setSitsSelected, takenPlaces }) => {
   // хранение состояния места
   const [sitSelected, setSitSelected] = useState(false);
   //проверка на то было ли место занято изначально
   const [placeTaken, setPlaceTaken] = useState(false);
   useEffect(() => {
-    if (sitsSelected.find((sit) => sit === number)) {
+    if (takenPlaces.find((sit) => sit === number)) {
       setPlaceTaken(true);
       setSitSelected(true);
     }
-  }, []);
+  }, [takenPlaces]);
   // обработка выбора места
   const selectSitHandler = () => {
     if (!placeTaken) {

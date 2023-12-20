@@ -26,7 +26,7 @@ export async function createTicketPDF(ticket) {
     `№ РЕЙСА: ${ticket.trip_id}`,
     `№ БИЛЕТА: ${ticket.id}`,
     `№ ПОЕЗДКИ: ${ticket.departure_id}`,
-    `# МЕСТА: ${ticket.place_number}`,
+    `№ МЕСТА: ${ticket.place_number}`,
     `КОД БИЛЕТА: ${code_number}`,
   ]);
   doc.addImage(codeImg, "PNG", 5, 0, 100, 31.25);
@@ -46,7 +46,7 @@ export async function createTicketPDF(ticket) {
     `ИМЯ`,
     `${ticket.first_name}`,
     `ОТЧЕСТВО`,
-    `${ticket.surname}`,
+    `${ticket.father_name}`,
   ]);
   doc.addImage(buyerDateImg, "PNG", 5, 73, 100, 87.5);
   doc.save(`билет№${ticket.id}.pdf`);

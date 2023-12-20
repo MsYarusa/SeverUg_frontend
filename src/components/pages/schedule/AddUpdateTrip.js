@@ -105,7 +105,7 @@ const AddUpdateTrip = ({ cancelHandler, data }) => {
     let days = daysSelected;
 
     days.forEach((day, i, arr) => {
-      day = day === 0 ? 7 : day;
+      arr[i] = day === 0 ? 7 : day;
     });
 
     // проверка корректности значений инпутов

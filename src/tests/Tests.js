@@ -31,3 +31,5 @@ const axios = require("axios").default;
 // let a = "password";
 // let hash = CryptoJS.SHA256(a).toString(CryptoJS.enc.Hex);
 // console.log(hash);
+
+console.log(Array.isArray([1, 2]));

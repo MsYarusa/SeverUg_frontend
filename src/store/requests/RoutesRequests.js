@@ -174,6 +174,7 @@ export const getTimeGroup = createAsyncThunk(
 export const postTimeGroup = createAsyncThunk(
   "routes/postTimeGroup",
   async ({ time }, { rejectWithValue, dispatch }) => {
+    console.log(time);
     let data = [];
     try {
       await axios

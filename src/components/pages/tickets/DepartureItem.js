@@ -20,21 +20,30 @@ const DeparturesItem = ({ data, onBuy }) => {
   // Обработка нажатия на кнопку оформления
   const buyHandler = (event) => {
     event.stopPropagation();
-    if (data.status === "active") {
+    if (data.status === "active" && +accurateDate - 108000 >= +new Date()) {
       onBuy(data);
     }
   };
 
   // Преобразованния данных отбытия для отображения
   let totalCost = sum(data.trip.road.cost);
+  let accurateDate = new Date(+data.date);
+  const [hours, mins] = data.trip.departure_time.split(":");
+  accurateDate.setHours(Number(hours), Number(mins));
 
-  let arrivalTime = getTimeFromMins(
-    sum(data.trip.road.time) + getMinsFromTime(data.trip.departure_time)
+  let arrivalTime =
+    sum(data.trip.road.time) + getMinsFromTime(data.trip.departure_time);
+  arrivalTime = getTimeFromMins(
+    arrivalTime - Math.floor(arrivalTime / 1440) * 1440
   );
 
   let stationsPares = [];
 
   data.trip.road.stations.slice(1).forEach((item, i, arr) => {
+    let arrTime =
+      sum(data.trip.road.time.slice(0, i + 1)) +
+      getMinsFromTime(data.trip.departure_time);
+    arrTime = getTimeFromMins(arrTime - Math.floor(arrTime / 1440) * 1440);
     const newPair = {
       id: i,
       station1: data.trip.road.stations[i].name,
@@ -43,10 +52,7 @@ const DeparturesItem = ({ data, onBuy }) => {
         sum(data.trip.road.time.slice(0, i)) +
           getMinsFromTime(data.trip.departure_time)
       ),
-      arr_time: getTimeFromMins(
-        sum(data.trip.road.time.slice(0, i + 1)) +
-          getMinsFromTime(data.trip.departure_time)
-      ),
+      arr_time: arrTime,
       cost: sum(data.trip.road.cost.slice(0, i + 1)),
     };
     stationsPares.push(newPair);
@@ -71,7 +77,9 @@ const DeparturesItem = ({ data, onBuy }) => {
           id={"buy " + data.id + " " + data.trip.id}
           onClick={buyHandler}
           className={
-            data.status === "active" ? "buy-button" : "buy-button-unactive"
+            data.status === "active" && +accurateDate - 108000 >= +new Date()
+              ? "buy-button"
+              : "buy-button-unactive"
           }
         >
           Оформить

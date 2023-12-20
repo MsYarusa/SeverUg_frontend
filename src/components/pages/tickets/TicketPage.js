@@ -28,6 +28,7 @@ const TicketPage = () => {
     if (schedule.length === 0) {
       dispatch(getSchedule());
     }
+    console.log(departures, schedule);
   }, []);
 
   // РЕЖИМ (режим определяется что мы отрисовываем - отбытия или рейсы)
@@ -66,7 +67,7 @@ const TicketPage = () => {
           id: 0,
           date: +date,
           status:
-            +accurateDate >= +new Date()
+            +accurateDate - 108000 >= +new Date()
               ? trip.bus.status === "active"
                 ? "active"
                 : "canceled"
@@ -97,14 +98,18 @@ const TicketPage = () => {
   // задаем начальные значения отфильтрованных списков ( в зависимости от режимв)
   useEffect(() => {
     if (dateSelected) {
-      setFilteredList(departuresForDate);
-      setSearchedList(departuresForDate);
+      changeStateHandler(dateSelected);
     } else {
       setFilteredList(schedule);
       setSearchedList(schedule);
     }
     searchHandler(savedSearchedConfig);
   }, [dateSelected, departures, schedule]);
+
+  useEffect(() => {
+    setFilteredList(departuresForDate);
+    setSearchedList(departuresForDate);
+  }, [departuresForDate]);
 
   // после поиска необходимо отфильтровать список с учетом сохраненных параметров
   useEffect(() => {
@@ -115,6 +120,7 @@ const TicketPage = () => {
   const searchHandler = (searchConfig) => {
     let searchResults = [];
     setSavedSearchedConfig(searchConfig);
+    console.log(searchedList);
     for (let item of dateSelected ? departuresForDate : schedule) {
       let trip = dateSelected ? item.trip : item;
       let searchData = searchFromTo({
@@ -151,7 +157,7 @@ const TicketPage = () => {
 
       searchResults = [...searchResults, ...newTrips];
     }
-    setSearchedList(searchResults);
+    setSearchedList([...searchResults]);
   };
 
   // фильтр (фильтрация по характеристикам)
@@ -174,19 +180,19 @@ const TicketPage = () => {
     }
     if (dateSelected) {
       filterResults.sort((a, b) =>
-        getMinsFromTime(a.trip.departure_time) <
+        getMinsFromTime(a.trip.departure_time) >
         getMinsFromTime(b.trip.departure_time)
           ? 1
           : -1
       );
     } else {
       filterResults.sort((a, b) =>
-        getMinsFromTime(a.departure_time) < getMinsFromTime(b.departure_time)
+        getMinsFromTime(a.departure_time) > getMinsFromTime(b.departure_time)
           ? 1
           : -1
       );
     }
-    setFilteredList(filterResults);
+    setFilteredList([...filterResults]);
   };
 
   // УПРАВЛЕНИЕ ОКНОВ ОФОРМЛЕНИЯ БИЛЕТОВ

@@ -11,27 +11,27 @@ export const getSchedule = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     //получение данных
     let data = [];
-    // try {
-    //   await axios
-    //     .get("https://spacekot.ru/apishechka/trip")
-    //     .then((res) => {
-    //       console.log("статус: успешно");
-    //       console.log("данные: ", res.data);
-    //       data = res.data;
-    //     })
-    //     .catch((error) => {
-    //       console.error("ошибка: ", error.message);
-    //       throw new Error(error.message);
-    //     });
-    // } catch (error) {
-    //   return rejectWithValue(error.message);
-    // }
-
     try {
-      data = schedule;
+      await axios
+        .get("https://spacekot.ru/apishechka/trip")
+        .then((res) => {
+          console.log("статус: успешно");
+          console.log("данные: ", res.data);
+          data = res.data;
+        })
+        .catch((error) => {
+          console.error("ошибка: ", error.message);
+          throw new Error(error.message);
+        });
     } catch (error) {
       return rejectWithValue(error.message);
     }
+
+    // try {
+    //   data = schedule;
+    // } catch (error) {
+    //   return rejectWithValue(error.message);
+    // }
 
     for (let trip of data) {
       trip.days.forEach((day, i, arr) => {
@@ -49,6 +49,7 @@ export const postTrip = createAsyncThunk(
   "schedule/postTrip",
   async ({ trip }, { rejectWithValue, dispatch }) => {
     let newTrip = null;
+    console.log(trip);
 
     //отправление запроса
     try {

@@ -378,14 +378,17 @@ const AddUpdateRoute = ({ cancelHandler, data }) => {
       if (costForAdd.length !== 0) {
         dispatch(postCostGroup({ cost: costForAdd }));
       }
+
       if (timeForAdd.length !== 0) {
-        dispatch(postTimeGroup({ time: timeForAdd }));
+        setTimeout(dispatch, 500, postTimeGroup({ time: timeForAdd }));
       }
+
       costForUpdate.forEach((costGroup, i, arr) => {
-        dispatch(putCostGroup({ cost: costGroup }));
+        setTimeout(dispatch, 100, putCostGroup({ cost: costGroup }));
       });
+
       timeForUpdate.forEach((timeGroup, i, arr) => {
-        dispatch(putTimeGroup({ time: timeGroup }));
+        setTimeout(dispatch, 100, putTimeGroup({ time: timeGroup }));
       });
 
       if (data) {

@@ -5,7 +5,7 @@ import { sum } from "../../../extraFunctions/ExtraFunctions";
 
 import "./ticketStyles/BuyerData.css";
 
-const BuyerData = ({ validation, sits, data, onSubmit }) => {
+const BuyerData = ({ sits, data, onSubmit }) => {
   // заполнение данных рейса и рендер форм ввода данных пользователей
   const [sitsSelected, setSitsSelected] = useState([]);
   const [buyersRendered, setBuyersRendered] = useState(false);
@@ -36,15 +36,10 @@ const BuyerData = ({ validation, sits, data, onSubmit }) => {
   }, [buyersRendered]);
 
   // ВАЛИДАЦИЯ
-  // флаги проверяющие корректность введенных данных пользователя
-  const [lastNameOk, setLastNameOk] = useState(true);
-  const [firstNameOk, setFirstNameOk] = useState(true);
-
   // отслеживания нажатия на кнопку далее
   useEffect(() => {
     if (onSubmit !== 0) {
       submitHandler();
-      console.log(onSubmit);
     }
   }, [onSubmit]);
 
@@ -58,8 +53,6 @@ const BuyerData = ({ validation, sits, data, onSubmit }) => {
     // пробегаемся по пользователям и сохраняем их
     for (let sit of sits) {
       // получение данных отбытия
-      const date = document.getElementById("dep-date " + sit).value;
-      const time = document.getElementById("dep-time " + sit).value;
       const [depStation, arrStation] = document
         .getElementById("dep-stations " + sit)
         .value.split(" — ");
@@ -73,15 +66,13 @@ const BuyerData = ({ validation, sits, data, onSubmit }) => {
       firstNameOk = firstName !== "" && firstNameOk;
       lastNameOk = lastNameOk !== "" && lastName;
 
-      console.log("name", firstName, "last", lastName);
-
       tickets.push({
         departure_id: data.id,
         bus_route_id: data.trip.bus.id,
         place_number: sit,
         trip_id: data.trip.id,
-        date: date,
-        time: time + ":00",
+        date: new Date(data.date).toISOString().split("T")[0],
+        time: data.trip.departure_time + ":00",
 
         departure_point: depStation,
         place_of_arrival: arrStation,
@@ -89,17 +80,12 @@ const BuyerData = ({ validation, sits, data, onSubmit }) => {
         is_visited: 0,
         first_name: firstName,
         last_name: lastName,
-        surname: fatherName,
+        father_name: fatherName,
       });
     }
 
-    // поднимаем флаги
-    setFirstNameOk(firstNameOk);
-    setLastNameOk(lastNameOk);
-    validation(firstNameOk && lastNameOk);
-    console.log(firstNameOk, lastNameOk);
     if (firstNameOk && lastNameOk) {
-      dispatch(postTicket(tickets));
+      dispatch(postTicket({ tickets: tickets }));
     }
   };
 
@@ -117,7 +103,6 @@ const BuyerData = ({ validation, sits, data, onSubmit }) => {
 export default BuyerData;
 
 const Buyer = ({ sit, submited }) => {
-  console.log(submited);
   // валидация имени и фамилии
   const [firstNameOk, setFirstNameOk] = useState(false);
   const [lastNameOk, setLastNameOk] = useState(false);
@@ -130,7 +115,6 @@ const Buyer = ({ sit, submited }) => {
   };
   const firstnameHandler = (event) => {
     if (event.target.value === "" && firstNameOk) {
-      console.log("failed");
       setFirstNameOk(false);
     } else if (!firstNameOk) {
       setFirstNameOk(true);

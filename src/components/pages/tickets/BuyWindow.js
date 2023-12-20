@@ -27,7 +27,6 @@ const BuyWindow = ({ cancelHandler, data }) => {
   const backHandler = () => {
     if (currentState === 2) {
       setCurrentState(1);
-      setValidation(true);
       setTicketsConfirmed(0);
     }
   };
@@ -53,15 +52,21 @@ const BuyWindow = ({ cancelHandler, data }) => {
   // ПЕЧАТЬ БИЛЕТОВ
   //получение билетов сохраненных в сторе
   const tickets = useSelector((state) => state.departures.tickets);
+  const [ticketsPrinted, setTicketsPrinted] = useState(false);
+
+  console.log(tickets);
+
   const dispatch = useDispatch();
 
   // печать билетов и удаление их из стора
   useEffect(() => {
+    console.log("useEffect", tickets);
     if (tickets.length !== 0) {
       for (let ticket of tickets) {
         createTicketPDF(ticket);
       }
       dispatch(clearTickets());
+      setTicketsPrinted(true);
     }
   }, [tickets]);
 
@@ -72,13 +77,12 @@ const BuyWindow = ({ cancelHandler, data }) => {
   //ВАЛИДАЦИЯ
   // переменная хранящая запрос на отправку формы
   const [ticketsConfirmed, setTicketsConfirmed] = useState(0);
-  const [validation, setValidation] = useState(true);
   // при получении полужительно ответа на запрос об отправке формы преходим далее
   useEffect(() => {
-    if (ticketsConfirmed !== 0 && validation) {
+    if (ticketsConfirmed !== 0 && ticketsPrinted) {
       cancelHandler();
     }
-  }, [validation]);
+  }, [ticketsPrinted]);
 
   return (
     <div className="window__container">
@@ -98,7 +102,6 @@ const BuyWindow = ({ cancelHandler, data }) => {
           )}
           {currentState === 2 && (
             <BuyerData
-              validation={setValidation}
               data={data}
               onSubmit={ticketsConfirmed}
               sits={sitsSelected}
