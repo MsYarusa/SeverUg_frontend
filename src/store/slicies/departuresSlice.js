@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getDepartures, postTicket } from "../requests/DeparturesRequests";
+import { getDepartures } from "../requests/DeparturesRequests";
+import { postTicket } from "../requests/TicketsRequests";
 
 const departureSlice = createSlice({
   name: "departures",
@@ -29,6 +30,15 @@ const departureSlice = createSlice({
       state.departures.forEach((item, i, arr) => {
         if (item.trip.id === action.payload.id) {
           arr[i].trip = action.payload.trip;
+        }
+      });
+    },
+    removeTicketFromDeparture(state, action) {
+      state.departures.forEach((item, i, arr) => {
+        if (item.tickets.find((ticket) => ticket.id === id)) {
+          arr[i].tickets = item.ticket.filter(
+            (ticket) => ticket.id !== action.payload.id
+          );
         }
       });
     },

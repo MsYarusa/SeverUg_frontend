@@ -1,5 +1,6 @@
 const { json } = require("react-router-dom");
 const CryptoJS = require("crypto-js");
+const { TYPES } = require("@babel/types");
 
 const axios = require("axios").default;
 
@@ -32,4 +33,9 @@ const axios = require("axios").default;
 // let hash = CryptoJS.SHA256(a).toString(CryptoJS.enc.Hex);
 // console.log(hash);
 
-console.log(Array.isArray([1, 2]));
+const TYPES_DICT = {
+  profit: 1,
+  succes: 2,
+  cancel: 3,
+};
+console.log(TYPES_DICT["profit"]);
