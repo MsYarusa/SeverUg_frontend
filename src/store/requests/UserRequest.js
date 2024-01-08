@@ -1,6 +1,7 @@
 import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import CryptoJS from "crypto-js";
+import * as Sentry from "@sentry/browser";
 
 // ПОЛУЧЕНИЕ ПОЛЬЗОВАТЕЛЯ
 export const getUser = createAsyncThunk(
@@ -61,6 +62,7 @@ export const getUser = createAsyncThunk(
           }
         })
         .catch((error) => {
+          Sentry.captureException(error);
           throw new Error("Wrong login or password!");
         });
     } catch (error) {
