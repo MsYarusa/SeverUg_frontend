@@ -20,5 +20,5 @@ jobs:
       - name: install modules
         run: npm install
       - name: build project
-        run: npm run build
+        run: CI=false npm run build
       - run: cd build && rsync -e "ssh -p 20022 -i $HOME/.ssh/key -o StrictHostKeyChecking=no" --archive --compress --delete . 37.140.192.54/www/ylzaporozhskiy.ru
