@@ -4,7 +4,7 @@ import {
   getCostGroup,
   getTimeGroup,
 } from "../requests/RoutesRequests";
-import { addToTable } from "../../extraFunctions/ExtraFunctions";
+import { addToTable } from "../../extraFunctions/AdjacencyTableFunctions";
 
 const routesSlice = createSlice({
   name: "routes",

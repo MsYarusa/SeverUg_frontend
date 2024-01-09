@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import ObjectItem from "../../cards/ObjectItem";
-import { translateBusStatus } from "../../../extraFunctions/Translators";
+import { translateBusStatus } from "../../../extraFunctions/TranslateFunctions";
 
 import wheel from "./busesImg/wheel.svg";
 import "./busesStyles/BusItem.css";

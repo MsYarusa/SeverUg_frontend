@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import ObjectItem from "../../cards/ObjectItem";
 import {
-  sum,
   getMinsFromTime,
   getTimeFromMins,
-} from "../../../extraFunctions/ExtraFunctions";
-import { translateDepStatus } from "../../../extraFunctions/Translators";
+} from "../../../extraFunctions/TimeFunctions";
+import { sum } from "../../../extraFunctions/BaseFunctions";
+import { translateDepStatus } from "../../../extraFunctions/TranslateFunctions";
 
 import "./ticketStyles/DeparturesItem.css";
 import "../schedule/scheduleStyles/ScheduleItem.css";

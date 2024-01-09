@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { getTimeFromMins, sum } from "../../../extraFunctions/ExtraFunctions";
+import { getTimeFromMins } from "../../../extraFunctions/TimeFunctions";
+import { sum } from "../../../extraFunctions/BaseFunctions";
 
 import ObjectItem from "../../cards/ObjectItem";
 

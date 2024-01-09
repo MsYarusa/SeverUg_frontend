@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux/es/hooks/useSelector";
-import { translateRole } from "../../../extraFunctions/Translators";
+import { translateRole } from "../../../extraFunctions/TranslateFunctions";
 
 import ObjectItem from "../../cards/ObjectItem";
 

@@ -11,11 +11,11 @@ import {
 import {
   getTimeFromMins,
   getMinsFromTime,
-} from "../../../extraFunctions/ExtraFunctions";
+} from "../../../extraFunctions/TimeFunctions";
 import {
   getFromTable,
   addToTable,
-} from "../../../extraFunctions/ExtraFunctions";
+} from "../../../extraFunctions/AdjacencyTableFunctions";
 
 import { StationSelector, CostTimeInputs } from "../schedule/StationInputs";
 import AddUpdateObject from "../../cards/AddUpdateDeleteObjects";

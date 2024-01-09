@@ -1,4 +1,4 @@
-import { sum } from "./ExtraFunctions";
+import { sum } from "./BaseFunctions";
 
 export function searchFromTo({ route, searchConfig }) {
   // в случае если параметры поиска не указаны, просто выводим маршрут целиком

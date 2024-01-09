@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createTicketPDF } from "../../../extraFunctions/TicketPDFCreator";
+import { createTicketPDF } from "../../../extraFunctions/PDFCreators.js";
 import { clearTickets } from "../../../store/slicies/departuresSlice";
 import { MAN, b_1, HAS } from "./BusSchemes/BusSchemesData";
 

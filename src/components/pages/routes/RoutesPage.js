@@ -7,7 +7,7 @@ import {
 } from "../../../store/requests/RoutesRequests";
 import { getStations } from "../../../store/requests/StationsRequests";
 import { getSchedule } from "../../../store/requests/ScheduleRequests";
-import { searchFromTo } from "../../../extraFunctions/SearchHandlers";
+import { searchFromTo } from "../../../extraFunctions/SearchFunctions";
 
 import RoutesList from "./RoutesList";
 import RouteFilter from "./RouteFilterBeta";

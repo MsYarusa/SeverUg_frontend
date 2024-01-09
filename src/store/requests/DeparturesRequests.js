@@ -68,45 +68,6 @@ export const postDepartures = createAsyncThunk(
   }
 );
 
-// ДОБАВЛЕНИЕ БИЛЕТОВ
-export const postTicket = createAsyncThunk(
-  "departures/postTicket",
-  async ({ tickets }, { rejectWithValue, dispatch }) => {
-    let data = [];
-    try {
-      await axios
-        .post(
-          `https://spacekot.ru/apishechka/tickets${
-            tickets.length === 1 ? "" : "/few"
-          }`,
-          tickets.length === 1 ? tickets[0] : tickets
-        )
-        .then((res) => {
-          console.log("статус: успешно");
-          console.log("билеты: ", res.data);
-          data = res.data;
-        })
-        .catch((error) => {
-          console.error("ошибка: ", error.message);
-          throw new Error(error.message);
-        });
-    } catch (error) {
-      return rejectWithValue(error.message);
-    }
-
-    // // отправляем запрос на получение новых отбытий
-    setTimeout(dispatch, 1000, getDepartures());
-
-    // try {
-    //   data = ticketsTest;
-    // } catch (error) {
-    //   return rejectWithValue(error.message);
-    // }
-
-    return Array.isArray(data) ? data : [data];
-  }
-);
-
 // ИЗМЕНЕНИЯ ДАННЫХ ОТБЫТИЯ
 export const putDeparture = createAsyncThunk(
   "departures/putDeparture",

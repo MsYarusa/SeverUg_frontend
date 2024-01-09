@@ -1,17 +1,25 @@
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { tripConvertor } from "../../../extraFunctions/ConvertionFunctions";
+import { reportsTypeEN } from "../../../extraFunctions/CONSTs/TranslatorCONSTS";
+import { translateReportType } from "../../../extraFunctions/TranslateFunctions";
 
-const ReportConfigs = () => {
+const ReportConfigs = ({ saveConfig, isSmall, isVisible }) => {
+  // получем необхожимые данные из стора
+  const trips = useSelector((state) => state.schedule.schedule);
+  // для отображения в селекторе необходимо обработать рейса из стора
+  const tripLabels = tripConvertor(trips);
   // хранения количества полей для выбора даты
-  const [selectedTrips, setSelectedTrips] = useState([0]);
+  const [extraTripSelectors, setExtraTripSelectors] = useState([0]);
   // тип
   const primeReportType = isSmall ? "report-type-small" : "report-type";
-  const primeTimeFrom = isSmall ? "min-time-small" : "min-time";
-  const primeTimeTo = isSmall ? "max-time-small" : "max-time";
+  const primeDateFrom = isSmall ? "min-date-small" : "min-date";
+  const primeDateTo = isSmall ? "max-date-small" : "max-date";
   const primeTrip = isSmall ? "trip-small " : "trip ";
 
   const secondaryReportType = isSmall ? "report-type" : "report-type-small";
-  const secondaryTimeFrom = isSmall ? "min-time" : "min-time-small";
-  const secondaryTimeTo = isSmall ? "max-time" : "max-time-small";
+  const secondaryDateFrom = isSmall ? "min-date" : "min-date-small";
+  const secondaryDateTo = isSmall ? "max-date" : "max-date-small";
   const secondaryTrip = isSmall ? "trip " : "trip-small ";
 
   // ИНИЦИАЛИЗАЦИЯ
@@ -31,142 +39,153 @@ const ReportConfigs = () => {
   }, []);
 
   // хранения значений
-  const [defaulSelectedTrips, setDefualtSelectedTrips] = useState([]);
+  const [defaultSelectedTrips, setDefualtSelectedTrips] = useState([]);
   // клонируем значения из другого фильтра в случае если размер экрана изменился
   useEffect(() => {
     if (smallVisible === isSmall) {
       let savedTrips = [];
-      let selectedTrips = [];
+      let extraTripSelectors = [];
       let index = 0;
       let tripSelector = document.getElementById(secondaryDate + index);
       while (tripSelector) {
-        selectedTrips.push(index);
+        extraTripSelectors.push(index);
         savedTrips.push(tripSelector.value);
 
         index += 1;
         tripSelector = document.getElementById(secondaryDate + index);
       }
-      setSelectedTrips(selectedTrips);
-      setSelectedTrips(savedTrips.length === 0 ? [""] : savedTrips);
+      setExtraTripSelectors(extraTripSelectors);
+      setDefualtSelectedTrips(savedTrips.length === 0 ? [""] : savedTrips);
 
       document.getElementById(primeReportType).value =
         document.getElementById(secondaryReportType).value;
-      document.getElementById(primeTimeFrom).value =
-        document.getElementById(secondaryTimeFrom).value;
-      document.getElementById(primeTimeTo).value =
-        document.getElementById(secondaryTimeTo).value;
+      document.getElementById(primeDateFrom).value =
+        document.getElementById(secondaryDateFrom).value;
+      document.getElementById(primeDateTo).value =
+        document.getElementById(secondaryDateTo).value;
     }
   }, [smallVisible]);
 
   useEffect(() => {
     let index = 0;
-    for (let trip of defaulSelectedTrips) {
-      if (selectedTrips.length !== 0 || index === 0) {
+    for (let trip of defaultSelectedTrips) {
+      if (extraTripSelectors.length !== 0 || index === 0) {
         document.getElementById(primeTrip + index).value = trip;
         index += 1;
       }
     }
-  }, [defaulSelectedTrips]);
+  }, [defaultSelectedTrips]);
 
   // ПАРАМЕТРЫ ФИЛЬТРА
   // хранение параметров фильтра
-  const [filterConfig, setFilterConfig] = useState({
-    cost: { from: 0, to: Number.MAX_SAFE_INTEGER },
-    time: { from: 0, to: Number.MAX_SAFE_INTEGER },
-    days: [],
+  const [configs, setConfigs] = useState({
+    type: null,
+    dates: { from: +new Date() - 2592000000, to: +new Date() },
+    trips: [],
   });
 
   // обработка инпутов фильтров
-  const filterHandler = (event) => {
+  const configHandler = (event) => {
     // получаем id элемента в котором произошли изменения и значение
     let id = event.target.id;
     let value = event.target.value;
     // создаем переменную куда будем сохранять новые параметры
-    let newFilterConfig = filterConfig;
+    let newConfigs = configs;
 
     // в зависимости от типа инпута соохраняем значение в соответствующее поле
-    if (id === primeCostFrom) {
-      // проверка на пустую строку
-      newFilterConfig.cost = { from: value, to: filterConfig.cost.to };
+    if (id === primeReportType) {
+      newConfigs.type = value;
     }
-    if (id === primeCostTo) {
-      value = value === "" ? Number.MAX_SAFE_INTEGER : value;
-      newFilterConfig.cost = { from: filterConfig.cost.from, to: value };
-    }
-    if (id === primeTimeFrom) {
+    if (id === primeDateFrom) {
       if (value === "") {
-        value = 0;
+        value = configs.dates.to - 2592000000;
       } else {
-        value = getMinsFromTime(value);
+        value = +new Date(value);
       }
-      newFilterConfig.time = { from: value, to: filterConfig.time.to };
+      newConfigs.dates = { from: value, to: configs.dates.to };
     }
-    if (id === primeTimeTo) {
+    if (id === primeDateTo) {
       if (value === "") {
-        value = Number.MAX_SAFE_INTEGER;
+        value = +new Date();
       } else {
-        value = getMinsFromTime(value);
+        value = +new Date(value);
       }
-      newFilterConfig.time = { from: filterConfig.time.from, to: value };
+      newConfigs.dates = { from: configs.dates.from, to: value };
     }
-    if (id.indexOf("date") !== -1) {
-      newFilterConfig.days = dateHandler(extraDateFilters, primeDate);
+    if (id.indexOf("trip") !== -1) {
+      // считываем рейса и сохраняем их в массив
+      let trips = [];
+      for (let s of extraTripSelectors) {
+        trips.push(document.getElementById(primeTrip + f).value);
+      }
+
+      // проверяем на наличие пустых значений
+      let containsNull = false;
+
+      for (let trip of trips) {
+        if (!trip) {
+          containsNull = true;
+          break;
+        }
+      }
+
+      newConfigs.trips = containsNull ? [] : trips;
     }
     // изменяем старые параметры в соответствии с новыми
-    setFilterConfig(newFilterConfig);
+    setConfigs(newConfigs);
     // передаем параметры родителю
-    onFilter(newFilterConfig);
+    saveConfig(newConfigs);
   };
 
   // сброс параметров фильтра
   const clearHandler = () => {
-    let newFilterConfig = {
-      cost: { from: 0, to: Number.MAX_SAFE_INTEGER },
-      time: { from: 0, to: Number.MAX_SAFE_INTEGER },
-      days: [],
+    let newConfigs = {
+      type: null,
+      dates: { from: +new Date() - 2592000000, to: +new Date() },
+      trips: [],
     };
-    setFilterConfig(newFilterConfig);
-    setExtraDateFilters([0]);
+    setConfigs(newConfigs);
+    setExtraTripSelectors([0]);
     // отправка новых параметров родителю
-    onFilter(newFilterConfig);
+    saveConfig(newConfigs);
   };
 
-  // РАБОТА С ДАТАМИ
-  // хранения количества полей для ввода дат
+  // РАБОТА С РЕЙСАМИ
+  // хранения количества полей для выбора рейсов
 
-  // добавление даты
-  const addDateHandler = () => {
-    setExtraDateFilters([...extraDateFilters, extraDateFilters.length]);
+  // добавление селектора рейсов
+  const addTripHandler = () => {
+    setExtraTripSelectors([...extraTripSelectors, extraTripSelectors.length]);
   };
 
-  //удаление даты
-  const deleteDateHandler = (event) => {
-    //сохраняем все даты кроме удаленной
-    let datesForSave = [];
-    for (let f of extraDateFilters) {
-      if (event.target.id !== f.toString()) {
-        datesForSave.push(
-          document.getElementById(primeDate + f.toString()).value
+  //удаление рейсов
+  const deleteTripHandler = (event) => {
+    //сохраняем все рейсы кроме удаленной
+    let tripsForSave = [];
+    for (let s of extraTripSelectors) {
+      if (event.target.id !== s.toString()) {
+        tripsForSave.push(
+          document.getElementById(primeTrip + s.toString()).value
         );
       }
     }
     // изменяем список описывающий количество полей
-    let extraDateFiltersNew =
-      extraDateFilters.slice(0, -1).length !== 0
-        ? extraDateFilters.slice(0, -1)
+    let extraTripSelectorsNew =
+      extraTripSelectors.slice(0, -1).length !== 0
+        ? extraTripSelectors.slice(0, -1)
         : [0];
-    setExtraDateFilters(extraDateFiltersNew);
+    setExtraTripSelectors(extraTripSelectorsNew);
 
-    // вводим значения сохраненных дат в оставшиеся поля инпутов
-    for (let f of extraDateFiltersNew) {
-      document.getElementById(primeDate + f.toString()).value = datesForSave[f];
+    // вводим значения сохраненных рейсов в оставшиеся поля инпутов
+    for (let s of extraTripSelectorsNew) {
+      document.getElementById(primeTrip + s.toString()).value = tripsForSave[s];
     }
 
     // изменяем параметры фильтра
-    let newFilterConfig = filterConfig;
-    newFilterConfig.days = dateHandler(extraDateFiltersNew);
-    setFilterConfig(newFilterConfig);
-    onFilter(newFilterConfig);
+    let newConfigs = configs;
+    newConfigs.trips = tripsForSave;
+    setConfigs(newConfigs);
+    saveConfig(newConfigs);
   };
 
   return (
@@ -175,90 +194,59 @@ const ReportConfigs = () => {
         <ObjectFilterSmall clearHandler={clearHandler} isVisible={isVisible}>
           <div className="multiple-input__container">
             <div className="filter-label-input">
-              <label>Стоимость:</label>
-              <CostInput
-                onChange={filterHandler}
-                primeCostFrom={primeCostFrom}
-                primeCostTo={primeCostTo}
-              />
+              <label>Выбрать тип отчета:</label>
+              <TypeSelector primeReportType={primeReportType} />
             </div>
             <div className="filter-label-input">
-              <label>Время:</label>
-              <TimeInput
-                onChange={filterHandler}
-                primeTimeFrom={primeTimeFrom}
-                primeTimeTo={primeTimeTo}
+              <label>Указать период:</label>
+              <DateSelector
+                primeDateFrom={primeDateFrom}
+                primeDateTo={primeDateTo}
               />
             </div>
           </div>
 
-          <label>Дата:</label>
+          <label>Выбрать рейс:</label>
           <div className="multiple-input__container">
-            <ModelSelect
-              key={0}
-              index={0}
-              defaultValue="Выбрать"
-              models={modelLables}
-              deleteHandler={deleteRoleHandler}
-              onChange={filterHandler}
-              isOnly={!extraModelFilter.length}
-              primeModel={primeModel}
-            />
-            {extraModelFilter.length !== 0 &&
-              extraModelFilter.map((index) => (
-                <ModelSelect
+            {selectedTrips.length !== 0 &&
+              selectedTrips.map((index) => (
+                <TripSelect
                   key={index}
                   index={index}
-                  defaultValue="Выбрать"
-                  models={modelLables}
-                  deleteHandler={deleteRoleHandler}
-                  onChange={filterHandler}
-                  isOnly={0}
-                  primeModel={primeModel}
+                  trips={tripLabels}
+                  deleteHandler={deleteTripHandler}
+                  isOnly={!selectedTrips.length}
+                  primeTrip={secondaryTrip}
                 />
               ))}
-            <button id="add-filter" onClick={addRoleHandler}>
-              Добавить модель
+            <button id="add-filter" onClick={addTripHandler}>
+              Добавить рейс
             </button>
           </div>
         </ObjectFilterSmall>
       ) : (
         <ObjectFilter clearHandler={clearHandler}>
-          <CostInput
-            onChange={filterHandler}
-            primeCostFrom={primeCostFrom}
-            primeCostTo={primeCostTo}
+          <TypeSelector primeReportType={primeReportType} />
+          <DateSelector
+            primeDateFrom={primeDateFrom}
+            primeDateTo={primeDateTo}
           />
-          <TimeInput
-            onChange={filterHandler}
-            primeTimeFrom={primeTimeFrom}
-            primeTimeTo={primeTimeTo}
-          />
-          <ModelSelect
-            key={0}
-            index={0}
-            defaultValue="Выбрать"
-            models={modelLables}
-            deleteHandler={deleteRoleHandler}
-            onChange={filterHandler}
-            isOnly={!extraModelFilter.length}
-            primeModel={primeModel}
-          />
-          {extraModelFilter.length !== 0 &&
-            extraModelFilter.map((index) => (
-              <ModelSelect
+          {selectedTrips.length !== 0 &&
+            selectedTrips.map((index) => (
+              <TripSelect
                 key={index}
                 index={index}
-                defaultValue="Выбрать"
-                models={modelLables}
-                deleteHandler={deleteRoleHandler}
-                onChange={filterHandler}
-                isOnly={0}
-                primeModel={primeModel}
+                trips={tripLabels}
+                deleteHandler={deleteTripHandler}
+                isOnly={!selectedTrips.length}
+                primeTrip={primeTrip}
               />
             ))}
-          <button id="add-filter" onClick={addRoleHandler}>
-            Добавить модель
+          <button id="add-filter" onClick={addTripHandler}>
+            Добавить рейс
+          </button>
+          <button id="submit-report-config" onClick={configHandler}>
+            Сформировать отчет
           </button>
         </ObjectFilter>
       )}
@@ -268,30 +256,49 @@ const ReportConfigs = () => {
 
 export default ReportConfigs;
 
+// компоненты отвечающий за выбор типа отчета
+const TypeSelector = ({ primeReportType }) => {
+  return (
+    <select defaultValue={null} id={primeReportType}>
+      <option disabled value={null}>
+        Выбрать тип отчета
+      </option>
+      {reportsTypeEN?.map((type) => (
+        <option key={type} value={trip}>
+          {translateReportType(type)}
+        </option>
+      ))}
+    </select>
+  );
+};
+
+// компонент отвечающий за выбор периода
+const DateSelector = ({ primeDateFrom, primeDateTo }) => {
+  return (
+    <div className="time input__container">
+      <label className="main-label">Указать период:</label>
+      <div className="filter-input">
+        <label>От</label>
+        <input id={primeDateFrom} type="date" />
+        <label>До</label>
+        <input id={primeDateTo} type="date" />
+      </div>
+    </div>
+  );
+};
+
 // комопнент отвечающий за выбор рейса
-const DateSelect = ({
-  index,
-  defaultValue,
-  trips,
-  deleteHandler,
-  onChange,
-  isOnly,
-  primeTrip,
-}) => {
+const TripSelect = ({ index, trips, deleteHandler, isOnly, primeTrip }) => {
   return (
     <div className="extra-input" id={"model " + index}>
       <label>Рейс:</label>
-      <select
-        defaultValue={defaultValue}
-        onChange={onChange}
-        id={primeTrip + index}
-      >
-        <option disabled value={defaultValue}>
-          {defaultValue}
+      <select defaultValue={null} id={primeTrip + index}>
+        <option disabled value={null}>
+          Выбрать
         </option>
         {trips?.map((trip) => (
-          <option key={trip + index} value={trip}>
-            {trip}
+          <option key={trip.id} value={trip.id}>
+            {trip.label}
           </option>
         ))}
       </select>
@@ -302,29 +309,4 @@ const DateSelect = ({
       )}
     </div>
   );
-};
-
-// функция, получающая значения дат и преобразующая их в удоборомый формат
-const dateHandler = (extraDateFilters, primeDate) => {
-  // считываем даты и сохраняем их в массив
-  let dateData = [];
-  for (let f of extraDateFilters) {
-    dateData.push(document.getElementById(primeDate + f).value);
-  }
-  // создаем множество для сохраненния преобразованных дат в дни недели
-  let weekDays = new Set();
-  // задаем флаг указывающий на наличие пустых полей
-  let dateIsNull = false;
-
-  // преобразуем и сохраняем даты
-  dateData.forEach((item, i, arr) => {
-    if (item) {
-      let day = new Date(item);
-      weekDays.add(day.getDay());
-    } else {
-      dateIsNull = true;
-    }
-  });
-  // возвращаем список дат
-  return dateIsNull ? [] : [...weekDays];
 };

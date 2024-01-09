@@ -1,13 +1,15 @@
-// РАБОТА С РОЛЯМИ
-export const rolesRU = [
-  "кассир",
-  "менеджер",
-  "дирекция",
-  "сисадмин",
-  "водитель",
-];
-export const rolesEN = ["cashier", "manager", "director", "admin", "driver"];
+import {
+  rolesEN,
+  rolesRU,
+  busStatusEN,
+  busStatusRU,
+  depStatusEN,
+  depStatusRU,
+  reportsTypeEN,
+  reportsTypeRU,
+} from "./CONSTs/TranslatorCONSTS";
 
+// РАБОТА С РОЛЯМИ
 export function translateRole(role) {
   const rolesTranslator = [
     { english: "cashier", russian: "кассир" },
@@ -26,10 +28,8 @@ export function translateRole(role) {
       .russian;
   }
 }
-// РАБОТА СО СТАТУСОМ АВТОБУСА
-export const busStatusEN = ["active", "unactive"];
-export const busStatusRU = ["активный", "на ремонте"];
 
+// РАБОТА СО СТАТУСОМ АВТОБУСА
 export function translateBusStatus(status) {
   const statusTranslator = [
     { english: "active", russian: "активный" },
@@ -47,9 +47,6 @@ export function translateBusStatus(status) {
 }
 
 //РАБОТА СО СТАТУСОМ ОТБЫТИЯ
-export const depStatusEN = ["active", "canceled", "done"];
-export const depStatusRU = ["активный", "отменен", "завершен"];
-
 export function translateDepStatus(status) {
   const statusTranslator = [
     { english: "active", russian: "активный" },
@@ -63,6 +60,24 @@ export function translateDepStatus(status) {
   }
   if (depStatusEN.find((statusEN) => statusEN === status)) {
     return statusTranslator.find((translator) => translator.english === status)
+      .russian;
+  }
+}
+
+//РАБОТА С ТИПАМИ ОТЧЕТОВ
+export function translateReportType(type) {
+  const typeTranslator = [
+    { english: "profit", russian: "отчет по прибыли" },
+    { english: "cancel", russian: "отчет по отмененным рейсам" },
+    { english: "succes", russian: "отчет по завершенным рейсы" },
+  ];
+
+  if (reportsTypeRU.find((typeRU) => typeRU === type)) {
+    return typeTranslator.find((translator) => translator.russian === type)
+      .english;
+  }
+  if (reportsTypeEN.find((typeEN) => typeEN === type)) {
+    return typeTranslator.find((translator) => translator.english === type)
       .russian;
   }
 }

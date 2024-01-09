@@ -33,9 +33,4 @@ const axios = require("axios").default;
 // let hash = CryptoJS.SHA256(a).toString(CryptoJS.enc.Hex);
 // console.log(hash);
 
-const TYPES_DICT = {
-  profit: 1,
-  succes: 2,
-  cancel: 3,
-};
-console.log(TYPES_DICT["profit"]);
+console.log(new Date(+new Date() - 2592000000));

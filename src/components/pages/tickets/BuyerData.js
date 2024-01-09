@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { postTicket } from "../../../store/requests/DeparturesRequests";
-import { sum } from "../../../extraFunctions/ExtraFunctions";
+import { postTicket } from "../../../store/requests/TicketsRequests";
+import { sum } from "../../../extraFunctions/BaseFunctions";
 
 import "./ticketStyles/BuyerData.css";
 

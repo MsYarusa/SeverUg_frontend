@@ -10,7 +10,7 @@ import {
   updateCostInRoute,
 } from "../slicies/routesSlice";
 import { updateRouteInTrip, removeTripByRoute } from "../slicies/scheduleSlice";
-import { addToTable } from "../../extraFunctions/ExtraFunctions";
+import { addToTable } from "../../extraFunctions/AdjacencyTableFunctions";
 
 // тесты
 import {

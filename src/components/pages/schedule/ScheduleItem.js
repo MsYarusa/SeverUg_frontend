@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import ObjectItem from "../../cards/ObjectItem";
 import {
-  sum,
   getMinsFromTime,
   getTimeFromMins,
-} from "../../../extraFunctions/ExtraFunctions";
+} from "../../../extraFunctions/TimeFunctions";
+import { sum } from "../../../extraFunctions/BaseFunctions";
 
 import "./scheduleStyles/ScheduleItem.css";
 

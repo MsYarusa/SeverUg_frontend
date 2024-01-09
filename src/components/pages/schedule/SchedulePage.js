@@ -7,9 +7,9 @@ import { getDrivers } from "../../../store/requests/EmployeesRequests";
 import {
   getTimeFromMins,
   getMinsFromTime,
-  sum,
-} from "../../../extraFunctions/ExtraFunctions";
-import { searchFromTo } from "../../../extraFunctions/SearchHandlers";
+} from "../../../extraFunctions/TimeFunctions";
+import { sum } from "../../../extraFunctions/BaseFunctions";
+import { searchFromTo } from "../../../extraFunctions/SearchFunctions";
 
 import ScheduleFilter from "./ScheduleFilterBeta";
 import ScheduleList from "./ScheduleList";

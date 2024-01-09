@@ -35,7 +35,7 @@ const departureSlice = createSlice({
     },
     removeTicketFromDeparture(state, action) {
       state.departures.forEach((item, i, arr) => {
-        if (item.tickets.find((ticket) => ticket.id === id)) {
+        if (item.tickets.find((ticket) => ticket.id === action.payload.id)) {
           arr[i].tickets = item.ticket.filter(
             (ticket) => ticket.id !== action.payload.id
           );
