@@ -26,4 +26,4 @@ jobs:
       - run: chmod 600 "$HOME/.ssh/key"
       - name: build project
         run: CI=false npm run build
-      - run: cd build && rsync -e "ssh -p 22 -i $HOME/.ssh/key -o StrictHostKeyChecking=no" --archive --compress --delete . 37.140.192.54:/www/ylzaporozhskiy.ru
+      - run: cd build && rsync -e "ssh -p 22 -i $HOME/.ssh/key -o StrictHostKeyChecking=no" --archive --compress --delete . u2308023@37.140.192.54:/www/ylzaporozhskiy.ru
