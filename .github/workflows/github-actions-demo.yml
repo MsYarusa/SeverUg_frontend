@@ -19,6 +19,11 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: install modules
         run: npm install
+        # Setup key
+      - run: set -eu
+      - run: mkdir "$HOME/.ssh"
+      - run: echo "${{ secrets.key }}" > "$HOME/.ssh/key"
+      - run: chmod 600 "$HOME/.ssh/key"
       - name: build project
         run: CI=false npm run build
       - run: cd build && rsync -e "ssh -p 22 -i $HOME/.ssh/key -o StrictHostKeyChecking=no" --archive --compress --delete . 37.140.192.54:/www/ylzaporozhskiy.ru
