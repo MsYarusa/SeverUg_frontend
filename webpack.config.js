@@ -11,7 +11,4 @@ module.exports = {
       project: "javascript-react",
     }),
   ],
-  resolve: {
-    extensions: [".js", ".ts"],
-  },
 };

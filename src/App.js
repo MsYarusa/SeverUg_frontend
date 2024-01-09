@@ -1,18 +1,18 @@
 import * as Sentry from "@sentry/react";
 import { Routes, Route } from "react-router-dom";
 
-import SchedulePage from "./components/pages/schedule/SchedulePage.js";
-import LoginPage from "./components/pages/login/LoginPage.js";
-import HomePage from "./components/pages/home/HomePage.js";
-import Layout from "./components/layout/Layout.js";
-import RequireAuth from "./hoc/RequireAuth.js";
-import RoleCheck from "./hoc/RoleCheck.js";
-import EmployeesPage from "./components/pages/employees/EmployeesPage.js";
-import NotFound from "./components/cards/NotFound.js";
-import RoutesPage from "./components/pages/routes/RoutesPage.js";
-import StationsPage from "./components/pages/stations/StationsPage.js";
-import BusesPage from "./components/pages/buses/BusesPage.js";
-import TicketPage from "./components/pages/tickets/TicketPage.js";
+import SchedulePage from "./components/pages/schedule/SchedulePage";
+import LoginPage from "./components/pages/login/LoginPage";
+import HomePage from "./components/pages/home/HomePage";
+import Layout from "./components/layout/AppLayout";
+import RequireAuth from "./hoc/RequireAuth";
+import RoleCheck from "./hoc/RoleCheck";
+import EmployeesPage from "./components/pages/employees/EmployeesPage";
+import NotFound from "./components/cards/NotFound";
+import RoutesPage from "./components/pages/routes/RoutesPage";
+import StationsPage from "./components/pages/stations/StationsPage";
+import BusesPage from "./components/pages/buses/BusesPage";
+import TicketPage from "./components/pages/tickets/TicketPage";
 
 Sentry.init({
   dsn: "https://39b84f6ce2a366bedeae8d7e6cd72c46@o4506533823381504.ingest.sentry.io/4506533824823296",
