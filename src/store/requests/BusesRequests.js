@@ -1,4 +1,5 @@
 import axios from "axios";
+import * as Sentry from "@sentry/browser";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
   addBus,
@@ -20,7 +21,7 @@ export const getBuses = createAsyncThunk(
     let data = [];
     try {
       await axios
-        .get("https://spacekot.ru/apishechka/buses")
+        .get("https://api.spacekot.ru/apishechka/buses")
         .then((res) => {
           console.log("статус: успешно");
           console.log("данные: ", res.data);
@@ -28,6 +29,7 @@ export const getBuses = createAsyncThunk(
         })
         .catch((error) => {
           console.error("ошибка: ", error.message);
+          Sentry.captureException(error);
           throw new Error("Server Error!");
         });
     } catch (error) {
@@ -52,7 +54,7 @@ export const getModels = createAsyncThunk(
     let data = [];
     try {
       await axios
-        .get("https://spacekot.ru/apishechka/bus_spec")
+        .get("https://api.spacekot.ru/apishechka/bus_spec")
         .then((res) => {
           console.log("статус: успешно");
           console.log("данные: ", res.data);
@@ -60,6 +62,7 @@ export const getModels = createAsyncThunk(
         })
         .catch((error) => {
           console.error("ошибка: ", error.message);
+          Sentry.captureException(error);
           throw new Error("Server Error!");
         });
     } catch (error) {
@@ -84,7 +87,7 @@ export const postBus = createAsyncThunk(
     //отправление запроса
     try {
       await axios
-        .post("https://spacekot.ru/apishechka/buses", bus)
+        .post("https://api.spacekot.ru/apishechka/buses", bus)
         .then((res) => {
           console.log("статус: успешно");
           console.log("данные: ", res.data);
@@ -92,6 +95,7 @@ export const postBus = createAsyncThunk(
         })
         .catch((error) => {
           console.error("ошибка: ", error.message);
+          Sentry.captureException(error);
           throw new Error(error.message);
         });
     } catch (error) {
@@ -111,7 +115,7 @@ export const putBus = createAsyncThunk(
     //отправление запроса
     try {
       await axios
-        .put(`https://spacekot.ru/apishechka/buses/${id}`, bus)
+        .put(`https://api.spacekot.ru/apishechka/buses/${id}`, bus)
         .then((res) => {
           console.log("статус: успешно");
           console.log("данные: ", res.data);
@@ -119,6 +123,7 @@ export const putBus = createAsyncThunk(
         })
         .catch((error) => {
           console.error("ошибка: ", error.message);
+          Sentry.captureException(error);
           throw new Error(error.message);
         });
     } catch (error) {
@@ -138,12 +143,13 @@ export const deleteBus = createAsyncThunk(
     //отправление запроса
     try {
       await axios
-        .delete(`https://spacekot.ru/apishechka/buses/${id}`)
+        .delete(`https://api.spacekot.ru/apishechka/buses/${id}`)
         .then((res) => {
           console.log("статус: успешно");
         })
         .catch((error) => {
           console.error("ошибка: ", error.message);
+          Sentry.captureException(error);
           throw new Error(error.message);
         });
     } catch (error) {
@@ -165,13 +171,14 @@ export const patchBus = createAsyncThunk(
     try {
       await axios
         .patch(
-          `https://spacekot.ru/apishechka/driver?bus_id=${bus_id}&driver_id=${driver_id}`
+          `https://api.spacekot.ru/apishechka/driver?bus_id=${bus_id}&driver_id=${driver_id}`
         )
         .then((res) => {
           console.log("статус: успешно");
         })
         .catch((error) => {
           console.error("ошибка: ", error.message);
+          Sentry.captureException(error);
           throw new Error(error.message);
         });
     } catch (error) {

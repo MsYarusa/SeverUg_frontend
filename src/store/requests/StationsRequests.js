@@ -1,4 +1,5 @@
 import axios from "axios";
+import * as Sentry from "@sentry/browser";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
   addStation,
@@ -25,13 +26,14 @@ export const getStations = createAsyncThunk(
     let data = [];
     try {
       await axios
-        .get("https://spacekot.ru/apishechka/stations")
+        .get("https://api.spacekot.ru/apishechka/stations")
         .then((res) => {
           console.log("статус: успешно");
           data = res.data;
         })
         .catch((error) => {
           console.error(error);
+          Sentry.captureException(error);
           throw new Error(error.message);
         });
     } catch (error) {
@@ -56,7 +58,7 @@ export const postStation = createAsyncThunk(
     //отправление запроса
     try {
       await axios
-        .post("https://spacekot.ru/apishechka/stations", {
+        .post("https://api.spacekot.ru/apishechka/stations", {
           name: name,
         })
         .then((res) => {
@@ -65,6 +67,7 @@ export const postStation = createAsyncThunk(
         })
         .catch((error) => {
           console.error("ошибка: ", error.message);
+          Sentry.captureException(error);
           throw new Error(error.message);
         });
     } catch (error) {
@@ -84,7 +87,7 @@ export const putStation = createAsyncThunk(
     //отправление запроса
     try {
       await axios
-        .put(`https://spacekot.ru/apishechka/stations/${id}`, {
+        .put(`https://api.spacekot.ru/apishechka/stations/${id}`, {
           name: name,
         })
         .then((res) => {
@@ -93,6 +96,7 @@ export const putStation = createAsyncThunk(
         })
         .catch((error) => {
           console.error("ошибка: ", error.message);
+          Sentry.captureException(error);
           throw new Error(error.message);
         });
     } catch (error) {
@@ -113,12 +117,13 @@ export const deleteStation = createAsyncThunk(
     //отправление запроса
     try {
       await axios
-        .delete(`https://spacekot.ru/apishechka/stations/${id}`)
+        .delete(`https://api.spacekot.ru/apishechka/stations/${id}`)
         .then((res) => {
           console.log("статус: успешно");
         })
         .catch((error) => {
           console.error("ошибка: ", error.message);
+          Sentry.captureException(error);
           throw new Error(error.message);
         });
     } catch (error) {

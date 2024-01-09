@@ -1,4 +1,5 @@
 import axios from "axios";
+import * as Sentry from "@sentry/browser";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { addTrip, updateTrip, removeTrip } from "../slicies/scheduleSlice";
 
@@ -13,7 +14,7 @@ export const getSchedule = createAsyncThunk(
     let data = [];
     try {
       await axios
-        .get("https://spacekot.ru/apishechka/trip")
+        .get("https://api.spacekot.ru/apishechka/trip")
         .then((res) => {
           console.log("статус: успешно");
           console.log("данные: ", res.data);
@@ -21,6 +22,7 @@ export const getSchedule = createAsyncThunk(
         })
         .catch((error) => {
           console.error("ошибка: ", error.message);
+          Sentry.captureException(error);
           throw new Error(error.message);
         });
     } catch (error) {
@@ -54,13 +56,14 @@ export const postTrip = createAsyncThunk(
     //отправление запроса
     try {
       await axios
-        .post("https://spacekot.ru/apishechka/trip", trip)
+        .post("https://api.spacekot.ru/apishechka/trip", trip)
         .then((res) => {
           console.log("статус: успешно");
           newTrip = res.data;
         })
         .catch((error) => {
           console.error("ошибка: ", error.message);
+          Sentry.captureException(error);
           throw new Error(error.message);
         });
     } catch (error) {
@@ -84,13 +87,14 @@ export const putTrip = createAsyncThunk(
     //отправление запроса
     try {
       await axios
-        .put(`https://spacekot.ru/apishechka/trip/${id}`, trip)
+        .put(`https://api.spacekot.ru/apishechka/trip/${id}`, trip)
         .then((res) => {
           console.log("статус: успешно");
           newTrip = res.data;
         })
         .catch((error) => {
           console.error("ошибка: ", error.message);
+          Sentry.captureException(error);
           throw new Error(error.message);
         });
     } catch (error) {
@@ -112,12 +116,13 @@ export const deleteTrip = createAsyncThunk(
     //отправление запроса
     try {
       await axios
-        .delete(`https://spacekot.ru/apishechka/trip/${id}`)
+        .delete(`https://api.spacekot.ru/apishechka/trip/${id}`)
         .then((res) => {
           console.log("статус: успешно");
         })
         .catch((error) => {
           console.error("ошибка: ", error.message);
+          Sentry.captureException(error);
           throw new Error(error.message);
         });
     } catch (error) {

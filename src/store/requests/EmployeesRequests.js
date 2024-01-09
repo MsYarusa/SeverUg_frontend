@@ -1,4 +1,5 @@
 import axios from "axios";
+import * as Sentry from "@sentry/browser";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
   addEmployee,
@@ -24,7 +25,7 @@ export const getEmployees = createAsyncThunk(
     let data = [];
     try {
       await axios
-        .get("https://spacekot.ru/apishechka/user")
+        .get("https://api.spacekot.ru/apishechka/user")
         .then((res) => {
           console.log("статус: успешно");
           console.log("данные: ", res.data);
@@ -32,6 +33,7 @@ export const getEmployees = createAsyncThunk(
         })
         .catch((error) => {
           console.error("ошибка: ", error.message);
+          Sentry.captureException(error);
           throw new Error("Server Error!");
         });
     } catch (error) {
@@ -60,7 +62,7 @@ export const postEmployee = createAsyncThunk(
     //отправление запроса
     try {
       await axios
-        .post("https://spacekot.ru/apishechka/user", employee)
+        .post("https://api.spacekot.ru/apishechka/user", employee)
         .then((res) => {
           console.log("статус: успешно");
           console.log("данные: ", res.data);
@@ -68,6 +70,7 @@ export const postEmployee = createAsyncThunk(
         })
         .catch((error) => {
           console.error("ошибка: ", error.message);
+          Sentry.captureException(error);
           throw new Error(error.message);
         });
     } catch (error) {
@@ -88,7 +91,7 @@ export const putEmployee = createAsyncThunk(
     //отправление запроса
     try {
       await axios
-        .put(`https://spacekot.ru/apishechka/user/${id}`, employee)
+        .put(`https://api.spacekot.ru/apishechka/user/${id}`, employee)
         .then((res) => {
           console.log("статус: успешно");
           console.log("данные: ", res.data);
@@ -96,6 +99,7 @@ export const putEmployee = createAsyncThunk(
         })
         .catch((error) => {
           console.error("ошибка: ", error.message);
+          Sentry.captureException(error);
           throw new Error(error.message);
         });
     } catch (error) {
@@ -116,13 +120,14 @@ export const updateAuthEmployee = createAsyncThunk(
     try {
       await axios
         .patch(
-          `https://spacekot.ru/apishechka/user/${id}?login=${login}&password=${password}`
+          `https://api.spacekot.ru/apishechka/user/${id}?login=${login}&password=${password}`
         )
         .then((res) => {
           console.log("статус: успешно");
         })
         .catch((error) => {
           console.error("ошибка: ", error.message);
+          Sentry.captureException(error);
           throw new Error(error.message);
         });
     } catch (error) {
@@ -138,12 +143,13 @@ export const deleteEmployee = createAsyncThunk(
     //отправление запроса
     try {
       await axios
-        .delete(`https://spacekot.ru/apishechka/user/${id}`)
+        .delete(`https://api.spacekot.ru/apishechka/user/${id}`)
         .then((res) => {
           console.log("статус: успешно");
         })
         .catch((error) => {
           console.error("ошибка: ", error.message);
+          Sentry.captureException(error);
           throw new Error(error.message);
         });
     } catch (error) {
@@ -163,7 +169,7 @@ export const getDrivers = createAsyncThunk(
     let data = [];
     try {
       await axios
-        .get("https://spacekot.ru/apishechka/driver")
+        .get("https://api.spacekot.ru/apishechka/driver")
         .then((res) => {
           console.log("статус: успешно");
           console.log("данные: ", res.data);
@@ -171,6 +177,7 @@ export const getDrivers = createAsyncThunk(
         })
         .catch((error) => {
           console.error("ошибка: ", error.message);
+          Sentry.captureException(error);
           throw new Error("Server Error!");
         });
     } catch (error) {
@@ -195,13 +202,14 @@ export const postDriver = createAsyncThunk(
     //отправление запроса
     try {
       await axios
-        .post("https://spacekot.ru/apishechka/driver", driver)
+        .post("https://api.spacekot.ru/apishechka/driver", driver)
         .then((res) => {
           console.log("статус: успешно");
           newDriver = res.data;
         })
         .catch((error) => {
           console.error("ошибка: ", error.message);
+          Sentry.captureException(error);
           throw new Error(error.message);
         });
     } catch (error) {
@@ -221,13 +229,14 @@ export const putDriver = createAsyncThunk(
     //отправление запроса
     try {
       await axios
-        .put(`https://spacekot.ru/apishechka/driver/${id}`, driver)
+        .put(`https://api.spacekot.ru/apishechka/driver/${id}`, driver)
         .then((res) => {
           console.log("статус: успешно");
           newDriver = res.data;
         })
         .catch((error) => {
           console.error("ошибка: ", error.message);
+          Sentry.captureException(error);
           throw new Error(error.message);
         });
     } catch (error) {
@@ -248,13 +257,14 @@ export const updateAuthDriver = createAsyncThunk(
     try {
       await axios
         .patch(
-          `https://spacekot.ru/apishechka/driver/${id}?login=${login}&password=${password}`
+          `https://api.spacekot.ru/apishechka/driver/${id}?login=${login}&password=${password}`
         )
         .then((res) => {
           console.log("статус: успешно");
         })
         .catch((error) => {
           console.error("ошибка: ", error.message);
+          Sentry.captureException(error);
           throw new Error(error.message);
         });
     } catch (error) {
@@ -270,12 +280,13 @@ export const deleteDriver = createAsyncThunk(
     //отправление запроса
     try {
       await axios
-        .delete(`https://spacekot.ru/apishechka/driver/${id}`)
+        .delete(`https://api.spacekot.ru/apishechka/driver/${id}`)
         .then((res) => {
           console.log("статус: успешно");
         })
         .catch((error) => {
           console.error("ошибка: ", error.message);
+          Sentry.captureException(error);
           throw new Error(error.message);
         });
     } catch (error) {
