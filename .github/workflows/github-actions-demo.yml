@@ -1,29 +1,51 @@
 name: GitHub Actions Demo
 run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+
 on:
   push:
     branches: [SentryIntegration]
   pull_request:
     branches: [SentryIntegration]
+
 jobs:
-  init:
+  build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [20.x]
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Starting Node.js ${{ matrix.node-version}}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-      - name: install modules
+
+      - name: Install modules
         run: npm install
-        # Setup key
-      - run: set -eu
-      - run: mkdir "$HOME/.ssh"
-      - run: echo "${{ secrets.key }}" > "$HOME/.ssh/key"
-      - run: chmod 600 "$HOME/.ssh/key"
-      - name: build project
+
+      - name: Build project
         run: CI=false npm run build
-      - run: cd build && rsync -e "ssh -p 22 -i $HOME/.ssh/key -o StrictHostKeyChecking=no" --archive --compress --delete . u2308023@37.140.192.54:/www/ylzaporozhskiy.ru
+
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup SSH
+        run: |
+          mkdir "$HOME/.ssh"
+          echo "${{ secrets.key }}" > "$HOME/.ssh/key"
+          chmod 600 "$HOME/.ssh/key"
+
+      - name: Deploy to server
+        uses: D3rHase/ssh-command-action@v0.2.2
+        with:
+          host: 37.140.192.54
+          user: u2308023
+          private_key: ${{ secrets.key }}
+          port: 22
+          command: |
+            echo '--- START WORK ON REMOTE SERVER ---';
+            cd /www/ylzaporozhskiy.ru;
+            rsync -a --delete . /www/ylzaporozhskiy.ru;

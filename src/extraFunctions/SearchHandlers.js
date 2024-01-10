@@ -47,6 +47,7 @@ export function searchFromTo({ route, searchConfig }) {
       }
     });
   }
+  console.log({ routes: newRoutes, departureTime: newDepartureTime });
   // сохраняем подходящие результаты
   return { routes: newRoutes, departureTime: newDepartureTime };
 }
