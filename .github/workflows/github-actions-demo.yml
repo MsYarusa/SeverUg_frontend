@@ -41,6 +41,6 @@ jobs:
           port: ${{ secrets.SERVER_SSH_PORT }}
           command: |
             echo '--- START WORK ON REMOTE SERVER ---';
-            cd /www/SeverUg_frontend;
+            cd www/SeverUg_frontend;
             git pull;
             cp -r build/* ../ylzaporozhskiy.ru;
