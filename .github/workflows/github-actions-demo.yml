@@ -42,7 +42,7 @@ jobs:
           command: |
             echo '--- START WORK ON REMOTE SERVER ---';
             cd www/ylzaporozhskiy.ru;
-            rm -rf static
+            rm -rf static;
             cd ../SeverUg_frontend;
             git pull;
             cp -r build/* ../ylzaporozhskiy.ru;
