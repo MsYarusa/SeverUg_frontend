@@ -32,15 +32,15 @@ jobs:
       - name: Run Test
         run: npm run test
 
-      - name: Setup SSH
-        run: |
-
-          mkdir "$HOME/.ssh"
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > "$HOME/.ssh/key"
-          chmod 600 "$HOME/.ssh/key"
-          echo $(ls)
-          scp -r build ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_IP }}:/var/www/u2308023/data/www/ylzaporozhskiy.ru
-
-
-
-
+      - name: Deploy to server
+        uses: D3rHase/ssh-command-action@v0.2.2
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          user: ${{ secrets.SERVER_USERNAME }}
+          private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SERVER_SSH_PORT }}
+          command: |
+            echo '--- START WORK ON REMOTE SERVER ---';
+            cd /www/SeverUg_frontend;
+            git pull;
+            cp -r build/* ../ylzaporozhskiy.ru;
