@@ -29,9 +29,9 @@ jobs:
       - name: Build project
         run: CI=false npm run build
 
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
+      - name: Run Test
+        run: npm run test
+
       - name: Setup SSH
         run: |
           mkdir "$HOME/.ssh"
@@ -41,10 +41,10 @@ jobs:
       - name: Deploy to server
         uses: D3rHase/ssh-command-action@v0.2.2
         with:
-          host: 37.140.192.54
-          user: u2308023
-          private_key: ${{ secrets.key }}
-          port: 22
+          host: ${{ secrets.SERVER_IP }}
+          user: ${{ secrets.SERVER_USERNAME }}
+          private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SERVER_SSH_PORT }}
           command: |
             echo '--- START WORK ON REMOTE SERVER ---';
             cd /www/ylzaporozhskiy.ru;
