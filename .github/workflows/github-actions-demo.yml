@@ -32,12 +32,6 @@ jobs:
       - name: Run Test
         run: npm run test
 
-      - name: Setup SSH
-        run: |
-          mkdir "$HOME/.ssh"
-          echo "${{ secrets.key }}" > "$HOME/.ssh/key"
-          chmod 600 "$HOME/.ssh/key"
-
       - name: Deploy to server
         uses: D3rHase/ssh-command-action@v0.2.2
         with:
@@ -47,5 +41,5 @@ jobs:
           port: ${{ secrets.SERVER_SSH_PORT }}
           command: |
             echo '--- START WORK ON REMOTE SERVER ---';
-            cd /www/ylzaporozhskiy.ru;
+            cd ~/www/ylzaporozhskiy.ru;
             rsync -a --delete . /www/ylzaporozhskiy.ru;
