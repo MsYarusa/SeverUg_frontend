@@ -41,5 +41,5 @@ jobs:
           port: ${{ secrets.SERVER_SSH_PORT }}
           command: |
             echo '--- START WORK ON REMOTE SERVER ---';
-            cd ~/www/ylzaporozhskiy.ru;
-            rsync -a --delete . /www/ylzaporozhskiy.ru;
+            cd www/ylzaporozhskiy.ru;
+            rsync -a --delete . www/ylzaporozhskiy.ru;
