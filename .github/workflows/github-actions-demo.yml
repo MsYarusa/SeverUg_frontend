@@ -42,4 +42,4 @@ jobs:
           command: |
             echo '--- START WORK ON REMOTE SERVER ---';
             cd www/ylzaporozhskiy.ru;
-            rsync -a --delete . www/ylzaporozhskiy.ru;
+            # cd build && rsync -a --delete . www/ylzaporozhskiy.ru;
