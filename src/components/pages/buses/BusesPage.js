@@ -73,12 +73,14 @@ const BusesPage = () => {
       let busData = [code];
       if (bus.drive_id) {
         let driver = drivers.find((driver) => driver.id === bus.drive_id);
-        let firstName = driver.first_name.toLowerCase().split(" ");
-        let lastName = driver.last_name.toLowerCase().split(" ");
-        let fatherName = driver.father_name
-          ? driver.father_name.toLowerCase().split(" ")
-          : "";
-        busData = [...busData, ...lastName, ...firstName, ...fatherName];
+        if (driver) {
+          let firstName = driver.first_name.toLowerCase().split(" ");
+          let lastName = driver.last_name.toLowerCase().split(" ");
+          let fatherName = driver.father_name
+            ? driver.father_name.toLowerCase().split(" ")
+            : "";
+          busData = [...busData, ...lastName, ...firstName, ...fatherName];
+        }
       }
       busData.filter((item) => item !== "");
       // копируем данные фильтра

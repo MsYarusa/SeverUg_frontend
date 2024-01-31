@@ -18,10 +18,13 @@ const BusItem = ({ data, deleteHandler, updateHandler, driverHandler }) => {
   let driverName = " не назначен";
   if (data.drive_id) {
     let driver = drivers.find((driver) => driver.id === data.drive_id);
-    let firstName = driver.first_name;
-    let lastName = driver.last_name;
-    let fatherName = driver.father_name ? driver.father_name : "";
-    driverName = [lastName, firstName, fatherName].join(" ");
+    console.log(driver);
+    if (driver) {
+      let firstName = driver.first_name;
+      let lastName = driver.last_name;
+      let fatherName = driver.father_name ? driver.father_name : "";
+      driverName = [lastName, firstName, fatherName].join(" ");
+    }
   }
 
   const driverClickedHandler = (event) => {

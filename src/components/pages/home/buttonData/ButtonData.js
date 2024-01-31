@@ -29,19 +29,9 @@ export const admin_data = [
     to: "/schedule",
   },
   {
-    img: profit,
-    text: "Прибыль",
-    to: "/profit",
-  },
-  {
-    img: canceledTrips,
-    text: "Отмененные",
-    to: "/canceled",
-  },
-  {
     img: successfulTrips,
-    text: "Успешные",
-    to: "/successful",
+    text: "Отчеты",
+    to: "/reports",
   },
   {
     img: tickets,
@@ -52,19 +42,9 @@ export const admin_data = [
 
 export const director_data = [
   {
-    img: profit,
-    text: "Прибыль",
-    to: "/profit",
-  },
-  {
-    img: canceledTrips,
-    text: "Отмененные",
-    to: "/canceled",
-  },
-  {
     img: successfulTrips,
-    text: "Успешные",
-    to: "/successful",
+    text: "Отчеты",
+    to: "/reports",
   },
 ];
 export const manager_data = [

@@ -67,9 +67,8 @@ export function translateDepStatus(status) {
 //РАБОТА С ТИПАМИ ОТЧЕТОВ
 export function translateReportType(type) {
   const typeTranslator = [
-    { english: "profit", russian: "отчет по прибыли" },
-    { english: "cancel", russian: "отчет по отмененным рейсам" },
-    { english: "succes", russian: "отчет по завершенным рейсы" },
+    { english: "canceled", russian: "отчет по отмененным рейсам" },
+    { english: "done", russian: "отчет по завершенным рейсы" },
   ];
 
   if (reportsTypeRU.find((typeRU) => typeRU === type)) {

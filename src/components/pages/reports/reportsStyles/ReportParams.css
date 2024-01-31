@@ -1,0 +1,138 @@
+.report-params {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 10px;
+  width: 800px;
+  color: #5c5c5c;
+  font-family: Montserrat;
+  font-size: 19px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 110%;
+}
+
+.report-params > div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #ededee;
+  width: 80%;
+  height: fit-content;
+  padding: 10px;
+  border-radius: 16px;
+}
+
+.report-params > div label {
+  margin: 0;
+  margin-left: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.report-params > div button {
+  background: none;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.report-params .filter-input {
+  padding: 5px;
+  margin: 0;
+  background-color: #fff;
+  border-radius: 16px;
+}
+
+.report-params #add-filter {
+  width: 82%;
+  height: 72px;
+  text-align: center;
+  border-radius: 16px;
+  border: none;
+  background: #ededee;
+
+  color: #5c5c5c;
+  font-family: Montserrat;
+  font-size: 19px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 110%;
+}
+
+.report-params .action-button__container {
+  width: 82%;
+  padding: 0;
+  margin: 10px 0 30px;
+  background-color: #fff;
+}
+
+.report-params .action-button {
+  border-radius: 16px;
+  border: none;
+  background: #6f808d;
+
+  min-height: 72px;
+  width: 49%;
+
+  color: #fff;
+  text-align: center;
+  font-family: Montserrat;
+  font-size: 19px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 110%;
+}
+
+.report-params .action-button:hover {
+  box-shadow: 0px 0px 0px 2px #6f808d;
+  cursor: pointer;
+}
+
+.report-params #add-filter:hover {
+  box-shadow: 0px 0px 0px 2px #ededee;
+  cursor: pointer;
+}
+
+.report-params select {
+  width: 65%;
+  height: 55px;
+
+  -moz-appearance: none;
+  -webkit-appearance: none;
+
+  border: none;
+  outline: none;
+  border-radius: 12px;
+  background: #ededee;
+
+  color: #5c5c5c;
+  background: #fff;
+  font-family: Montserrat;
+  text-align: center;
+  font-size: 19px;
+  font-weight: 500;
+  line-height: 110%;
+  cursor: pointer;
+}
+
+.report-params input {
+  width: 50%;
+  height: 50px;
+
+  border: none;
+  outline: none;
+  border-radius: 30px;
+
+  color: #5c5c5c;
+  font-family: Montserrat;
+  text-align: center;
+  font-size: 19px;
+  font-weight: 500;
+  line-height: 110%;
+  cursor: pointer;
+  padding-right: 5px;
+}

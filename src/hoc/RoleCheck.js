@@ -12,6 +12,8 @@ const RoleCheck = ({ children, roles }) => {
     <>
       {user.role === "cashier" ? (
         <Navigate to="/tickets" />
+      ) : user.role === "director" ? (
+        <Navigate to="/reports" />
       ) : (
         <Navigate to="/" />
       )}

@@ -24,7 +24,7 @@ export const getEmployees = createAsyncThunk(
     let data = [];
     try {
       await axios
-        .get("https://spacekot.ru/apishechka/user")
+        .get("https://api.spacekot.ru/apishechka/user")
         .then((res) => {
           console.log("статус: успешно");
           console.log("данные: ", res.data);
@@ -60,7 +60,7 @@ export const postEmployee = createAsyncThunk(
     //отправление запроса
     try {
       await axios
-        .post("https://spacekot.ru/apishechka/user", employee)
+        .post("https://api.spacekot.ru/apishechka/user", employee)
         .then((res) => {
           console.log("статус: успешно");
           console.log("данные: ", res.data);
@@ -88,7 +88,7 @@ export const putEmployee = createAsyncThunk(
     //отправление запроса
     try {
       await axios
-        .put(`https://spacekot.ru/apishechka/user/${id}`, employee)
+        .put(`https://api.spacekot.ru/apishechka/user/${id}`, employee)
         .then((res) => {
           console.log("статус: успешно");
           console.log("данные: ", res.data);
@@ -116,7 +116,7 @@ export const updateAuthEmployee = createAsyncThunk(
     try {
       await axios
         .patch(
-          `https://spacekot.ru/apishechka/user/${id}?login=${login}&password=${password}`
+          `https://api.spacekot.ru/apishechka/user/${id}?login=${login}&password=${password}`
         )
         .then((res) => {
           console.log("статус: успешно");
@@ -138,7 +138,7 @@ export const deleteEmployee = createAsyncThunk(
     //отправление запроса
     try {
       await axios
-        .delete(`https://spacekot.ru/apishechka/user/${id}`)
+        .delete(`https://api.spacekot.ru/apishechka/user/${id}`)
         .then((res) => {
           console.log("статус: успешно");
         })
@@ -163,7 +163,7 @@ export const getDrivers = createAsyncThunk(
     let data = [];
     try {
       await axios
-        .get("https://spacekot.ru/apishechka/driver")
+        .get("https://api.spacekot.ru/apishechka/driver")
         .then((res) => {
           console.log("статус: успешно");
           console.log("данные: ", res.data);
@@ -195,7 +195,7 @@ export const postDriver = createAsyncThunk(
     //отправление запроса
     try {
       await axios
-        .post("https://spacekot.ru/apishechka/driver", driver)
+        .post("https://api.spacekot.ru/apishechka/driver", driver)
         .then((res) => {
           console.log("статус: успешно");
           newDriver = res.data;
@@ -221,7 +221,7 @@ export const putDriver = createAsyncThunk(
     //отправление запроса
     try {
       await axios
-        .put(`https://spacekot.ru/apishechka/driver/${id}`, driver)
+        .put(`https://api.spacekot.ru/apishechka/driver/${id}`, driver)
         .then((res) => {
           console.log("статус: успешно");
           newDriver = res.data;
@@ -248,7 +248,7 @@ export const updateAuthDriver = createAsyncThunk(
     try {
       await axios
         .patch(
-          `https://spacekot.ru/apishechka/driver/${id}?login=${login}&password=${password}`
+          `https://api.spacekot.ru/apishechka/driver/${id}?login=${login}&password=${password}`
         )
         .then((res) => {
           console.log("статус: успешно");
@@ -270,7 +270,7 @@ export const deleteDriver = createAsyncThunk(
     //отправление запроса
     try {
       await axios
-        .delete(`https://spacekot.ru/apishechka/driver/${id}`)
+        .delete(`https://api.spacekot.ru/apishechka/driver/${id}`)
         .then((res) => {
           console.log("статус: успешно");
         })

@@ -27,7 +27,7 @@ export const getRoutes = createAsyncThunk(
     let data = [];
     try {
       await axios
-        .get("https://spacekot.ru/apishechka/road")
+        .get("https://api.spacekot.ru/apishechka/road")
         .then((res) => {
           console.log("статус: успешно");
           console.log("данные: ", res.data);
@@ -59,7 +59,7 @@ export const postRoute = createAsyncThunk(
     //отправление запроса
     try {
       await axios
-        .post("https://spacekot.ru/apishechka/road", route)
+        .post("https://api.spacekot.ru/apishechka/road", route)
         .then((res) => {
           console.log("статус: успешно");
           newRroute = res.data;
@@ -86,7 +86,7 @@ export const putRoute = createAsyncThunk(
     //отправление запроса
     try {
       await axios
-        .put(`https://spacekot.ru/apishechka/road/${id}`, route)
+        .put(`https://api.spacekot.ru/apishechka/road/${id}`, route)
         .then((res) => {
           console.log("статус: успешно");
           newRoute = res.data;
@@ -112,7 +112,7 @@ export const deleteRoute = createAsyncThunk(
     //отправление запроса
     try {
       await axios
-        .delete(`https://spacekot.ru/apishechka/road/${id}`)
+        .delete(`https://api.spacekot.ru/apishechka/road/${id}`)
         .then((res) => {
           console.log("статус: успешно");
         })
@@ -137,7 +137,7 @@ export const getTimeGroup = createAsyncThunk(
     let data = [];
     try {
       await axios
-        .get(`https://spacekot.ru/apishechka/station_time`)
+        .get(`https://api.spacekot.ru/apishechka/station_time`)
         .then((res) => {
           console.log("статус: успешно");
           console.log("данные: ", res.data);
@@ -179,7 +179,7 @@ export const postTimeGroup = createAsyncThunk(
     try {
       await axios
         .post(
-          `https://spacekot.ru/apishechka/station_time${
+          `https://api.spacekot.ru/apishechka/station_time${
             time.length === 1 ? "" : "/few"
           }`,
           time.length === 1 ? time[0] : time
@@ -211,7 +211,7 @@ export const putTimeGroup = createAsyncThunk(
     let data = [];
     try {
       await axios
-        .put(`https://spacekot.ru/apishechka/station_time`, time)
+        .put(`https://api.spacekot.ru/apishechka/station_time`, time)
         .then((res) => {
           console.log("статус: успешно");
           console.log("данные: ", res.data);
@@ -236,7 +236,7 @@ export const getCostGroup = createAsyncThunk(
     let data = [];
     try {
       await axios
-        .get(`https://spacekot.ru/apishechka/station_cost`)
+        .get(`https://api.spacekot.ru/apishechka/station_cost`)
         .then((res) => {
           console.log("статус: успешно");
           console.log("данные: ", res.data);
@@ -277,7 +277,7 @@ export const postCostGroup = createAsyncThunk(
     try {
       await axios
         .post(
-          `https://spacekot.ru/apishechka/station_cost${
+          `https://api.spacekot.ru/apishechka/station_cost${
             cost.length === 1 ? "" : "/few"
           }`,
           cost.length === 1 ? cost[0] : cost
@@ -310,7 +310,7 @@ export const putCostGroup = createAsyncThunk(
     let data = [];
     try {
       await axios
-        .put(`https://spacekot.ru/apishechka/station_cost`, cost)
+        .put(`https://api.spacekot.ru/apishechka/station_cost`, cost)
         .then((res) => {
           console.log("статус: успешно");
           console.log("данные: ", res.data);

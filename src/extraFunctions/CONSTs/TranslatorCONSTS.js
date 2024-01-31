@@ -13,9 +13,8 @@ export const busStatusRU = ["активный", "на ремонте"];
 export const depStatusEN = ["active", "canceled", "done"];
 export const depStatusRU = ["активный", "отменен", "завершен"];
 
-export const reportsTypeEN = ["profit", "succes", "cancel"];
+export const reportsTypeEN = ["done", "canceled"];
 export const reportsTypeRU = [
-  "отчет по прибыли",
   "отчет по завершенным рейсы",
   "отчет по отмененным рейсам",
 ];

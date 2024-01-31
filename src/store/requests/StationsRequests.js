@@ -25,7 +25,7 @@ export const getStations = createAsyncThunk(
     let data = [];
     try {
       await axios
-        .get("https://spacekot.ru/apishechka/stations")
+        .get("https://api.spacekot.ru/apishechka/stations")
         .then((res) => {
           console.log("статус: успешно");
           data = res.data;
@@ -56,7 +56,7 @@ export const postStation = createAsyncThunk(
     //отправление запроса
     try {
       await axios
-        .post("https://spacekot.ru/apishechka/stations", {
+        .post("https://api.spacekot.ru/apishechka/stations", {
           name: name,
         })
         .then((res) => {
@@ -84,7 +84,7 @@ export const putStation = createAsyncThunk(
     //отправление запроса
     try {
       await axios
-        .put(`https://spacekot.ru/apishechka/stations/${id}`, {
+        .put(`https://api.spacekot.ru/apishechka/stations/${id}`, {
           name: name,
         })
         .then((res) => {
@@ -113,7 +113,7 @@ export const deleteStation = createAsyncThunk(
     //отправление запроса
     try {
       await axios
-        .delete(`https://spacekot.ru/apishechka/stations/${id}`)
+        .delete(`https://api.spacekot.ru/apishechka/stations/${id}`)
         .then((res) => {
           console.log("статус: успешно");
         })

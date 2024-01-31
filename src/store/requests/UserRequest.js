@@ -48,7 +48,7 @@ export const getUser = createAsyncThunk(
     // отправление запроса
     try {
       await axios
-        .post("https://spacekot.ru/apishechka/login", {
+        .post("https://api.spacekot.ru/apishechka/login", {
           login: CryptoJS.SHA256(login).toString(CryptoJS.enc.Hex),
           password: CryptoJS.SHA256(password).toString(CryptoJS.enc.Hex),
         })

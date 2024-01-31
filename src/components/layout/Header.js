@@ -121,14 +121,8 @@ const AdminNavLinks = () => {
         </NavLink>
       </DropdownObject>
       <DropdownObject label="Дирекция" style="dropdown" isLinks={true}>
-        <NavLink to="/canceled">
-          <p>Отмененные</p>
-        </NavLink>
-        <NavLink to="/profit">
-          <p>Прибыль</p>
-        </NavLink>
-        <NavLink to="/successful">
-          <p>Успешные</p>
+        <NavLink to="/reports">
+          <p>Отчеты</p>
         </NavLink>
       </DropdownObject>
       <DropdownObject label="Кассир" style="dropdown" isLinks={true}>
@@ -158,14 +152,8 @@ const AdminNavLinksPlain = () => {
       <NavLink to="/schedule">
         <p>Расписание</p>
       </NavLink>
-      <NavLink to="/canceled">
-        <p>Отмененные</p>
-      </NavLink>
-      <NavLink to="/profit">
-        <p>Прибыль</p>
-      </NavLink>
-      <NavLink to="/successful">
-        <p>Успешные</p>
+      <NavLink to="/reports">
+        <p>Отчеты</p>
       </NavLink>
       <NavLink to="/tickets">
         <p>Билеты</p>
@@ -197,22 +185,7 @@ const ManagerNavLinks = () => {
 };
 
 const DirectorNavLinks = () => {
-  return (
-    <>
-      <NavLink to="/">
-        <p className="link-label">Главная</p>
-      </NavLink>
-      <NavLink to="/canceled">
-        <p className="link-label">Отмененные</p>
-      </NavLink>
-      <NavLink to="/profit">
-        <p className="link-label">Прибыль</p>
-      </NavLink>
-      <NavLink to="/successful">
-        <p className="link-label">Успешные</p>
-      </NavLink>
-    </>
-  );
+  return <></>;
 };
 
 const CashierNavLinks = () => {

@@ -11,6 +11,7 @@ import RoutesPage from "./components/pages/routes/RoutesPage";
 import StationsPage from "./components/pages/stations/StationsPage";
 import BusesPage from "./components/pages/buses/BusesPage";
 import TicketPage from "./components/pages/tickets/TicketPage";
+import ReportPage from "./components/pages/reports/ReportPage";
 
 function App() {
   return (
@@ -24,7 +25,14 @@ function App() {
           </RequireAuth>
         }
       >
-        <Route index element={<HomePage />} />
+        <Route
+          index
+          element={
+            <RoleCheck roles={["admin", "manager"]}>
+              <HomePage />
+            </RoleCheck>
+          }
+        />
         <Route
           path="employees"
           element={
@@ -94,6 +102,14 @@ function App() {
           element={
             <RoleCheck roles={["admin", "cashier"]}>
               <TicketPage />
+            </RoleCheck>
+          }
+        />
+        <Route
+          path="reports"
+          element={
+            <RoleCheck roles={["admin", "director"]}>
+              <ReportPage />
             </RoleCheck>
           }
         />

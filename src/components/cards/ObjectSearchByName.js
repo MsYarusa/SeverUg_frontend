@@ -21,7 +21,11 @@ const SearchByName = ({ search, placeholder }) => {
   };
 
   return (
-    <form onSubmit={submitHandler} className="object-search__container">
+    <form
+      onSubmit={submitHandler}
+      className="object-search__container"
+      autoComplete="off"
+    >
       <input
         id="search"
         type="text"

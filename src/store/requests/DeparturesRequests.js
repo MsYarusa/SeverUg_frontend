@@ -17,7 +17,7 @@ export const getDepartures = createAsyncThunk(
     let data = [];
     try {
       await axios
-        .get("https://spacekot.ru/apishechka/departures")
+        .get("https://api.spacekot.ru/apishechka/departures")
         .then((res) => {
           console.log("статус: успешно");
           console.log("данные: ", res.data);
@@ -49,7 +49,7 @@ export const postDepartures = createAsyncThunk(
     //отправление запроса
     try {
       await axios
-        .post("https://spacekot.ru/apishechka/departures", departure)
+        .post("https://api.spacekot.ru/apishechka/departures", departure)
         .then((res) => {
           console.log("статус: успешно");
           console.log("данные: ", res.data);
@@ -76,7 +76,7 @@ export const putDeparture = createAsyncThunk(
     //отправление запроса
     try {
       await axios
-        .put(`https://spacekot.ru/apishechka/departures/${id}`, departure)
+        .put(`https://api.spacekot.ru/apishechka/departures/${id}`, departure)
         .then((res) => {
           console.log("статус: успешно");
           console.log("данные: ", res.data);
@@ -102,7 +102,7 @@ export const deleteDeparture = createAsyncThunk(
     //отправление запроса
     try {
       await axios
-        .delete(`https://spacekot.ru/apishechka/departures/${id}`)
+        .delete(`https://api.spacekot.ru/apishechka/departures/${id}`)
         .then((res) => {
           console.log("статус: успешно");
         })
